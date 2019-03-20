@@ -17,6 +17,9 @@ _global_script_class_icons={
 
 config/name="mario"
 run/main_scene="res://level1.tscn"
+boot_splash/image="res://mouse.png"
+boot_splash/fullsize=false
+boot_splash/bg_color=Color( 0, 0, 0, 1 )
 config/icon="res://icon.png"
 
 [display]
@@ -53,4 +56,5 @@ jump={
 
 quality/intended_usage/framebuffer_allocation=0
 quality/2d/use_pixel_snap=true
+environment/default_clear_color=Color( 0.25098, 0.239216, 0.239216, 1 )
 environment/default_environment="res://default_env.tres"
