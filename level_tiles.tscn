@@ -1,0 +1,54 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://mario.png" type="Texture" id=1]
+
+[node name="Node2D" type="Node2D"]
+
+[node name="brick_0" type="Sprite" parent="."]
+visible = false
+texture = ExtResource( 1 )
+region_enabled = true
+region_rect = Rect2( 0, 0, 16, 16 )
+
+[node name="brick_1" type="Sprite" parent="."]
+visible = false
+texture = ExtResource( 1 )
+region_enabled = true
+region_rect = Rect2( 16, 0, 16, 16 )
+
+[node name="brick_2" type="Sprite" parent="."]
+visible = false
+texture = ExtResource( 1 )
+region_enabled = true
+region_rect = Rect2( 32, 0, 16, 16 )
+
+[node name="brick_3" type="Sprite" parent="."]
+visible = false
+texture = ExtResource( 1 )
+region_enabled = true
+region_rect = Rect2( 48, 0, 16, 16 )
+
+[node name="brick_4" type="Sprite" parent="."]
+visible = false
+texture = ExtResource( 1 )
+region_enabled = true
+region_rect = Rect2( 0, 16, 16, 16 )
+
+[node name="brick_5" type="Sprite" parent="."]
+visible = false
+texture = ExtResource( 1 )
+region_enabled = true
+region_rect = Rect2( 16, 16, 16, 16 )
+
+[node name="bridge_0" type="Sprite" parent="."]
+visible = false
+texture = ExtResource( 1 )
+region_enabled = true
+region_rect = Rect2( 32, 16, 16, 16 )
+
+[node name="bridge_1" type="Sprite" parent="."]
+visible = false
+texture = ExtResource( 1 )
+region_enabled = true
+region_rect = Rect2( 48, 16, 16, 16 )
+
