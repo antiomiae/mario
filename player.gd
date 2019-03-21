@@ -17,8 +17,12 @@ var motion_state = MotionState.WALKING
 var velocity : Vector2 = Vector2(0, 0)
 var has_jumped : bool = false
 
+onready var camera = get_parent().get_node("camera")
+onready var tilemap = get_parent().get_node("TileMap")
+
 func _ready():
 	pass
+	
 
 func _physics_process(delta):
 	
@@ -34,6 +38,8 @@ func _physics_process(delta):
 		MotionState.JUMPING:
 			movement_jumping(delta)
 
+	camera.offset = position - Vector2(320,240)/2
+	#camera.align()
 
 func movement_walking(delta):	
 	horizontal_input(WALK_SPEED, WALK_ACCELERATION, WALK_FRICTION, delta)
