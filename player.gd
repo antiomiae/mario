@@ -7,6 +7,7 @@ const SLOW_WALK_ACCELERATION = 0.037109375
 
 #const WALK_FRICTION = 0.05078125
 const WALK_FRICTION = 0.1015625
+const WALK_SKID = WALK_FRICTION
 const WALK_SPEED = 3.5314159
 const WALK_ACCELERATION = 0.0556640625
 #const WALK_ACCELERATION = 0.89
@@ -41,7 +42,7 @@ func _physics_process(delta):
     #camera.position = position - Vector2(320,240)/2
 
 func movement_walking(delta):
-    horizontal_input(WALK_SPEED, WALK_ACCELERATION, WALK_FRICTION, delta)
+    horizontal_input(WALK_SPEED, WALK_ACCELERATION, WALK_FRICTION, WALK_SKID, delta)
     velocity.x = clamp(velocity.x, -WALK_SPEED, WALK_SPEED)
     velocity.y = GRAVITY
 
@@ -74,15 +75,18 @@ func movement_jumping(delta):
     if velocity.y > MAX_FALL_SPEED:
         velocity.y = CLAMP_FALL_SPEED
 
-    horizontal_input(AIR_WALK_SPEED, AIR_WALK_ACCELERATION, 0, delta)
+    horizontal_input(AIR_WALK_SPEED, AIR_WALK_ACCELERATION, 0, 0, delta)
     velocity = move_and_slide(velocity/delta, UP)*delta
 
     if is_on_floor():
         has_jumped = false
         velocity.y = 0
-        motion_state = MotionState.WALKING
+        if Input.is_action_just_pressed("jump"):
+            motion_state = MotionState.JUMPING
+        else:
+            motion_state = MotionState.WALKING
 
-func horizontal_input(speed, acceleration, friction, delta):
+func horizontal_input(speed, acceleration, friction, brake, delta):
     var input_dir = 0
 
     if is_walk_pressed():
@@ -94,6 +98,8 @@ func horizontal_input(speed, acceleration, friction, delta):
     if input_dir != 0:
         if abs(velocity.x) < speed:
             velocity.x += sign(input_dir) * acceleration
+        if sign(velocity.x) != input_dir:
+            velocity.x += sign(input_dir) * max(acceleration, brake)
     elif abs(velocity.x) > 0 and friction != 0:
         # apply drag to slowdown character to a stop
         if abs(velocity.x) <= friction:
