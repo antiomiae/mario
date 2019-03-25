@@ -6,6 +6,10 @@
 extents = Vector2( 6.5, 7 )
 
 [node name="mario" type="KinematicBody2D"]
+collision/safe_margin = 0.1
+__meta__ = {
+"_edit_horizontal_guides_": [ 15.0 ]
+}
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2( 6.5, 8 )

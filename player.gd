@@ -24,7 +24,9 @@ const UP = Vector2(0, -1)
 
 var motion_state = MotionState.WALKING
 var velocity : Vector2 = Vector2(0, 0)
+var last_velocity = velocity
 var has_jumped : bool = false
+var was_on_floor = is_on_floor()
 
 onready var camera = get_parent().get_node("camera")
 
@@ -33,34 +35,88 @@ func _ready():
 
 
 func _physics_process(delta):
+    if Input.is_key_pressed(KEY_P):
+        print("pause")
+    was_on_floor = is_on_floor()
     match motion_state:
         MotionState.WALKING:
             movement_walking(delta)
         MotionState.JUMPING:
             movement_jumping(delta)
 
-    #camera.position = position - Vector2(320,240)/2
+    last_velocity = velocity
+
+
+func get_collisions():
+    var collisions = []
+    for i in range(get_slide_count()):
+        collisions.push_back(get_slide_collision(i))
+
+    return collisions
+
+
 
 func movement_walking(delta):
     horizontal_input(WALK_SPEED, WALK_ACCELERATION, WALK_FRICTION, WALK_SKID, delta)
     velocity.x = clamp(velocity.x, -WALK_SPEED, WALK_SPEED)
     velocity.y = GRAVITY
 
-    velocity = move_and_slide(velocity/delta, UP)*delta
+    last_velocity = velocity
+    velocity = move_and_slide_with_snap(velocity*60, Vector2(0, 1), UP)*delta
 
-    var state = {
-        "ceiling": is_on_ceiling(),
-        "floor": is_on_floor(),
-        "wall": is_on_wall()
-    }
+    handle_tile_ledge()
 
-    if !is_on_floor():
+    if was_on_floor and Input.is_action_just_pressed("jump"):
+        motion_state = MotionState.JUMPING
+        has_jumped = false
+    elif !is_on_floor():
         motion_state = MotionState.JUMPING
         has_jumped = true
-    else:
-        if Input.is_action_just_pressed("jump"):
-            motion_state = MotionState.JUMPING
-            has_jumped = false
+
+
+# snap player above ledge if just missed
+func handle_tile_ledge():
+    if velocity.y < 0 or is_on_ceiling():
+        return
+
+    var collisions = get_collisions()
+    var front_colliding_tiles = []
+
+    if collisions.size() > 0:
+        for c in collisions:
+            if c.normal.x != 0:
+                front_colliding_tiles.push_back(c)
+
+    if (front_colliding_tiles.size() > 0 and
+        last_velocity.x != 0):
+
+        front_colliding_tiles.sort_custom(CollisionSortByY, "sort")
+        var c = front_colliding_tiles.front()
+        var pos = c.position
+
+        var tile_index = $"../TileMap".world_to_map(Vector2(pos.x - c.normal.x, pos.y))
+        var cell = $"../TileMap".get_cell(tile_index.x, tile_index.y)
+        # bail if there's no tile to collide with
+        if cell < 0:
+            return
+
+        var tile_y = tile_index.y
+        var cell_height = $"../TileMap".cell_size.y
+
+        var foot_y = to_global(Vector2(0, 15)).y
+
+        if tile_y * cell_height + 5 > foot_y:
+            var d = tile_y * cell_height - foot_y - 0.125
+            var old_y = position.y
+
+            var test_xform = transform.translated(Vector2(0, d))
+
+            var will_collide = test_move(test_xform, Vector2(last_velocity.x, 0))
+
+            if !will_collide:
+                move_local_y(d)
+                velocity.x = last_velocity.x
+                velocity.y = 0
 
 
 func movement_jumping(delta):
@@ -76,9 +132,15 @@ func movement_jumping(delta):
         velocity.y = CLAMP_FALL_SPEED
 
     horizontal_input(AIR_WALK_SPEED, AIR_WALK_ACCELERATION, 0, 0, delta)
-    velocity = move_and_slide(velocity/delta, UP)*delta
+    last_velocity = velocity
+    velocity = move_and_slide(velocity*60, UP)*delta
 
-    if is_on_floor():
+    handle_tile_ledge()
+
+    if was_on_floor and Input.is_action_just_pressed("jump"):
+        motion_state = MotionState.JUMPING
+        has_jumped = false
+    elif is_on_floor():
         has_jumped = false
         velocity.y = 0
         if Input.is_action_just_pressed("jump"):
@@ -109,3 +171,11 @@ func horizontal_input(speed, acceleration, friction, brake, delta):
 
 func is_walk_pressed() -> bool:
     return Input.is_action_pressed("walk_left") || Input.is_action_pressed("walk_right")
+
+# for sorting collisions by y position with Array#sort_custom. Collisions with smaller y position
+# come before larger ones, a.k.a. highest first
+class CollisionSortByY:
+    static func sort(a, b):
+        if a.position.y < b.position.y:
+            return true
+        return false
