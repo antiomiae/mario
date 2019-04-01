@@ -1,17 +1,19 @@
 [gd_scene load_steps=3 format=2]
 
-[ext_resource path="res://hook_anchor_node.gd" type="Script" id=1]
+[ext_resource path="res://tether/tether_anchor_node.gd" type="Script" id=1]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 8, 8 )
 
-[node name="Node2D" type="Node2D"]
+[node name="TetherAnchorNode" type="Node2D" groups=[
+"anchor_nodes",
+]]
 script = ExtResource( 1 )
+
+[node name="Sprite" type="Sprite" parent="."]
 
 [node name="StaticBody2D" type="StaticBody2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
 shape = SubResource( 1 )
-
-[node name="Sprite" type="Sprite" parent="."]
 

@@ -10,12 +10,18 @@ config_version=4
 
 _global_script_classes=[ {
 "base": "Node2D",
-"class": "HookAnchorNode",
+"class": "GrapplingHook",
 "language": "GDScript",
-"path": "res://hook_anchor_node.gd"
+"path": "res://tether/grappling_hook.gd"
+}, {
+"base": "Node2D",
+"class": "TetherAnchorNode",
+"language": "GDScript",
+"path": "res://tether/tether_anchor_node.gd"
 } ]
 _global_script_class_icons={
-"HookAnchorNode": ""
+"GrapplingHook": "",
+"TetherAnchorNode": ""
 }
 
 [application]
