@@ -21,6 +21,16 @@ func is_anchor_path_clear(body):
     # do some kind of raycast, i dunno
     pass
 
+# system callbacks
+func _process(delta):
+    update()
+
+func _draw():
+    if current_attachment:
+        draw_line(emitter_position, to_local(current_attachment.get_attachment_point()), Color(1, 1, 1), 1.0)
+
+
+# detection area signals
 func _on_detection_area_body_entered(body):
     var is_anchor = body.get_node("..") is TetherAnchorNode
     if is_anchor:
@@ -28,14 +38,6 @@ func _on_detection_area_body_entered(body):
 
 func _on_detection_area_body_exited(body):
     anchor_nodes.erase(body)
-
-
-func _draw():
-    if current_attachment:
-        draw_line(emitter_position, to_local(current_attachment.get_attachment_point()), Color(1, 1, 1), 1.0)
-
-func _process(delta):
-    update()
 
 
 class Attachment:

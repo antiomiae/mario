@@ -4,7 +4,7 @@
 [ext_resource path="res://tether/tether_anchor_node.tscn" type="PackedScene" id=2]
 [ext_resource path="res://tether/player.gd" type="Script" id=3]
 [ext_resource path="res://tether/grappling_hook.tscn" type="PackedScene" id=4]
-[ext_resource path="res://sprites/gloomp.png" type="Texture" id=5]
+[ext_resource path="res://sprites/runner.png" type="Texture" id=5]
 
 [node name="Node2D" type="Node2D"]
 script = ExtResource( 1 )
@@ -13,7 +13,7 @@ script = ExtResource( 1 )
 margin_left = -1.0
 margin_right = 325.0
 margin_bottom = 247.0
-color = Color( 0, 0, 0, 1 )
+color = Color( 0.0235294, 0.0235294, 0.0235294, 1 )
 
 [node name="TileMap" type="TileMap" parent="."]
 format = 1
@@ -22,14 +22,18 @@ format = 1
 position = Vector2( 151, 105 )
 
 [node name="DebugCharacter" type="Node2D" parent="."]
-position = Vector2( 82, 105 )
+position = Vector2( 81, 110 )
 script = ExtResource( 3 )
 __meta__ = {
 "_edit_group_": true
 }
 
 [node name="GrapplingHook" parent="DebugCharacter" instance=ExtResource( 4 )]
+emitter_position = Vector2( 6, 0 )
 
 [node name="Sprite" type="Sprite" parent="DebugCharacter"]
 texture = ExtResource( 5 )
+vframes = 2
+hframes = 4
+frame = 4
 
