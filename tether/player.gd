@@ -1,6 +1,6 @@
 extends Node2D
 
-export(float) var speed = 64
+export(float) var speed = 67
 
 func _physics_process(delta):
     var v = Vector2(0, 0)
@@ -14,3 +14,8 @@ func _physics_process(delta):
         v.y += 1
 
     position += v * speed * delta
+
+    if v.x != 0:
+        $AnimationPlayer.play("run")
+    else:
+        $AnimationPlayer.play("stand")
