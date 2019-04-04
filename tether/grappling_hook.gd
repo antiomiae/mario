@@ -17,7 +17,10 @@ func attach_to_anchor(body, local_pos = Vector2(0, 0)):
 func detach_from_anchor():
     current_attachment = null
 
-func is_anchor_path_clear(body):
+func is_attached():
+    return current_attachment != null
+
+func is_tether_path_clear(body):
     # do some kind of raycast, i dunno
     pass
 
@@ -32,12 +35,21 @@ func _draw():
 
 # detection area signals
 func _on_detection_area_body_entered(body):
-    var is_anchor = body.get_node("..") is TetherAnchorNode
+    var parent = body.get_node("..")
+    var is_anchor = parent is TetherAnchorNode
     if is_anchor:
-        anchor_nodes.push_back(body)
+        anchor_nodes.push_back(parent)
+        parent.on_detected()
 
 func _on_detection_area_body_exited(body):
-    anchor_nodes.erase(body)
+    var parent = body.get_node("..")
+    var is_anchor = parent is TetherAnchorNode
+    if is_anchor:
+        anchor_nodes.erase(parent)
+        parent.on_lost()
+
+func tether_vector() -> Vector2:
+    return to_global(emitter_position) - current_attachment.get_attachment_point()
 
 
 class Attachment:

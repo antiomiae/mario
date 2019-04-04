@@ -1,42 +1,9 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://tether/tether_scene.gd" type="Script" id=1]
 [ext_resource path="res://sprites/hotline_tiles.tres" type="TileSet" id=2]
 [ext_resource path="res://tether/tether_anchor_node.tscn" type="PackedScene" id=3]
-[ext_resource path="res://tether/player.gd" type="Script" id=4]
-[ext_resource path="res://tether/grappling_hook.tscn" type="PackedScene" id=5]
-[ext_resource path="res://sprites/runner.png" type="Texture" id=6]
-
-[sub_resource type="Animation" id=1]
-resource_name = "run"
-length = 0.4
-tracks/0/type = "value"
-tracks/0/path = NodePath("Sprite:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/keys = {
-"times": PoolRealArray( 0, 0.1, 0.2, 0.3 ),
-"transitions": PoolRealArray( 1, 1, 1, 1 ),
-"update": 1,
-"values": [ 0, 1, 2, 3 ]
-}
-
-[sub_resource type="Animation" id=2]
-resource_name = "stand"
-tracks/0/type = "value"
-tracks/0/path = NodePath("Sprite:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
-"update": 1,
-"values": [ 4 ]
-}
+[ext_resource path="res://tether/player.tscn" type="PackedScene" id=4]
 
 [node name="Node2D" type="Node2D"]
 script = ExtResource( 1 )
@@ -63,24 +30,13 @@ tile_data = PoolIntArray( 1, 5, 0, 16, 5, 0, 65537, 5, 0, 65552, 5, 0, 131073, 5
 [node name="TetherAnchorNode" parent="." instance=ExtResource( 3 )]
 position = Vector2( 138, 104 )
 
-[node name="DebugCharacter" type="Node2D" parent="."]
-position = Vector2( 65, 80 )
-script = ExtResource( 4 )
+[node name="TetherAnchorNode2" parent="." instance=ExtResource( 3 )]
+position = Vector2( 115, 104 )
 
-[node name="GrapplingHook" parent="DebugCharacter" instance=ExtResource( 5 )]
-emitter_position = Vector2( 6, 0 )
+[node name="TetherAnchorNode3" parent="." instance=ExtResource( 3 )]
+position = Vector2( 88, 79 )
 
-[node name="Sprite" type="Sprite" parent="DebugCharacter"]
-texture = ExtResource( 6 )
-vframes = 2
-hframes = 4
-frame = 3
-
-[node name="AnimationPlayer" type="AnimationPlayer" parent="DebugCharacter"]
-playback_process_mode = 0
-playback_speed = 0.5
-anims/run = SubResource( 1 )
-anims/stand = SubResource( 2 )
+[node name="DebugCharacter" parent="." instance=ExtResource( 4 )]
 
 [node name="Camera2D" type="Camera2D" parent="."]
 anchor_mode = 0
