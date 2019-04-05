@@ -1,4 +1,4 @@
-extends Node2D
+extends KinematicBody2D
 
 enum { NORMAL, GRAPPLING }
 
@@ -6,13 +6,31 @@ enum { CW, CCW }
 
 enum { RIGHT, LEFT }
 
+enum { FALLING, JUMPING, ON_GROUND }
+
 export(float) var speed = 67
 onready var grappling_hook = $GrapplingHook
 var debug_movement = false
 var movement_state = GRAPPLING
+var air_state = ON_GROUND
 var swing_direction = CCW
 var facing_state = RIGHT
-var grappling_speed = 1 * 60
+
+var grappling_speed = 4.5
+var jump_speed = -4
+var max_fall_speed = 4
+
+var max_run_speed = 2
+
+var gravity = 0.3
+
+var velocity = Vector2(0, 0)
+
+const H_ACC = {
+    ON_GROUND: 0.1,
+    FALLING: 0.05,
+    JUMPING: 0.08
+}
 
 
 func _physics_process(delta):
@@ -47,40 +65,124 @@ func _debug_movement(delta):
 
 
 func movement(delta):
-    if movement_state == NORMAL:
-        if Input.is_action_just_pressed("grapple"):
-            grapple_to_anchor()
+    update_facing_state()
+
     match movement_state:
         NORMAL:
             _normal_movement(delta)
         GRAPPLING:
             _grappling_movement(delta)
 
+    update_sprite()
+
+
+func update_facing_state():
+    var x_input = x_input_strenth()
+    if x_input > 0:
+        facing_state = RIGHT
+    elif x_input < 0:
+        facing_state = LEFT
+
+
+func update_sprite():
     $Sprite.flip_h = is_facing_left()
 
 
+func x_input_strenth():
+    return Input.get_action_strength("ui_right") - Input.get_action_strength("ui_left")
+
+
 func _normal_movement(delta):
-    _debug_movement(delta)
+    var x_input = x_input_strenth()
+
+    if x_input != 0:
+        apply_horizontal_input(x_input)
+    elif velocity.x != 0:
+        apply_horizontal_drag()
+
+    if Input.is_action_just_pressed("jump") and air_state == ON_GROUND:
+        jump()
+
+    apply_gravity()
+
+    var new_v = move_and_slide(velocity * 60.0, Vector2(0, -1.0)) * (1.0/60)
+
+    if air_state == ON_GROUND and new_v.y != 0:
+        air_state = FALLING
+
+    if is_on_floor() or (new_v.y == 0 and velocity.y > 0):
+        air_state = ON_GROUND
+
+
+    velocity = new_v
+
+    if air_state != ON_GROUND and Input.is_action_pressed("grapple"):
+        grapple_to_anchor()
+
+    update_animation()
+
+
+func update_animation():
+    if air_state == ON_GROUND:
+        if velocity.x != 0:
+            $AnimationPlayer.play("run")
+        else:
+            $AnimationPlayer.play("stand")
+    else:
+        $AnimationPlayer.play("stand")
+
+
+func apply_horizontal_drag():
+    if air_state == ON_GROUND:
+        if abs(velocity.x) <= H_ACC[ON_GROUND]:
+            velocity.x = 0
+        else:
+            velocity.x -= H_ACC[ON_GROUND] * sign(velocity.x)
+
+
+func apply_horizontal_input(x_input):
+    velocity.x += x_input * H_ACC[air_state]
+    velocity.x = clamp(velocity.x, -max_run_speed, max_run_speed)
+
+
+func apply_gravity():
+    velocity.y += gravity
+
+    velocity.y = min(velocity.y, max_fall_speed)
+
+
+func jump():
+    velocity.y = jump_speed
+    air_state = JUMPING
 
 
 func _grappling_movement(delta):
-    if !Input.is_action_pressed("grapple"):
-        grappling_hook.detach_from_anchor()
-
     if grappling_hook.is_attached():
-        var d = _swing(delta)
-        position += d
-        if should_detach(d):
+        velocity = _swing(delta)
+
+        var new_v = move_and_slide(velocity * 60, Vector2(0, -1))*(1.0/60)
+
+        if has_collided() or should_detach(velocity) or !Input.is_action_pressed("grapple"):
             grappling_hook.detach_from_anchor()
             movement_state = NORMAL
+
+            air_state = ON_GROUND if new_v.y == 0 else FALLING
+
+            Input.action_release("grapple")
+
+        velocity = new_v
     else:
         movement_state = NORMAL
+
+
+func has_collided():
+    return get_slide_count() > 0
 
 
 func _swing(delta):
     var tether_vec = grappling_hook.tether_vector()
     var tether_length = tether_vec.length()
-    var angular_displacement = grappling_speed * delta / tether_length
+    var angular_displacement = grappling_speed / tether_length
     if swing_direction == CCW:
         angular_displacement = -angular_displacement
     var displacement = tether_vec.rotated(angular_displacement) - tether_vec
@@ -102,6 +204,7 @@ func should_detach(delta_pos):
             return true
 
     return false
+
 
 func grapple_to_anchor():
     var possible_anchors = grappling_hook.anchor_nodes
@@ -128,5 +231,7 @@ func grapple_to_anchor():
 func is_facing_right():
     return facing_state == RIGHT
 
+
 func is_facing_left():
     return facing_state == LEFT
+

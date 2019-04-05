@@ -11,22 +11,31 @@ export var emitter_position : Vector2 = Vector2(0, 0)
 
 var current_attachment : Attachment = null
 
+
 func attach_to_anchor(body, local_pos = Vector2(0, 0)):
     current_attachment = Attachment.new(local_pos, body)
+    body.on_detected()
+
 
 func detach_from_anchor():
+    if current_attachment:
+        current_attachment.body.on_lost()
     current_attachment = null
+
 
 func is_attached():
     return current_attachment != null
+
 
 func is_tether_path_clear(body):
     # do some kind of raycast, i dunno
     pass
 
+
 # system callbacks
 func _process(delta):
     update()
+
 
 func _draw():
     if current_attachment:
@@ -39,14 +48,14 @@ func _on_detection_area_body_entered(body):
     var is_anchor = parent is TetherAnchorNode
     if is_anchor:
         anchor_nodes.push_back(parent)
-        parent.on_detected()
+
 
 func _on_detection_area_body_exited(body):
     var parent = body.get_node("..")
     var is_anchor = parent is TetherAnchorNode
     if is_anchor:
         anchor_nodes.erase(parent)
-        parent.on_lost()
+
 
 func tether_vector() -> Vector2:
     return to_global(emitter_position) - current_attachment.get_attachment_point()
