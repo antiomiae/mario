@@ -18,11 +18,14 @@ func attach_to_anchor(body, local_pos = Vector2(0, 0)):
     current_attachment = Attachment.new(local_pos, body)
     body.on_detected()
 
+    $AnimationPlayer.play("tether_color")
 
 func detach_from_anchor():
     if current_attachment:
         current_attachment.body.on_lost()
     current_attachment = null
+
+    $AnimationPlayer.stop(false)
 
 
 func is_attached():
