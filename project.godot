@@ -15,12 +15,18 @@ _global_script_classes=[ {
 "path": "res://tether/grappling_hook.gd"
 }, {
 "base": "Node2D",
+"class": "LineTrail",
+"language": "GDScript",
+"path": "res://effects/line_trail.gd"
+}, {
+"base": "StaticBody2D",
 "class": "TetherAnchorNode",
 "language": "GDScript",
 "path": "res://tether/tether_anchor_node.gd"
 } ]
 _global_script_class_icons={
 "GrapplingHook": "",
+"LineTrail": "",
 "TetherAnchorNode": ""
 }
 

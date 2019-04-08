@@ -9,6 +9,8 @@ var anchor_nodes = []
 
 export var emitter_position : Vector2 = Vector2(0, 0)
 
+onready var line_trail = $LineTrail
+
 var current_attachment : Attachment = null
 
 
@@ -33,28 +35,21 @@ func is_tether_path_clear(body):
 
 
 # system callbacks
-func _process(delta):
+func _physics_process(delta):
     update()
-
-
-func _draw():
     if current_attachment:
-        draw_line(emitter_position, to_local(current_attachment.get_attachment_point()), Color(1, 1, 1), 1.0)
+        $LineTrail.add_line(to_global(emitter_position), current_attachment.get_attachment_point())
 
 
 # detection area signals
 func _on_detection_area_body_entered(body):
-    var parent = body.get_node("..")
-    var is_anchor = parent is TetherAnchorNode
-    if is_anchor:
-        anchor_nodes.push_back(parent)
+    match body:
+        TetherAnchorNode:
+            anchor_nodes.push_back(body)
 
 
 func _on_detection_area_body_exited(body):
-    var parent = body.get_node("..")
-    var is_anchor = parent is TetherAnchorNode
-    if is_anchor:
-        anchor_nodes.erase(parent)
+    anchor_nodes.erase(body)
 
 
 func tether_vector() -> Vector2:

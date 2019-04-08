@@ -1,4 +1,4 @@
-extends Node2D
+extends StaticBody2D
 
 class_name TetherAnchorNode
 
@@ -8,8 +8,8 @@ func _process(delta):
     update()
 
 func _draw():
-    var extents = $StaticBody2D/CollisionShape2D.shape.extents
-    var position = $StaticBody2D/CollisionShape2D.position
+    var extents = $CollisionShape2D.shape.extents
+    var position = $CollisionShape2D.position
     draw_rect(Rect2(position - extents, extents*2), color)
 
 func on_detected():

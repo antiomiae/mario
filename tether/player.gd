@@ -142,7 +142,7 @@ func apply_horizontal_drag():
 
 func apply_horizontal_input(x_input):
     velocity.x += x_input * H_ACC[air_state]
-    velocity.x = clamp(velocity.x, -max_run_speed, max_run_speed)
+    velocity.x = clamp(velocity.x, -max_run_speed * abs(x_input), max_run_speed * abs(x_input))
 
 
 func apply_gravity():
@@ -168,7 +168,7 @@ func _grappling_movement(delta):
 
             air_state = ON_GROUND if new_v.y == 0 else FALLING
 
-            Input.action_release("grapple")
+            #Input.action_release("grapple")
 
         velocity = new_v
     else:
