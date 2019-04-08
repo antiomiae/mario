@@ -43,9 +43,8 @@ func _physics_process(delta):
 
 # detection area signals
 func _on_detection_area_body_entered(body):
-    match body:
-        TetherAnchorNode:
-            anchor_nodes.push_back(body)
+    if body is TetherAnchorNode:
+        anchor_nodes.push_back(body)
 
 
 func _on_detection_area_body_exited(body):
