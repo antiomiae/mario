@@ -168,7 +168,7 @@ func _grappling_movement(delta):
 
             air_state = ON_GROUND if new_v.y == 0 else FALLING
 
-            #Input.action_release("grapple")
+            Input.action_release("grapple")
 
         velocity = new_v
     else:
