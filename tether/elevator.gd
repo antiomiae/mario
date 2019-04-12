@@ -14,11 +14,11 @@ onready var tween = $Tween
 func _ready():
     p0 = position
 
-func go_to(stop):
+func go_to(stop, delay=0):
     var total_distance = (p0 - p1).abs().length()
     var current_distance = (position - stop).abs().length()
     tween.remove_all()
-    tween.interpolate_property(self, "position", position, stop, travel_time*(current_distance/total_distance), Tween.TRANS_LINEAR, Tween.EASE_IN, 0)
+    tween.interpolate_property(self, "position", position, stop, travel_time*(current_distance/total_distance), Tween.TRANS_LINEAR, Tween.EASE_IN, delay)
     tween.start()
 
 
@@ -28,7 +28,7 @@ func _physics_process(delta):
     # no riders
     if _riders.empty():
         if state != STATE.DOWN and state != STATE.MOVING_DOWN:
-            go_to(p0)
+            go_to(p0, 0.25)
             state = STATE.MOVING_DOWN
     else:
         if state != STATE.UP and state != STATE.MOVING_UP:

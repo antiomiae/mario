@@ -54,14 +54,13 @@ limit_bottom = 240
 editor_draw_limits = true
 
 [node name="Elevator" type="StaticBody2D" parent="."]
-editor/display_folded = true
-position = Vector2( 98, 208 )
+position = Vector2( 96, 208 )
 collision_mask = 3
 script = ExtResource( 4 )
 __meta__ = {
 "_edit_group_": true
 }
-p1 = Vector2( 98, 64 )
+p1 = Vector2( 96, 64 )
 
 [node name="TileMap" type="TileMap" parent="Elevator"]
 tile_set = ExtResource( 2 )
@@ -69,7 +68,7 @@ cell_size = Vector2( 8, 8 )
 collision_layer = 0
 collision_mask = 0
 format = 1
-tile_data = PoolIntArray( -131072, 1610612740, 0, -131070, 1073741828, 0, -65536, 536870916, 0, -65534, 4, 0, 0, 0, 0, 1, 0, 0, 2, 0, 0 )
+tile_data = PoolIntArray( 0, 0, 0, 1, 0, 0, 2, 0, 0 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Elevator"]
 position = Vector2( 12, 4 )
