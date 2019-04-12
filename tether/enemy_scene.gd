@@ -5,4 +5,4 @@ func _physics_process(delta: float) -> void:
 
     var collision = $Bullet.get_collision()
     if collision:
-        $Bullet.call_deferred("set_position", Vector2(0, $Bullet.position.y))
+        $Bullet.call_deferred("set_position", Vector2(0, 208))

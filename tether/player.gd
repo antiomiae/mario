@@ -32,6 +32,7 @@ const H_ACC = {
     JUMPING: 0.08
 }
 
+const brake_acc = 0.25
 
 func _physics_process(delta):
     if debug_movement:
@@ -134,10 +135,10 @@ func update_animation():
 
 func apply_horizontal_drag():
     if air_state == ON_GROUND:
-        if abs(velocity.x) <= H_ACC[ON_GROUND]:
+        if abs(velocity.x) <= brake_acc:
             velocity.x = 0
         else:
-            velocity.x -= H_ACC[ON_GROUND] * sign(velocity.x)
+            velocity.x -= brake_acc * sign(velocity.x)
 
 
 func apply_horizontal_input(x_input):

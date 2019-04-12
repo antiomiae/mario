@@ -1,13 +1,11 @@
 extends Node2D
 
-export var velocity : Vector2 = Vector2(60*2, 0)
-export var draw_length : float = 1
+export var velocity : Vector2 = Vector2(30*1.717, -30*1.717)
+export var draw_length : float = 4
 var collision_layer = 0xFFFFFFFF
 
 var _last_position : Vector2 = position
 var _collision = null
-
-
 
 
 func advance(delta):
@@ -28,7 +26,7 @@ func advance(delta):
 
 func _draw():
     var n = velocity.normalized()
-    draw_line(to_local(position), to_local(position - draw_length * n), Color(1, 1, 1), 1, false)
+    draw_line(to_local(position), to_local(position - draw_length * n), Color(1, 1, 1), 1, true)
 
 
 func get_collision():
