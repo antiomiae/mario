@@ -6,7 +6,7 @@ enum { CW, CCW }
 
 enum { RIGHT, LEFT }
 
-enum { FALLING, JUMPING, ON_GROUND }
+enum { FALLING, JUMPING, ON_GROUND, DEAD }
 
 export(float) var speed = 67
 onready var grappling_hook = $GrapplingHook
@@ -34,11 +34,16 @@ const H_ACC = {
 
 const brake_acc = 0.25
 
+
+#
+var StiffBody = preload("res://stiff_body.tscn")
+
 func _physics_process(delta):
     if debug_movement:
         _debug_movement(delta)
     else:
-        movement(delta)
+        if movement_state != DEAD:
+            movement(delta)
 
 
 func _debug_movement(delta):
@@ -66,13 +71,17 @@ func _debug_movement(delta):
 
 
 func movement(delta):
-    update_facing_state()
+    if movement_state != DEAD:
+        update_facing_state()
 
     match movement_state:
         NORMAL:
             _normal_movement(delta)
         GRAPPLING:
             _grappling_movement(delta)
+
+    if Input.is_action_just_pressed("shoot"):
+        $Cannon.shoot()
 
     update_sprite()
 
@@ -86,11 +95,13 @@ func update_facing_state():
 
 
 func update_sprite():
-    $Sprite.flip_h = is_facing_left()
+    var new_scale = 1 if is_facing_right() else -1
+    $Sprite.scale.x = new_scale
+    $Cannon.scale.x = new_scale
 
 
 func x_input_strenth():
-    return Input.get_action_strength("ui_right") - Input.get_action_strength("ui_left")
+    return Input.get_action_strength("walk_right") - Input.get_action_strength("walk_left")
 
 
 func _normal_movement(delta):
@@ -236,3 +247,24 @@ func is_facing_right():
 func is_facing_left():
     return facing_state == LEFT
 
+
+func on_bullet_hit(collision_dict):
+    var new_body = StiffBody.instance()
+    get_tree().current_scene.add_child(new_body, true)
+    new_body.position = self.position
+    new_body.get_node("CollisionShape2D").shape = $CollisionShape2D.shape.duplicate(true)
+    var stiff_sprite = new_body.get_node("Sprite")
+    stiff_sprite.replace_by($Sprite.duplicate(true))
+    new_body.get_node("Sprite").frame = 4
+    movement_state = DEAD
+    self.visible = false
+    $CollisionShape2D.disabled = true
+
+    #new_body.collision_layer = 0
+    #new_body.collision_mask = collision_mask
+
+    var local_pos = new_body.to_local(collision_dict['position'])
+    var bullet = collision_dict['bullet']
+    var vel = bullet.velocity
+    new_body.inertia = 20
+    new_body.apply_impulse(local_pos, vel)

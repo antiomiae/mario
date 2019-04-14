@@ -1,0 +1,43 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://tether/elevator.gd" type="Script" id=1]
+[ext_resource path="res://sprites/hotline_tiles.tres" type="TileSet" id=2]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 12, 4 )
+
+[sub_resource type="RectangleShape2D" id=2]
+extents = Vector2( 10, 2 )
+
+[node name="Elevator" type="StaticBody2D"]
+collision_mask = 3
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_group_": true
+}
+p1 = Vector2( 16, 64 )
+
+[node name="TileMap" type="TileMap" parent="."]
+tile_set = ExtResource( 2 )
+cell_size = Vector2( 8, 8 )
+collision_layer = 0
+collision_mask = 0
+format = 1
+tile_data = PoolIntArray( 0, 0, 0, 1, 0, 0, 2, 0, 0 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2( 12, 4 )
+shape = SubResource( 1 )
+
+[node name="trigger_area" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="trigger_area"]
+position = Vector2( 12, -2 )
+shape = SubResource( 2 )
+
+[node name="Tween" type="Tween" parent="."]
+playback_process_mode = 0
+
+[connection signal="body_entered" from="trigger_area" to="." method="_on_trigger_area_body_entered"]
+[connection signal="body_exited" from="trigger_area" to="." method="_on_trigger_area_body_exited"]
+[connection signal="tween_completed" from="Tween" to="." method="_on_tween_completed"]

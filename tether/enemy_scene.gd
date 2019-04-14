@@ -1,8 +1,8 @@
 extends Node2D
 
-func _physics_process(delta: float) -> void:
-    $Bullet.advance(delta)
+func _physics_process(delta):
+    handle_reset()
 
-    var collision = $Bullet.get_collision()
-    if collision:
-        $Bullet.call_deferred("set_position", Vector2(0, 208))
+func handle_reset():
+    if Input.is_action_pressed("pause"):
+        get_tree().reload_current_scene()

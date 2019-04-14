@@ -14,6 +14,7 @@ onready var tween = $Tween
 func _ready():
     p0 = position
 
+
 func go_to(stop, delay=0):
     var total_distance = (p0 - p1).abs().length()
     var current_distance = (position - stop).abs().length()
