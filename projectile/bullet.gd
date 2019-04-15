@@ -2,7 +2,7 @@ extends Node2D
 
 export var velocity : Vector2 = Vector2(30*1.717, -30*1.717)
 export var draw_length : float = 4
-var collision_layer = 0xFFFFFFFF
+var collision_mask = 0xFFFFFFFF
 
 var _collision = null
 var spawn_point = Vector2(0, 0)
@@ -26,7 +26,7 @@ func advance(delta):
     var next_position = position + velocity * delta
 
     var state = get_world_2d().direct_space_state
-    _collision = state.intersect_ray(position, next_position, [], collision_layer)
+    _collision = state.intersect_ray(position, next_position, [], collision_mask)
 
     if _collision:
         _collision['bullet'] = self

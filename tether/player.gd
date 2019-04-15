@@ -1,5 +1,7 @@
 extends KinematicBody2D
 
+signal died(body)
+
 enum { NORMAL, GRAPPLING }
 
 enum { CW, CCW }
@@ -8,8 +10,13 @@ enum { RIGHT, LEFT }
 
 enum { FALLING, JUMPING, ON_GROUND, DEAD }
 
+var crouching = false
+
 export(float) var speed = 67
 onready var grappling_hook = $GrapplingHook
+
+export(int, 1, 2) var player_number = 1
+
 var debug_movement = false
 var movement_state = GRAPPLING
 var air_state = ON_GROUND
@@ -22,9 +29,11 @@ var max_fall_speed = 4
 
 var max_run_speed = 2
 
-var gravity = 0.3
+var gravity = 0.2
 
 var velocity = Vector2(0, 0)
+
+var _corpse = null
 
 const H_ACC = {
     ON_GROUND: 0.1,
@@ -35,6 +44,10 @@ const H_ACC = {
 const brake_acc = 0.25
 
 
+func _ready():
+    $Cannon.bullet_collision_mask = LayerNames.physics_layer('map')
+    #$Cannon.bullet_collision_mask = 0
+
 #
 var StiffBody = preload("res://stiff_body.tscn")
 
@@ -43,7 +56,13 @@ func _physics_process(delta):
         _debug_movement(delta)
     else:
         if movement_state != DEAD:
+            $standing_hitbox.disabled = crouching
+            $crouching_hitbox.disabled = !crouching
             movement(delta)
+        else:
+            position = _corpse.position
+
+
 
 
 func _debug_movement(delta):
@@ -70,6 +89,10 @@ func _debug_movement(delta):
         $AnimationPlayer.play("stand")
 
 
+func input(action):
+    return PlayerInput.get_player_action(action, player_number)
+
+
 func movement(delta):
     if movement_state != DEAD:
         update_facing_state()
@@ -80,7 +103,7 @@ func movement(delta):
         GRAPPLING:
             _grappling_movement(delta)
 
-    if Input.is_action_just_pressed("shoot"):
+    if Input.is_action_just_pressed(input("shoot")):
         $Cannon.shoot()
 
     update_sprite()
@@ -101,18 +124,20 @@ func update_sprite():
 
 
 func x_input_strenth():
-    return Input.get_action_strength("walk_right") - Input.get_action_strength("walk_left")
+    return Input.get_action_strength(input("walk_right")) - Input.get_action_strength(input("walk_left"))
 
 
 func _normal_movement(delta):
     var x_input = x_input_strenth()
 
-    if x_input != 0:
+    crouching = Input.is_action_pressed(PlayerInput.get_player_action("down"))
+
+    if x_input != 0 and not crouching:
         apply_horizontal_input(x_input)
     elif velocity.x != 0:
         apply_horizontal_drag()
 
-    if Input.is_action_just_pressed("jump") and air_state == ON_GROUND:
+    if Input.is_action_just_pressed(input("jump")) and air_state == ON_GROUND:
         jump()
 
     apply_gravity()
@@ -128,7 +153,7 @@ func _normal_movement(delta):
 
     velocity = new_v
 
-    if air_state != ON_GROUND and Input.is_action_pressed("grapple"):
+    if air_state != ON_GROUND and Input.is_action_pressed(input("grapple")):
         grapple_to_anchor()
 
     update_animation()
@@ -136,11 +161,18 @@ func _normal_movement(delta):
 
 func update_animation():
     if air_state == ON_GROUND:
-        if velocity.x != 0:
+        if crouching:
+            $AnimationPlayer.play("crouch")
+        elif velocity.x != 0:
             $AnimationPlayer.play("run")
         else:
             $AnimationPlayer.play("stand")
-    else:
+    elif movement_state == FALLING:
+        if crouching:
+            $AnimationPlayer.play("crouch")
+        else:
+            $AnimationPlayer.play("stand")
+    elif movement_state == GRAPPLING:
         $AnimationPlayer.play("stand")
 
 
@@ -159,7 +191,6 @@ func apply_horizontal_input(x_input):
 
 func apply_gravity():
     velocity.y += gravity
-
     velocity.y = min(velocity.y, max_fall_speed)
 
 
@@ -174,13 +205,13 @@ func _grappling_movement(delta):
 
         var new_v = move_and_slide(velocity * 60, Vector2(0, -1))*(1.0/60)
 
-        if has_collided() or should_detach(velocity) or !Input.is_action_pressed("grapple"):
+        if has_collided() or should_detach(velocity) or !Input.is_action_pressed(input("grapple")):
             grappling_hook.detach_from_anchor()
             movement_state = NORMAL
 
             air_state = ON_GROUND if new_v.y == 0 else FALLING
 
-            Input.action_release("grapple")
+            Input.action_release(input("grapple"))
 
         velocity = new_v
     else:
@@ -252,19 +283,28 @@ func on_bullet_hit(collision_dict):
     var new_body = StiffBody.instance()
     get_tree().current_scene.add_child(new_body, true)
     new_body.position = self.position
-    new_body.get_node("CollisionShape2D").shape = $CollisionShape2D.shape.duplicate(true)
+    new_body.get_node("CollisionShape2D").shape = $standing_hitbox.shape.duplicate(true)
     var stiff_sprite = new_body.get_node("Sprite")
     stiff_sprite.replace_by($Sprite.duplicate(true))
     new_body.get_node("Sprite").frame = 4
     movement_state = DEAD
     self.visible = false
-    $CollisionShape2D.disabled = true
+    $standing_hitbox.disabled = true
+    $crouching_hitbox.disabled = true
 
-    #new_body.collision_layer = 0
-    #new_body.collision_mask = collision_mask
+    new_body.collision_layer = collision_layer
+    new_body.collision_mask = collision_mask
 
     var local_pos = new_body.to_local(collision_dict['position'])
     var bullet = collision_dict['bullet']
     var vel = bullet.velocity
     new_body.inertia = 20
     new_body.apply_impulse(local_pos, vel)
+
+    _corpse = new_body
+
+    died()
+
+
+func died():
+    emit_signal("died", self)

@@ -1,9 +1,10 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://tether/enemy_scene.gd" type="Script" id=1]
 [ext_resource path="res://sprites/hotline_tiles.tres" type="TileSet" id=2]
 [ext_resource path="res://tether/elevator.tscn" type="PackedScene" id=3]
 [ext_resource path="res://tether/player.tscn" type="PackedScene" id=4]
+[ext_resource path="res://projectile/laser_turret.tscn" type="PackedScene" id=5]
 
 [node name="Node2D" type="Node2D"]
 pause_mode = 2
@@ -37,9 +38,7 @@ position = Vector2( 16, 208 )
 
 [node name="player" parent="." instance=ExtResource( 4 )]
 pause_mode = 1
-position = Vector2( 27, 200 )
-collision_layer = 3
-collision_mask = 3
+position = Vector2( 72, 208 )
 
 [node name="Camera2D" type="Camera2D" parent="player"]
 current = true
@@ -48,4 +47,10 @@ limit_top = 0
 limit_right = 328
 limit_bottom = 240
 editor_draw_limits = true
+
+[node name="laser_turret_1" parent="." instance=ExtResource( 5 )]
+position = Vector2( 115, 191 )
+
+[node name="laser_turret_2" parent="." instance=ExtResource( 5 )]
+position = Vector2( 0, 150 )
 

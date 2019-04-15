@@ -1,0 +1,26 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://projectile/laser_turret.gd" type="Script" id=1]
+[ext_resource path="res://sprites/laser_turret.png" type="Texture" id=2]
+[ext_resource path="res://projectile/cannon.gd" type="Script" id=3]
+[ext_resource path="res://projectile/bullet.tscn" type="PackedScene" id=4]
+
+[node name="LaserTurret" type="Node2D"]
+script = ExtResource( 1 )
+laser_color = Color( 1, 0.290196, 0.407843, 0.74902 )
+
+[node name="Sprite" type="Sprite" parent="."]
+texture = ExtResource( 2 )
+
+[node name="RayCast2D" type="RayCast2D" parent="."]
+position = Vector2( 1, -2.5 )
+enabled = true
+cast_to = Vector2( 200, 0 )
+collision_mask = 3
+
+[node name="Cannon" type="Node2D" parent="."]
+position = Vector2( 5, 0 )
+script = ExtResource( 3 )
+bullet_scene = ExtResource( 4 )
+bullet_speed = 90.0
+

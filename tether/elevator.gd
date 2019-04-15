@@ -4,6 +4,7 @@ var _riders = []
 var p0 : Vector2 = Vector2(0, 0)
 export var p1 : Vector2 = Vector2(0, 0)
 export var travel_time : float = 4
+export var trigger_delay = 1
 
 enum STATE { UP, DOWN, MOVING_UP, MOVING_DOWN }
 
@@ -29,7 +30,7 @@ func _physics_process(delta):
     # no riders
     if _riders.empty():
         if state != STATE.DOWN and state != STATE.MOVING_DOWN:
-            go_to(p0, 0.25)
+            go_to(p0, trigger_delay)
             state = STATE.MOVING_DOWN
     else:
         if state != STATE.UP and state != STATE.MOVING_UP:
