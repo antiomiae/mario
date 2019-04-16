@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://tether/player.gd" type="Script" id=1]
 [ext_resource path="res://tether/grappling_hook.tscn" type="PackedScene" id=2]
@@ -9,11 +9,13 @@
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 2, 7 )
 
-[sub_resource type="RectangleShape2D" id=4]
+[sub_resource type="RectangleShape2D" id=2]
 extents = Vector2( 3, 4.5 )
 
-[sub_resource type="Animation" id=5]
+[sub_resource type="Animation" id=3]
 resource_name = "crouch"
+length = 0.001
+loop = true
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sprite:frame")
 tracks/0/interp = 1
@@ -24,10 +26,10 @@ tracks/0/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 1,
-"values": [ 5 ]
+"values": [ 6 ]
 }
 
-[sub_resource type="Animation" id=2]
+[sub_resource type="Animation" id=4]
 length = 0.4
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sprite:frame")
@@ -42,7 +44,22 @@ tracks/0/keys = {
 "values": [ 0, 1, 2, 3 ]
 }
 
-[sub_resource type="Animation" id=3]
+[sub_resource type="Animation" id=6]
+resource_name = "slide"
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ 5 ]
+}
+
+[sub_resource type="Animation" id=5]
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sprite:frame")
 tracks/0/interp = 1
@@ -66,7 +83,7 @@ shape = SubResource( 1 )
 
 [node name="crouching_hitbox" type="CollisionShape2D" parent="."]
 position = Vector2( 0, 3.5 )
-shape = SubResource( 4 )
+shape = SubResource( 2 )
 disabled = true
 
 [node name="GrapplingHook" parent="." instance=ExtResource( 2 )]
@@ -80,9 +97,10 @@ frame = 5
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 playback_process_mode = 0
 playback_speed = 0.5
-anims/crouch = SubResource( 5 )
-anims/run = SubResource( 2 )
-anims/stand = SubResource( 3 )
+anims/crouch = SubResource( 3 )
+anims/run = SubResource( 4 )
+anims/slide = SubResource( 6 )
+anims/stand = SubResource( 5 )
 
 [node name="Cannon" type="Node2D" parent="."]
 script = ExtResource( 4 )

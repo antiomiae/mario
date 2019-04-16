@@ -42,7 +42,7 @@ const H_ACC = {
 }
 
 const brake_acc = 0.25
-
+const slide_acc = 0.05
 
 func _ready():
     $Cannon.bullet_collision_mask = LayerNames.physics_layer('map')
@@ -162,7 +162,10 @@ func _normal_movement(delta):
 func update_animation():
     if air_state == ON_GROUND:
         if crouching:
-            $AnimationPlayer.play("crouch")
+            if velocity.x == 0:
+                $AnimationPlayer.play("crouch")
+            else:
+                $AnimationPlayer.play("slide")
         elif velocity.x != 0:
             $AnimationPlayer.play("run")
         else:
@@ -178,10 +181,11 @@ func update_animation():
 
 func apply_horizontal_drag():
     if air_state == ON_GROUND:
-        if abs(velocity.x) <= brake_acc:
+        var friction = slide_acc if crouching else brake_acc
+        if abs(velocity.x) <= friction:
             velocity.x = 0
         else:
-            velocity.x -= brake_acc * sign(velocity.x)
+            velocity.x -= friction * sign(velocity.x)
 
 
 func apply_horizontal_input(x_input):

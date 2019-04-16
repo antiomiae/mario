@@ -44,7 +44,7 @@ _global_script_class_icons={
 
 [application]
 
-config/name="mario"
+config/name="tether"
 run/main_scene="res://tether/tether_scene.tscn"
 boot_splash/image="res://mouse.png"
 boot_splash/fullsize=false

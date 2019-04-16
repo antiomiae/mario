@@ -1,6 +1,6 @@
 [gd_scene load_steps=6 format=2]
 
-[ext_resource path="res://tether/enemy_scene.gd" type="Script" id=1]
+[ext_resource path="res://tether/level_scene.gd" type="Script" id=1]
 [ext_resource path="res://sprites/hotline_tiles.tres" type="TileSet" id=2]
 [ext_resource path="res://tether/elevator.tscn" type="PackedScene" id=3]
 [ext_resource path="res://tether/player.tscn" type="PackedScene" id=4]
