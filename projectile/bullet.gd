@@ -41,9 +41,11 @@ func handle_collision():
         collider.call("on_bullet_hit", _collision)
 
     var explosion = Explosion.instance()
-    explosion.position = _collision['position']
-    explosion.rotation = _collision['normal'].angle()
-    get_tree().current_scene.add_child(explosion)
+    collider.add_child(explosion)
+    explosion.position = collider.to_local(_collision['position'])
+    explosion.rotation = _collision['normal'].angle() - collider.rotation
+    explosion.play()
+
 
     emit_signal("collided", _collision)
 

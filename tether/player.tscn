@@ -44,7 +44,7 @@ tracks/0/keys = {
 "values": [ 0, 1, 2, 3 ]
 }
 
-[sub_resource type="Animation" id=6]
+[sub_resource type="Animation" id=5]
 resource_name = "slide"
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sprite:frame")
@@ -59,7 +59,7 @@ tracks/0/keys = {
 "values": [ 5 ]
 }
 
-[sub_resource type="Animation" id=5]
+[sub_resource type="Animation" id=6]
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sprite:frame")
 tracks/0/interp = 1
@@ -99,8 +99,8 @@ playback_process_mode = 0
 playback_speed = 0.5
 anims/crouch = SubResource( 3 )
 anims/run = SubResource( 4 )
-anims/slide = SubResource( 6 )
-anims/stand = SubResource( 5 )
+anims/slide = SubResource( 5 )
+anims/stand = SubResource( 6 )
 
 [node name="Cannon" type="Node2D" parent="."]
 script = ExtResource( 4 )

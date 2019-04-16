@@ -7,19 +7,18 @@
 [ext_resource path="res://projectile/effects/explosion.gd" type="Script" id=5]
 
 [sub_resource type="SpriteFrames" id=1]
+resource_local_to_scene = true
 animations = [ {
 "frames": [ ExtResource( 1 ), ExtResource( 2 ), ExtResource( 3 ), ExtResource( 4 ) ],
-"loop": false,
+"loop": true,
 "name": "New Anim",
-"speed": 15.0
+"speed": 10.0
 } ]
 
 [node name="AnimatedSprite" type="AnimatedSprite"]
 position = Vector2( 0, 1 )
 frames = SubResource( 1 )
 animation = "New Anim"
-frame = 3
-playing = true
 flip_h = true
 script = ExtResource( 5 )
 

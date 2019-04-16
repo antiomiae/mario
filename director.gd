@@ -6,6 +6,8 @@ var scene_stack = []
 
 var _doing_continue = false
 
+func _ready():
+    self.pause_mode = Node.PAUSE_MODE_PROCESS
 
 func _process(delta):
     handle_reset()

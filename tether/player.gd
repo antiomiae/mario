@@ -34,6 +34,7 @@ var gravity = 0.2
 var velocity = Vector2(0, 0)
 
 var _corpse = null
+var _current_anchor = null
 
 const H_ACC = {
     ON_GROUND: 0.1,
@@ -44,12 +45,12 @@ const H_ACC = {
 const brake_acc = 0.25
 const slide_acc = 0.05
 
-func _ready():
-    $Cannon.bullet_collision_mask = LayerNames.physics_layer('map')
-    #$Cannon.bullet_collision_mask = 0
-
-#
 var StiffBody = preload("res://stiff_body.tscn")
+
+
+func _ready():
+    $Cannon.bullet_collision_mask = LayerNames.physics_layer('map')|LayerNames.physics_layer('player')
+
 
 func _physics_process(delta):
     if debug_movement:
@@ -61,8 +62,7 @@ func _physics_process(delta):
             movement(delta)
         else:
             position = _corpse.position
-
-
+            rotation = _corpse.rotation
 
 
 func _debug_movement(delta):
@@ -118,6 +118,7 @@ func update_facing_state():
 
 
 func update_sprite():
+    update_animation()
     var new_scale = 1 if is_facing_right() else -1
     $Sprite.scale.x = new_scale
     $Cannon.scale.x = new_scale
@@ -142,7 +143,8 @@ func _normal_movement(delta):
 
     apply_gravity()
 
-    var new_v = move_and_slide(velocity * 60.0, Vector2(0, -1.0)) * (1.0/60)
+    var new_v = move_and_slide_with_snap(velocity * 60, Vector2(0, 1), Vector2(0, -1))*(1/60.0)
+    #var new_v = move_and_slide(velocity * 60.0, Vector2(0, -1.0))* (1.0/60)
 
     if air_state == ON_GROUND and new_v.y != 0:
         air_state = FALLING
@@ -150,13 +152,11 @@ func _normal_movement(delta):
     if is_on_floor() or (new_v.y == 0 and velocity.y > 0):
         air_state = ON_GROUND
 
-
     velocity = new_v
 
+    _update_current_anchor()
     if air_state != ON_GROUND and Input.is_action_pressed(input("grapple")):
         grapple_to_anchor()
-
-    update_animation()
 
 
 func update_animation():
@@ -253,7 +253,7 @@ func should_detach(delta_pos):
     return false
 
 
-func grapple_to_anchor():
+func _update_current_anchor():
     var possible_anchors = grappling_hook.anchor_nodes
     var anchor = null
     var emitter_pos = grappling_hook.to_global(grappling_hook.emitter_position)
@@ -264,15 +264,27 @@ func grapple_to_anchor():
                 if a.position.x > emitter_pos.x && is_facing_right() or a.position.x < emitter_pos.x && is_facing_left():
                     if anchor == null or (a.position.x < anchor.position.x && is_facing_right()) or (a.position.x > anchor.position.x && is_facing_left()):
                         anchor = a
-
         if anchor != null:
-            grappling_hook.attach_to_anchor(anchor)
-            movement_state = GRAPPLING
+            if _current_anchor != anchor:
+                if _current_anchor:
+                    _current_anchor.on_lost()
+                anchor.on_detected()
+            _current_anchor = anchor
+    elif _current_anchor != null:
+        _current_anchor.on_lost()
+        _current_anchor = null
 
-            if is_facing_right():
-                swing_direction = CCW
-            else:
-                swing_direction = CW
+
+func grapple_to_anchor():
+    if _current_anchor != null:
+        grappling_hook.attach_to_anchor(_current_anchor)
+        movement_state = GRAPPLING
+        crouching = false
+
+        if is_facing_right():
+            swing_direction = CCW
+        else:
+            swing_direction = CW
 
 
 func is_facing_right():
@@ -288,11 +300,9 @@ func on_bullet_hit(collision_dict):
     get_tree().current_scene.add_child(new_body, true)
     new_body.position = self.position
     new_body.get_node("CollisionShape2D").shape = $standing_hitbox.shape.duplicate(true)
-    var stiff_sprite = new_body.get_node("Sprite")
-    stiff_sprite.replace_by($Sprite.duplicate(true))
-    new_body.get_node("Sprite").frame = 4
+
     movement_state = DEAD
-    self.visible = false
+    #self.visible = false
     $standing_hitbox.disabled = true
     $crouching_hitbox.disabled = true
 
@@ -302,8 +312,9 @@ func on_bullet_hit(collision_dict):
     var local_pos = new_body.to_local(collision_dict['position'])
     var bullet = collision_dict['bullet']
     var vel = bullet.velocity
+    var impact_vel = -velocity.project(vel)*20
     new_body.inertia = 20
-    new_body.apply_impulse(local_pos, vel)
+    new_body.apply_impulse(local_pos, vel+impact_vel)
 
     _corpse = new_body
 

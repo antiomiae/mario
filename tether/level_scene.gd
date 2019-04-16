@@ -7,5 +7,6 @@ func _physics_process(delta):
         Director.call_deferred("do_continue")
 
 func _on_player_died(body):
-    yield(get_tree().create_timer(3.0), "timeout")
-    Director.do_continue()
+    if body.player_number == 1:
+        yield(get_tree().create_timer(3.0), "timeout")
+        Director.do_continue()
