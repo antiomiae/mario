@@ -131,7 +131,7 @@ func x_input_strenth():
 func _normal_movement(delta):
     var x_input = x_input_strenth()
 
-    crouching = Input.is_action_pressed(PlayerInput.get_player_action("down"))
+    crouching = Input.is_action_pressed(input("down"))
 
     if x_input != 0 and not crouching:
         apply_horizontal_input(x_input)
@@ -194,7 +194,11 @@ func apply_horizontal_input(x_input):
 
 
 func apply_gravity():
-    velocity.y += gravity
+    # if we're moving up, don't apply gravity
+    if air_state == ON_GROUND and get_floor_velocity().y < 0:
+        pass
+    else:
+        velocity.y += gravity
     velocity.y = min(velocity.y, max_fall_speed)
 
 

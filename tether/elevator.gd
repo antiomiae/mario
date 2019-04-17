@@ -50,7 +50,7 @@ func _physics_process(delta):
         if state != STATE.UP and state != STATE.MOVING_UP:
             go_to(p1)
             state = STATE.MOVING_UP
-
+    #_update_position(delta)
     call_deferred("_update_position", delta)
 
 

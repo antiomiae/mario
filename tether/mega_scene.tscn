@@ -53,6 +53,7 @@ position = Vector2( 156, 68 )
 
 [node name="Elevator" parent="." instance=ExtResource( 4 )]
 position = Vector2( 80, 256 )
+collision/safe_margin = 0.001
 p1 = Vector2( 200, 100 )
 
 [node name="player" parent="." instance=ExtResource( 5 )]
@@ -60,6 +61,7 @@ position = Vector2( 30, 256 )
 
 [node name="Camera2D" type="Camera2D" parent="player"]
 current = true
+zoom = Vector2( 0.5, 0.5 )
 limit_left = 0
 limit_top = -200
 limit_right = 480
