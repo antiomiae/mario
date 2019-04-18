@@ -1,9 +1,23 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://projectile/laser_turret.gd" type="Script" id=1]
 [ext_resource path="res://sprites/laser_turret.png" type="Texture" id=2]
 [ext_resource path="res://projectile/cannon.gd" type="Script" id=3]
 [ext_resource path="res://projectile/bullet.tscn" type="PackedScene" id=4]
+
+[sub_resource type="ParticlesMaterial" id=1]
+flag_disable_z = true
+spread = 80.0
+gravity = Vector3( 0, 0, 0 )
+initial_velocity = 20.0
+initial_velocity_random = 0.23
+orbit_velocity = 0.0
+orbit_velocity_random = 0.0
+tangential_accel = 10.0
+tangential_accel_random = 0.48
+damping = 17.0
+damping_random = 0.21
+color = Color( 1, 0.627451, 0.678431, 0.933333 )
 
 [node name="LaserTurret" type="Node2D"]
 script = ExtResource( 1 )
@@ -23,4 +37,12 @@ position = Vector2( 5, 0 )
 script = ExtResource( 3 )
 bullet_scene = ExtResource( 4 )
 bullet_speed = 90.0
+
+[node name="Particles2D" type="Particles2D" parent="."]
+rotation = 3.14159
+amount = 2
+randomness = 0.27
+fract_delta = false
+local_coords = false
+process_material = SubResource( 1 )
 

@@ -64,11 +64,18 @@ limit_right = 480
 limit_bottom = 240
 editor_draw_limits = true
 
+[node name="player2" parent="." instance=ExtResource( 4 )]
+pause_mode = 1
+position = Vector2( 52, 144 )
+player_number = 2
+
 [node name="laser_turret_1" parent="." instance=ExtResource( 5 )]
 position = Vector2( 231, 125 )
+laser_color = Color( 1, 0.290196, 0.356863, 1 )
 
 [node name="Elevator" parent="." instance=ExtResource( 6 )]
 position = Vector2( -8, 48 )
 p1 = Vector2( -8, -72 )
 
 [connection signal="died" from="player" to="." method="_on_player_died"]
+[connection signal="died" from="player2" to="." method="_on_player_died"]

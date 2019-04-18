@@ -23,13 +23,13 @@ var air_state = ON_GROUND
 var swing_direction = CCW
 var facing_state = RIGHT
 
-var grappling_speed = 4.5
-var jump_speed = -4
-var max_fall_speed = 4
+var grappling_speed = 4
+var jump_speed = -3
+var max_fall_speed = 3
 
 var max_run_speed = 2
 
-var gravity = 0.2
+var gravity = 0.15
 
 var velocity = Vector2(0, 0)
 
@@ -43,7 +43,7 @@ const H_ACC = {
 }
 
 const brake_acc = 0.25
-const slide_acc = 0.05
+const slide_acc = 0.04
 
 var StiffBody = preload("res://stiff_body.tscn")
 
@@ -141,10 +141,12 @@ func _normal_movement(delta):
     if Input.is_action_just_pressed(input("jump")) and air_state == ON_GROUND:
         jump()
 
+    if Input.is_action_just_released(input("jump")) and air_state == JUMPING:
+        velocity.y = max(velocity.y, jump_speed*0.2)
+
     apply_gravity()
 
     var new_v = move_and_slide_with_snap(velocity * 60, Vector2(0, 1), Vector2(0, -1))*(1/60.0)
-    #var new_v = move_and_slide(velocity * 60.0, Vector2(0, -1.0))* (1.0/60)
 
     if air_state == ON_GROUND and new_v.y != 0:
         air_state = FALLING
@@ -274,6 +276,10 @@ func _update_current_anchor():
                     _current_anchor.on_lost()
                 anchor.on_detected()
             _current_anchor = anchor
+        else:
+            if _current_anchor:
+                _current_anchor.on_lost()
+                _current_anchor = null
     elif _current_anchor != null:
         _current_anchor.on_lost()
         _current_anchor = null

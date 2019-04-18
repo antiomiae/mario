@@ -59,8 +59,8 @@ LayerNames="*res://layer_names.gd"
 
 [display]
 
-window/size/width=480
-window/size/height=270
+window/size/width=360
+window/size/height=225
 window/size/test_width=960
 window/size/test_height=540
 window/stretch/mode="viewport"
