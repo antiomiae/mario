@@ -179,5 +179,6 @@ down_player_2={
 [rendering]
 
 quality/intended_usage/framebuffer_allocation=0
+quality/2d/use_pixel_snap=true
 environment/default_clear_color=Color( 0.25098, 0.239216, 0.239216, 1 )
 environment/default_environment="res://default_env.tres"

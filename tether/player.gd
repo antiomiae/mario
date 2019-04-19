@@ -148,7 +148,9 @@ func _normal_movement(delta):
 
     apply_gravity()
 
-    var new_v = move_and_slide_with_snap(velocity * 60, Vector2(0, 1), Vector2(0, -1))*(1/60.0)
+    var snap = Vector2(0, 3) if air_state == ON_GROUND else Vector2(0, 0)
+
+    var new_v = move_and_slide_with_snap(velocity * 60, snap, Vector2(0, -1))*(1/60.0)
 
     if air_state == ON_GROUND and new_v.y != 0:
         air_state = FALLING

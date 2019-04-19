@@ -75,7 +75,6 @@ laser_color = Color( 1, 0.290196, 0.356863, 1 )
 
 [node name="Elevator" parent="." instance=ExtResource( 6 )]
 position = Vector2( -8, 48 )
-p1 = Vector2( -8, -72 )
 
 [connection signal="died" from="player" to="." method="_on_player_died"]
 [connection signal="died" from="player2" to="." method="_on_player_died"]
