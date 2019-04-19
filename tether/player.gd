@@ -1,5 +1,7 @@
 extends KinematicBody2D
 
+class_name Player
+
 signal died(body)
 
 enum { NORMAL, GRAPPLING }
@@ -47,9 +49,9 @@ const slide_acc = 0.04
 
 var StiffBody = preload("res://stiff_body.tscn")
 
-
 func _ready():
     $Cannon.bullet_collision_mask = LayerNames.physics_layer('map')|LayerNames.physics_layer('player')
+    $Cannon.exclude_body(self)
 
 
 func _physics_process(delta):

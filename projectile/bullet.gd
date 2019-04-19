@@ -20,13 +20,13 @@ func respawn():
 func _physics_process(delta):
     advance(delta)
 
-func advance(delta):
+func advance(delta, exceptions := []):
     update()
 
     var next_position = position + velocity * delta
 
     var state = get_world_2d().direct_space_state
-    _collision = state.intersect_ray(position, next_position, [], collision_mask)
+    _collision = state.intersect_ray(position, next_position, exceptions, collision_mask)
 
     if _collision:
         _collision['bullet'] = self
