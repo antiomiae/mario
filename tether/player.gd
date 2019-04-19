@@ -193,8 +193,8 @@ func apply_horizontal_drag():
 
 
 func apply_horizontal_input(x_input):
-    velocity.x += x_input * H_ACC[air_state]
-    velocity.x = clamp(velocity.x, -max_run_speed * abs(x_input), max_run_speed * abs(x_input))
+    if abs(velocity.x) < max_run_speed * abs(x_input) or sign(x_input) != sign(velocity.x):
+        velocity.x += x_input * H_ACC[air_state]
 
 
 func apply_gravity():
@@ -270,7 +270,7 @@ func _update_current_anchor():
         for a in possible_anchors:
             if a.position.y <= emitter_pos.y:
                 if a.position.x > emitter_pos.x && is_facing_right() or a.position.x < emitter_pos.x && is_facing_left():
-                    if anchor == null or (a.position.x < anchor.position.x && is_facing_right()) or (a.position.x > anchor.position.x && is_facing_left()):
+                    if anchor == null or (a.position.x < anchor.position.x && is_facing_right()) or (a.position.x > anchor.position.x && is_facing_left()) or (a.position.y > anchor.position.y):
                         anchor = a
         if anchor != null:
             if _current_anchor != anchor:
