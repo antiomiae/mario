@@ -42,6 +42,8 @@ func push_scene(scene):
     root().add_child(scene)
     get_tree().set_current_scene(scene)
 
+func reset():
+    get_tree().reload_current_scene()
 
 func handle_pause():
     if Input.is_action_just_pressed("pause"):
@@ -50,7 +52,7 @@ func handle_pause():
 
 func handle_reset():
     if Input.is_action_just_pressed("reset"):
-        get_tree().reload_current_scene()
+        reset()
 
 
 func do_continue():

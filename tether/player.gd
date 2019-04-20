@@ -161,12 +161,12 @@ func _normal_movement(delta):
     velocity = new_v
 
     _update_current_anchor()
-    if air_state != ON_GROUND and Input.is_action_pressed(input("grapple")):
+    if Input.is_action_pressed(input("grapple")):
         grapple_to_anchor()
 
 
 func update_animation():
-    if air_state == ON_GROUND:
+    if air_state == ON_GROUND and movement_state != DEAD:
         if crouching:
             if velocity.x == 0:
                 $AnimationPlayer.play("crouch")
@@ -181,7 +181,7 @@ func update_animation():
             $AnimationPlayer.play("crouch")
         else:
             $AnimationPlayer.play("stand")
-    elif movement_state == GRAPPLING:
+    elif movement_state == GRAPPLING or movement_state == DEAD:
         $AnimationPlayer.play("stand")
 
 
@@ -215,15 +215,15 @@ func jump():
 
 func _grappling_movement(delta):
     if grappling_hook.is_attached():
-        velocity = _swing(delta)
+        velocity = swing(delta)
 
         var new_v = move_and_slide(velocity * 60, Vector2(0, -1))*(1.0/60)
 
-        if has_collided() or should_detach(velocity) or !Input.is_action_pressed(input("grapple")):
+        if (has_collided() and (is_on_wall() or is_on_ceiling())) or should_detach(new_v) or !Input.is_action_pressed(input("grapple")):
             grappling_hook.detach_from_anchor()
             movement_state = NORMAL
 
-            air_state = ON_GROUND if new_v.y == 0 else FALLING
+            air_state = ON_GROUND if is_on_floor() else FALLING
 
             Input.action_release(input("grapple"))
 
@@ -236,7 +236,7 @@ func has_collided():
     return get_slide_count() > 0
 
 
-func _swing(delta):
+func swing(delta):
     var tether_vec = grappling_hook.tether_vector()
     var tether_length = tether_vec.length()
     var angular_displacement = grappling_speed / tether_length
@@ -251,7 +251,7 @@ func should_detach(delta_pos):
     # points from anchor to emitter of grappling hook
     var tether_vec = grappling_hook.tether_vector()
     var angle = tether_vec.angle()
-
+    # FIXME: use normal of tether_vec instead of tether_vec and its angle
     # swinging upward
     if delta_pos.y < 0:
         # close to horizontal

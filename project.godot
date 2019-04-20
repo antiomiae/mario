@@ -62,13 +62,14 @@ config/icon="res://icon.png"
 Director="*res://director.gd"
 PlayerInput="*res://player_input.gd"
 LayerNames="*res://layer_names.gd"
+PlayerInfo="*res://player_info.gd"
 
 [display]
 
 window/size/width=360
-window/size/height=225
-window/size/test_width=960
-window/size/test_height=540
+window/size/height=224
+window/size/test_width=1080
+window/size/test_height=672
 window/stretch/mode="viewport"
 window/stretch/aspect="keep"
 
@@ -182,3 +183,4 @@ quality/intended_usage/framebuffer_allocation=0
 quality/2d/use_pixel_snap=true
 environment/default_clear_color=Color( 0.25098, 0.239216, 0.239216, 1 )
 environment/default_environment="res://default_env.tres"
+quality/dynamic_fonts/use_oversampling=false
