@@ -161,7 +161,7 @@ func _normal_movement(delta):
     velocity = new_v
 
     _update_current_anchor()
-    if Input.is_action_pressed(input("grapple")):
+    if Input.is_action_pressed(input("grapple")) and air_state != ON_GROUND:
         grapple_to_anchor()
 
 

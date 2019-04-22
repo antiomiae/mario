@@ -2,8 +2,9 @@ extends "res://tether/level_scene.gd"
 
 func _ready():
     var viewport = get_viewport()
-    viewport.connect("size_changed", self, "set_screen_size")
+    #viewport.connect("size_changed", self, "set_screen_size")
     _update_death_counter()
+
 
 func _update_death_counter():
     $gui_layer/death_counter.text = "%04d" % PlayerInfo.player_deaths
