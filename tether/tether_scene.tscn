@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://tether/level_scene.gd" type="Script" id=1]
 [ext_resource path="res://sprites/hotline_tiles.tres" type="TileSet" id=2]
@@ -8,6 +8,7 @@
 [ext_resource path="res://tether/elevator.tscn" type="PackedScene" id=6]
 [ext_resource path="res://sprites/green_eyed_cat.png" type="Texture" id=7]
 [ext_resource path="res://counter.tscn" type="PackedScene" id=8]
+[ext_resource path="res://sprites/ray.png" type="Texture" id=9]
 
 [node name="Node2D" type="Node2D"]
 pause_mode = 2
@@ -89,6 +90,10 @@ margin_left = 3.0
 margin_top = 3.0
 margin_right = 27.0
 margin_bottom = 14.0
+
+[node name="Sprite2" type="Sprite" parent="."]
+position = Vector2( 38, 136 )
+texture = ExtResource( 9 )
 
 [connection signal="died" from="player" to="." method="_on_player_died"]
 [connection signal="died" from="player2" to="." method="_on_player_died"]
