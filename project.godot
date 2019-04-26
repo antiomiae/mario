@@ -37,7 +37,7 @@ _global_script_classes=[ {
 "base": "Object",
 "class": "ProjectileCollision",
 "language": "GDScript",
-"path": "res://projectile_collision.gd"
+"path": "res://projectile/projectile_collision.gd"
 }, {
 "base": "StaticBody2D",
 "class": "TetherAnchorNode",
