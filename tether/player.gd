@@ -150,7 +150,7 @@ func _normal_movement(delta):
 
     var snap = Vector2(0, 3) if air_state == ON_GROUND else Vector2(0, 0)
 
-    var new_v = move_and_slide_with_snap(velocity * 60, snap, Vector2(0, -1))*(1/60.0)
+    var new_v = move_and_slide_with_snap(velocity * 60, snap, Vector2(0, -1), false, 4, 0.785398, false)*(1/60.0)
 
     if air_state == ON_GROUND and new_v.y != 0:
         air_state = FALLING
@@ -309,13 +309,15 @@ func is_facing_left():
     return facing_state == LEFT
 
 
-func on_bullet_hit(collision_dict):
+func on_bullet_hit(collision_dict : ProjectileCollision):
+    movement_state = DEAD
+
     var new_body = StiffBody.instance()
     get_tree().current_scene.add_child(new_body, true)
     new_body.position = self.position
     new_body.get_node("CollisionShape2D").shape = $standing_hitbox.shape.duplicate(true)
 
-    movement_state = DEAD
+
     #self.visible = false
     $standing_hitbox.disabled = true
     $crouching_hitbox.disabled = true
@@ -323,9 +325,9 @@ func on_bullet_hit(collision_dict):
     new_body.collision_layer = collision_layer
     new_body.collision_mask = collision_mask
 
-    var local_pos = new_body.to_local(collision_dict['position'])
-    var bullet = collision_dict['bullet']
-    var vel = bullet.velocity
+    var local_pos = new_body.to_local(collision_dict.position)
+    var bullet = collision_dict.projectile
+    var vel = collision_dict.velocity
     var impact_vel = -velocity.project(vel)*20
     new_body.inertia = 20
     new_body.apply_impulse(local_pos, vel+impact_vel)

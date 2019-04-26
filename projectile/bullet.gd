@@ -38,7 +38,12 @@ func advance(delta, exceptions := []):
 func handle_collision():
     var collider = _collision['collider']
     if collider.has_method("on_bullet_hit"):
-        collider.call("on_bullet_hit", _collision)
+        var pc = ProjectileCollision.new()
+        pc.projectile = self
+        pc.position = _collision['position']
+        pc.normal = _collision['normal']
+        pc.velocity = velocity
+        collider.call("on_bullet_hit", pc)
 
     var explosion = Explosion.instance()
     collider.add_child(explosion)

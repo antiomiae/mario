@@ -34,6 +34,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://tether/player.gd"
 }, {
+"base": "Object",
+"class": "ProjectileCollision",
+"language": "GDScript",
+"path": "res://projectile_collision.gd"
+}, {
 "base": "StaticBody2D",
 "class": "TetherAnchorNode",
 "language": "GDScript",
@@ -45,6 +50,7 @@ _global_script_class_icons={
 "GrapplingHook": "",
 "LineTrail": "",
 "Player": "",
+"ProjectileCollision": "",
 "TetherAnchorNode": ""
 }
 
