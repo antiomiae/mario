@@ -3,9 +3,16 @@ extends KinematicBody2D
 export var velocity := Vector2()
 export var power := 200.0
 
+enum TrackingMode { DUMB, SMART }
+
+export(TrackingMode) var tracking_mode := TrackingMode.DUMB
+
+export(NodePath) var target
+
 const Explosion = preload("res://projectile/effects/explosion.tscn")
 
 func _physics_process(delta):
+    _update_velocity()
     var collision = move_and_collide(velocity, false, true, true)
 
     if collision:
@@ -24,7 +31,16 @@ func _physics_process(delta):
             explosion.rotation = pc.normal.angle()
             explosion.play()
 
-        self.queue_free()
-
+        #self.queue_free()
 
     position += velocity
+
+func _update_velocity():
+    if tracking_mode == TrackingMode.SMART:
+        if target:
+            var _target = get_node(target)
+            var angle = (_target.position - position).angle()
+            velocity = velocity.length()*Vector2.RIGHT.rotated(angle)
+            rotation = angle
+
+

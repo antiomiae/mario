@@ -317,7 +317,6 @@ func on_bullet_hit(collision_dict : ProjectileCollision):
     new_body.position = self.position
     new_body.get_node("CollisionShape2D").shape = $standing_hitbox.shape.duplicate(true)
 
-
     #self.visible = false
     $standing_hitbox.disabled = true
     $crouching_hitbox.disabled = true
