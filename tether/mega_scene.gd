@@ -4,6 +4,7 @@ func _ready():
     var viewport = get_viewport()
     #viewport.connect("size_changed", self, "set_screen_size")
     _update_death_counter()
+    $rocket1.launch()
 
 
 func _update_death_counter():

@@ -10,7 +10,7 @@
 resource_local_to_scene = true
 animations = [ {
 "frames": [ ExtResource( 1 ), ExtResource( 2 ), ExtResource( 3 ), ExtResource( 4 ) ],
-"loop": true,
+"loop": false,
 "name": "New Anim",
 "speed": 10.0
 } ]
