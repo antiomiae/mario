@@ -183,6 +183,11 @@ down_player_2={
 2d_physics/layer_3="anchors"
 2d_physics/layer_4="enemy"
 
+[physics]
+
+2d/default_linear_damp=0.01
+2d/default_angular_damp=0
+
 [rendering]
 
 quality/intended_usage/framebuffer_allocation=0
