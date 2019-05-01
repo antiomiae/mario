@@ -43,6 +43,8 @@ func handle_collision():
         pc.position = _collision['position']
         pc.normal = _collision['normal']
         pc.velocity = velocity
+        pc.collider = collider
+        pc.shape = _collision['shape']
         collider.call("on_bullet_hit", pc)
 
     var explosion = Explosion.instance()

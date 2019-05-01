@@ -6,3 +6,5 @@ var projectile
 var position
 var velocity
 var normal
+var collider
+var shape
