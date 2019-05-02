@@ -86,9 +86,10 @@ margin_top = 3.0
 margin_right = 27.0
 margin_bottom = 14.0
 
-[node name="KinematicBody2D" parent="." instance=ExtResource( 9 )]
-position = Vector2( 353, 136 )
+[node name="skeleton" parent="." instance=ExtResource( 9 )]
+position = Vector2( 353, 141 )
 collision_layer = 9
 collision_mask = 2
+walk_speed = 1.054
 
 [connection signal="died" from="player" to="." method="_on_player_died"]
