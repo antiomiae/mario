@@ -4,14 +4,13 @@ class_name Player
 
 signal died(body)
 
+
 enum { NORMAL, GRAPPLING }
-
 enum { CW, CCW }
-
 enum { RIGHT, LEFT }
-
 enum { FALLING, JUMPING, ON_GROUND, DEAD }
 
+var dead = false
 var crouching = false
 
 export(float) var speed = 67
@@ -33,10 +32,12 @@ var max_run_speed = 2
 
 var gravity = 0.15
 
+var _last_velocity = Vector2.ZERO
 var velocity = Vector2(0, 0)
 
 var _corpse = null
 var _current_anchor = null
+onready var _current_hitbox = $standing_hitbox
 
 const H_ACC = {
     ON_GROUND: 0.1,
@@ -50,21 +51,30 @@ const slide_acc = 0.04
 var StiffBody = preload("res://stiff_body.tscn")
 
 func _ready():
-    $Cannon.bullet_collision_mask = LayerNames.physics_layer('map')|LayerNames.physics_layer('player')
+    $Cannon.bullet_collision_mask = LayerNames.physics_layer('map')|LayerNames.physics_layer('player')|LayerNames.physics_layer('enemy')
     $Cannon.exclude_body(self)
 
 
 func _physics_process(delta):
+    _last_velocity = velocity
     if debug_movement:
         _debug_movement(delta)
     else:
         if movement_state != DEAD:
-            $standing_hitbox.disabled = crouching
-            $crouching_hitbox.disabled = !crouching
+            set_current_hitbox($crouching_hitbox if crouching else $standing_hitbox)
             movement(delta)
         else:
-            position = _corpse.position
-            rotation = _corpse.rotation
+            if _corpse:
+                position = _corpse.position
+                rotation = _corpse.rotation
+
+
+func set_current_hitbox(hitbox):
+    if hitbox:
+        hitbox.disabled = false
+    if _current_hitbox != hitbox:
+        _current_hitbox.disabled = true
+        _current_hitbox = hitbox
 
 
 func _debug_movement(delta):
@@ -96,9 +106,6 @@ func input(action):
 
 
 func movement(delta):
-    if movement_state != DEAD:
-        update_facing_state()
-
     match movement_state:
         NORMAL:
             _normal_movement(delta)
@@ -108,6 +115,7 @@ func movement(delta):
     if Input.is_action_just_pressed(input("shoot")):
         $Cannon.shoot()
 
+    update_facing_state()
     update_sprite()
 
 
@@ -122,7 +130,9 @@ func update_facing_state():
 func update_sprite():
     update_animation()
     var new_scale = 1 if is_facing_right() else -1
-    $Sprite.scale.x = new_scale
+    if $Sprite.scale.x != new_scale:
+        $Sprite.scale.x = new_scale
+        $Sprite.position.x = -$Sprite.position.x
     $Cannon.scale.x = new_scale
 
 
@@ -150,7 +160,7 @@ func _normal_movement(delta):
 
     var snap = Vector2(0, 3) if air_state == ON_GROUND else Vector2(0, 0)
 
-    var new_v = move_and_slide_with_snap(velocity * 60, snap, Vector2(0, -1), false, 4, 0.785398, false)*(1/60.0)
+    var new_v = move_and_slide_with_snap(velocity * 60, snap, Vector2(0, -1), false, 4, 0.785398, true)*(1/60.0)
 
     if air_state == ON_GROUND and new_v.y != 0:
         air_state = FALLING
@@ -308,33 +318,51 @@ func is_facing_right():
 func is_facing_left():
     return facing_state == LEFT
 
+func died():
+    movement_state = DEAD
+    self.dead = true
+    emit_signal("died", self)
+
+
+func create_corpse():
+    if !_corpse:
+        var new_body = StiffBody.instance()
+        new_body.global_position = self.global_position
+        var hitbox = new_body.get_node("CollisionShape2D")
+        hitbox.shape = _current_hitbox.shape.duplicate(true)
+        hitbox.position = _current_hitbox.position
+        get_tree().current_scene.add_child(new_body, true)
+
+        set_current_hitbox(null)
+        #new_body.visible = false
+
+        new_body.collision_layer = 0
+        new_body.collision_mask = LayerNames.physics_layer('map')
+
+        _corpse = new_body
+
+    return _corpse
+
 
 func on_bullet_hit(collision_dict : ProjectileCollision):
-    movement_state = DEAD
-
-    var new_body = StiffBody.instance()
-    get_tree().current_scene.add_child(new_body, true)
-    new_body.position = self.position
-    new_body.get_node("CollisionShape2D").shape = $standing_hitbox.shape.duplicate(true)
-
-    #self.visible = false
-    $standing_hitbox.disabled = true
-    $crouching_hitbox.disabled = true
-
-    new_body.collision_layer = collision_layer
-    new_body.collision_mask = collision_mask
-
-    var local_pos = new_body.to_local(collision_dict.position)
+    create_corpse()
+    var local_pos = _corpse.to_local(collision_dict.position)
     var bullet = collision_dict.projectile
     var vel = collision_dict.velocity
-    var impact_vel = -velocity.project(vel)*20
-    new_body.inertia = 20
-    new_body.apply_impulse(local_pos, vel+impact_vel)
-
-    _corpse = new_body
-
+    var impact_vel = -velocity.project(vel)
+    _corpse.inertia = 20.0
+    _corpse.apply_impulse(local_pos, vel+impact_vel)
+    $AnimationPlayer.play('stand')
     died()
 
+func on_enemy_hit(enemy, collision):
+    if !dead:
+        create_corpse()
+        _corpse.inertia = 20
+        _corpse.apply_central_impulse(_last_velocity*60)
+        var local_pos = _corpse.to_local(collision.position)
+        _corpse.apply_impulse(local_pos, 10*(-collision.normal))
+        $AnimationPlayer.play('stand')
+        died()
 
-func died():
-    emit_signal("died", self)
+

@@ -1,4 +1,4 @@
-extends KinematicBody2D
+extends "../lib/godot-flippable-physics/FlippablePhysics2D.gd".FlippableKinematicBody2D
 
 var dead := false
 export var facing := -1
@@ -21,6 +21,7 @@ func _ready():
     $head.add_collision_exception_with(self)
     update_sprite()
     enable_head_body(false)
+    $head_hitbox.disabled = false
 
 func _physics_process(delta):
     if dead:
@@ -31,18 +32,14 @@ func _physics_process(delta):
     _move()
     if get_slide_count() > 0:
         _handle_collisions()
-
     if is_on_wall() and is_on_floor():
         facing = -facing
-
     update_sprite()
 
 func update_sprite():
     if facing != 0:
-        $sprite.flip_h = (facing == 1)
-        $head_hitbox.position.x = facing*abs($head_hitbox.position.x)
-        $head.position.x = facing*abs($head.position.x)
         $head/sprite.flip_h = (facing == 1)
+        self.set_flip_h(facing != 1)
 
 func enable_head_body(enable = true):
     $head.mode = RigidBody2D.MODE_RIGID if enable else RigidBody2D.MODE_KINEMATIC
@@ -58,6 +55,7 @@ func _move():
     velocity = new_v
 
 func _died():
+    #$AnimationPlayer.stop()
     $AnimationPlayer.play('dead')
     $body_hitbox.disabled = true
     $head_hitbox.disabled = true
@@ -75,7 +73,7 @@ func _handle_collisions():
         var collision = get_slide_collision(i)
         var collider = collision.collider
         if (collider.collision_layer | LayerNames.physics_layer('player')) && collider.has_method('on_enemy_hit'):
-            collider.on_enemy_hit(self)
+            collider.on_enemy_hit(self, collision)
 
 func on_bullet_hit(pc : ProjectileCollision):
     var owner = shape_owner_get_owner(shape_find_owner(pc.shape))

@@ -13,7 +13,7 @@ func _ready():
     add_child(_cooldown_timer)
     _cooldown_timer.one_shot = true
     _cooldown_timer.process_mode = Timer.TIMER_PROCESS_PHYSICS
-    $Cannon.bullet_collision_mask = LayerNames.physics_layer('player')
+    $Cannon.bullet_collision_mask = LayerNames.physics_layer('player')|LayerNames.physics_layer('enemy')
 
 func _physics_process(delta):
     update()
