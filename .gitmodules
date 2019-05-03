@@ -1,3 +1,3 @@
 [submodule "lib/godot-flippable-physics"]
 	path = lib/godot-flippable-physics
-	url = https://github.com/DanielKinsman/godot-flippable-physics.git
+	url = https://github.com/antiomiae/godot-flippable-physics.git
