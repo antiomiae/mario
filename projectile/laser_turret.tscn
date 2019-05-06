@@ -37,7 +37,7 @@ collision_mask = 3
 position = Vector2( 5, 0 )
 script = ExtResource( 3 )
 bullet_scene = ExtResource( 4 )
-bullet_speed = 90.0
+bullet_speed = 180.0
 
 [node name="Particles2D" type="Particles2D" parent="."]
 rotation = 3.14159

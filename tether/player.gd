@@ -1,4 +1,4 @@
-extends KinematicBody2D
+extends "../lib/godot-flippable-physics/FlippablePhysics2D.gd".FlippableKinematicBody2D
 
 class_name Player
 
@@ -32,12 +32,17 @@ var max_run_speed = 2
 
 var gravity = 0.15
 
+var _aim_vector := Vector2.RIGHT
+
 var _last_velocity = Vector2.ZERO
 var velocity = Vector2(0, 0)
 
 var _corpse = null
 var _current_anchor = null
 onready var _current_hitbox = $standing_hitbox
+
+var horizontal_bullet_origin : Vector2
+var up_bullet_origin : Vector2
 
 const H_ACC = {
     ON_GROUND: 0.1,
@@ -105,6 +110,10 @@ func input(action):
     return PlayerInput.get_player_action(action, player_number)
 
 
+func point_cannon():
+    $Cannon.point_by(_aim_vector)
+
+
 func movement(delta):
     match movement_state:
         NORMAL:
@@ -112,11 +121,18 @@ func movement(delta):
         GRAPPLING:
             _grappling_movement(delta)
 
-    if Input.is_action_just_pressed(input("shoot")):
-        $Cannon.shoot()
-
     update_facing_state()
     update_sprite()
+
+    if Input.is_action_pressed(input('up')):
+        _aim_vector = Vector2(0, -1)
+    else:
+        _aim_vector = Vector2(1, 0)
+
+    if Input.is_action_just_pressed(input('shoot')):
+        $Cannon.shoot()
+
+
 
 
 func update_facing_state():
@@ -129,11 +145,9 @@ func update_facing_state():
 
 func update_sprite():
     update_animation()
-    var new_scale = 1 if is_facing_right() else -1
-    if $Sprite.scale.x != new_scale:
-        $Sprite.scale.x = new_scale
-        $Sprite.position.x = -$Sprite.position.x
-    $Cannon.scale.x = new_scale
+    set_flip_h(is_facing_left())
+    point_cannon()
+
 
 
 func x_input_strenth():
@@ -232,11 +246,8 @@ func _grappling_movement(delta):
         if (has_collided() and (is_on_wall() or is_on_ceiling())) or should_detach(new_v) or !Input.is_action_pressed(input("grapple")):
             grappling_hook.detach_from_anchor()
             movement_state = NORMAL
-
             air_state = ON_GROUND if is_on_floor() else FALLING
-
             Input.action_release(input("grapple"))
-
         velocity = new_v
     else:
         movement_state = NORMAL
@@ -345,6 +356,8 @@ func create_corpse():
 
 
 func on_bullet_hit(collision_dict : ProjectileCollision):
+    var shape_owner_id = shape_find_owner(collision_dict.shape)
+    var shape_owner = shape_owner_get_owner(shape_owner_id)
     create_corpse()
     var local_pos = _corpse.to_local(collision_dict.position)
     var bullet = collision_dict.projectile

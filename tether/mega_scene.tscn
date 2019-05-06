@@ -109,7 +109,7 @@ position = Vector2( 332, 156 )
 
 [node name="player" parent="." instance=ExtResource( 7 )]
 editor/display_folded = true
-position = Vector2( 129, 245 )
+position = Vector2( 134, 256 )
 
 [node name="Camera2D" type="Camera2D" parent="player"]
 current = true
@@ -136,12 +136,13 @@ scale = Vector2( -1, 1 )
 position = Vector2( 476, 204 )
 
 [node name="rocket1" parent="." instance=ExtResource( 10 )]
-position = Vector2( 32, 258 )
+position = Vector2( 32, 257 )
 rotation = -1.5708
 collision_layer = 8
 cruising_speed = 1.0
 launch_speed = 0.14
-inertia = 100.0
+mass = 10.0
+inertia = 50.0
 tracking_mode = 1
 control_mode = 0
 target = NodePath("../player")

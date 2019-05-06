@@ -33,6 +33,15 @@ func _physics_process(delta):
         ControlMode.LAUNCHING:
             _launching_movement(delta)
 
+func explode():
+    var explosion = Explosion.instance()
+    get_node('..').add_child(explosion)
+    explosion.position = position
+    explosion.rotation = stepify(rotation, PI/2.0)
+    explosion.play()
+    velocity = Vector2.ZERO
+    self.queue_free()
+
 func _flying_movement(delta):
     _update_velocity(delta)
     var collision = move_and_collide(velocity, false, true, true)
@@ -46,16 +55,9 @@ func _flying_movement(delta):
             pc.position = collision.position
             pc.velocity = velocity.normalized()*power
             pc.normal = collision.normal
+            pc.shape = collision.collider_shape_index
             body.on_bullet_hit(pc)
-
-        var explosion = Explosion.instance()
-        get_node('..').add_child(explosion)
-        explosion.position = position
-        explosion.rotation = stepify(rotation, PI/2.0)
-        explosion.play()
-        velocity = Vector2.ZERO
-        self.queue_free()
-
+            explode()
     position += travel
 
 func normalize_radians(r):
@@ -94,9 +96,12 @@ func _launching_movement(delta):
     if control_delay_timer_.is_stopped():
         control_mode = ControlMode.FLYING
         velocity = Vector2.ZERO
-
     position += velocity
     rotation += angular_velocity*delta
+
+
+func on_bullet_hit(projectile_collision):
+    explode()
 
 func launch():
     if control_delay_timer_.is_stopped():

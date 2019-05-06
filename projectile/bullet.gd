@@ -17,8 +17,12 @@ func _ready():
 func respawn():
     position = spawn_point
 
-func _physics_process(delta):
-    advance(delta)
+#func _physics_process(delta):
+#    #advance(delta)
+
+func half_round(v : Vector2):
+    return (v - Vector2(0.5, 0.5)).round() + Vector2(0.5, 0.5)
+
 
 func advance(delta, exceptions := []):
     update()
@@ -45,7 +49,7 @@ func handle_collision():
         pc.velocity = velocity
         pc.collider = collider
         pc.shape = _collision['shape']
-        collider.call("on_bullet_hit", pc)
+        collider.on_bullet_hit(pc)
 
     var explosion = Explosion.instance()
     collider.add_child(explosion)
@@ -53,12 +57,13 @@ func handle_collision():
     explosion.rotation = _collision['normal'].angle() - collider.rotation
     explosion.play()
 
-
     emit_signal("collided", _collision)
 
 func _draw():
     var n = velocity.normalized()
-    draw_line(to_local(position)-Vector2(0, 1), to_local(position - draw_length * n)-Vector2(0, 1), Color(1, 1, 1), 1, false)
+    var start = to_local(position)
+    var stop = to_local(position - draw_length * n)
+    draw_line(start, stop, Color(1, 1, 1), 0.5, false)
 
 
 func get_collision():
