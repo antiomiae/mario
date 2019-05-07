@@ -2,7 +2,7 @@
 
 [ext_resource path="res://sprites/duck.png" type="Texture" id=1]
 
-[sub_resource type="Animation" id=3]
+[sub_resource type="Animation" id=1]
 resource_name = "crouch"
 length = 0.1
 tracks/0/type = "value"
@@ -18,8 +18,7 @@ tracks/0/keys = {
 "values": [ 16 ]
 }
 
-[sub_resource type="Animation" id=1]
-resource_name = "idle"
+[sub_resource type="Animation" id=2]
 length = 3.0
 loop = true
 tracks/0/type = "value"
@@ -35,8 +34,7 @@ tracks/0/keys = {
 "values": [ 0, 1, 2, 3, 4, 5, 6, 7, 0 ]
 }
 
-[sub_resource type="Animation" id=2]
-resource_name = "walk"
+[sub_resource type="Animation" id=3]
 length = 0.5
 loop = true
 tracks/0/type = "value"
@@ -60,8 +58,8 @@ vframes = 3
 hframes = 8
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-autoplay = "idle"
-anims/crouch = SubResource( 3 )
-anims/idle = SubResource( 1 )
-anims/walk = SubResource( 2 )
+autoplay = "walk"
+anims/crouch = SubResource( 1 )
+anims/idle = SubResource( 2 )
+anims/walk = SubResource( 3 )
 
