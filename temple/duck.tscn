@@ -58,7 +58,7 @@ vframes = 3
 hframes = 8
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-autoplay = "walk"
+autoplay = "idle"
 anims/crouch = SubResource( 1 )
 anims/idle = SubResource( 2 )
 anims/walk = SubResource( 3 )
