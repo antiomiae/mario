@@ -95,6 +95,7 @@ func land():
     set_controller(ground_controller)
 
 func die():
+    alive = false
     set_animation('dead')
     set_controller(dead_controller)
 
@@ -113,7 +114,7 @@ func basic_damage():
     if lives_left < 1:
         die()
 
-    velocity = Vector2(-3*(sign(velocity.x)), -4)
+    velocity = Vector2(-3*_facing, -4)
     yield(get_tree().create_timer(2, false), "timeout")
     $sprite_effects.play('reset')
     make_invulnerable(false)
