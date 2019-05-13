@@ -1,5 +1,133 @@
 extends KinematicBody2D
 
+signal life_lost(lives_left)
+
+var MOVEMENT_PARAMETERS = {
+    'ground': MovementParameters.new(5, 5, 3, 0.15, 0.3, 0.5),
+    'air': MovementParameters.new(5, 2, 3, 0.1, 0.005, 0.25)
+}
+
+var velocity := Vector2.ZERO
+var last_velocity := Vector2.ZERO
+export var total_lives : int = 3
+var lives_left : int = total_lives
+
+var _current_movement_parameters = MOVEMENT_PARAMETERS['ground']
+var _invulnerable = false
+var _facing := 1
+
+var ground_controller = GroundController.new(self)
+var air_controller = AirController.new(self)
+var dead_controller = DeadController.new(self)
+var state_controller = ground_controller
+onready var input_controller = $DuckController
+
+var idle_frames := 0
+
+var alive = true
+
+func update_sprite():
+    $Sprite.flip_h = _facing == -1
+
+func _ready():
+    _init_lives()
+    stand()
+    #set_animation(animation)
+
+func _physics_process(delta):
+    last_velocity = velocity
+    state_controller.process(delta)
+    if input_controller.walk != 0:
+        _facing = sign(input_controller.walk)
+    update_sprite()
+    idle_timer()
+
+func _init_lives():
+    assert(total_lives > 0)
+    lives_left = total_lives
+
+func idle_timer():
+    if state_controller == ground_controller && velocity == Vector2.ZERO:
+        idle_frames += 1
+    else:
+        idle_frames = 0
+
+func jump_input():
+    return input_controller.jump && !input_controller.last_jump
+
+
+func set_animation(anim_name):
+    $AnimationPlayer.play(anim_name)
+
+
+func set_controller(controller : StateController):
+    if state_controller != controller:
+        state_controller.exit()
+        controller.enter()
+        state_controller = controller
+
+func idle():
+    set_animation('idle')
+
+func walk():
+    _current_movement_parameters = MOVEMENT_PARAMETERS['ground']
+    set_animation('walk')
+    set_controller(ground_controller)
+
+func stand():
+    _current_movement_parameters = MOVEMENT_PARAMETERS['ground']
+    set_animation('stand')
+    set_controller(ground_controller)
+
+func fall():
+    _current_movement_parameters = MOVEMENT_PARAMETERS['air']
+    set_animation('fall')
+    #set_controller(air_controller)
+
+func jump():
+    _current_movement_parameters = MOVEMENT_PARAMETERS['air']
+    set_animation('fall')
+    set_controller(air_controller)
+
+func land():
+    _current_movement_parameters = MOVEMENT_PARAMETERS['ground']
+    set_animation('stand')
+    set_controller(ground_controller)
+
+func die():
+    set_animation('dead')
+    set_controller(dead_controller)
+
+func make_invulnerable(should = true):
+    _invulnerable = should
+    set_collision_layer_bit(LayerNames.physics_layer('enemy'), !should)
+
+func basic_damage():
+    if _invulnerable:
+        return
+
+    $sprite_effects.play('damage_blink')
+    make_invulnerable(true)
+    lose_life()
+
+    if lives_left < 1:
+        die()
+
+    velocity = Vector2(-3*(sign(velocity.x)), -4)
+    yield(get_tree().create_timer(2, false), "timeout")
+    $sprite_effects.play('reset')
+    make_invulnerable(false)
+
+func lose_life():
+    if lives_left > 0:
+        lives_left -= 1
+    emit_signal('life_lost', lives_left)
+
+
+func on_spike_hit(spikes):
+    state_controller.on_spike_hit(spikes)
+
+
 class MovementParameters:
     var jump_speed : float
     var fall_speed : float
@@ -32,6 +160,10 @@ class StateController:
     func exit():
         pass
 
+    func on_spike_hit(spikes):
+        if parent.alive:
+            parent.basic_damage()
+
     func just_jumped():
         return parent.input_controller.jump && !parent.input_controller.last_jump
 
@@ -39,7 +171,7 @@ class StateController:
         return parent._current_movement_parameters
 
     func walk():
-        var walk_input = parent.walk_input()
+        var walk_input = parent.input_controller.walk
         var change_direction = sign(walk_input) != sign(parent.velocity.x) && parent.velocity.x != 0
         # stop
         if change_direction:
@@ -50,7 +182,7 @@ class StateController:
                 if abs(parent.velocity.x) < walk_speed:
                     parent.velocity.x += sign(walk_input)*movement_parameters().walk_acceleration
             else:
-                var vx = movement_parameters().walk_acceleration + parent.velocity.x
+                var vx = sign(walk_input)*movement_parameters().walk_acceleration + parent.velocity.x
                 parent.velocity.x = clamp(vx, -abs(walk_input)*walk_speed, abs(walk_input)*walk_speed)
 
     func skid():
@@ -60,19 +192,30 @@ class StateController:
 
 
 class AirController extends StateController:
+    var jump_count := 0
+    const max_jumps = 1
+
     func _init(_parent).(_parent):
         parent = _parent
 
+    func _enter():
+        jump_count = 0
+
     func process(delta):
         update_velocity()
+        handle_jump()
         parent.velocity = parent.move_and_slide(parent.velocity*60, Vector2(0, -1))*(1.0/60.0)
 
         if parent.is_on_floor():
+            jump_count = 0
             parent.land()
 
+    func handle_jump():
+        if just_jumped() && jump_count < max_jumps:
+            parent.velocity.y = -movement_parameters().jump_speed
 
     func update_velocity():
-        var walk_input = parent.walk_input()
+        var walk_input = parent.input_controller.walk
         if walk_input != 0:
             walk()
         else:
@@ -87,20 +230,27 @@ class GroundController extends StateController:
     func process(delta):
         update_velocity()
         parent.velocity = parent.move_and_slide_with_snap(parent.velocity*60, Vector2(0, 2), Vector2(0, -1))*(1.0/60.0)
-        if parent.velocity.x != 0:
-            parent.walk()
-        else:
-            parent.stand()
 
-        if parent.velocity.y > 0 || !parent.is_on_floor():
-            parent.fall()
+        var action = null
+
+        if parent.velocity.x != 0:
+            action = 'walk'
+        else:
+            action = 'stand'
+
+        if !parent.is_on_floor():
+            action = 'fall'
         elif just_jumped():
             parent.velocity.y = -movement_parameters().jump_speed
-            parent.jump()
-
+            action = 'jump'
+        else:
+            if parent.idle_frames >= 120:
+                action = 'idle'
+        if action:
+            parent.call(action)
 
     func update_velocity():
-        var walk_input = parent.walk_input()
+        var walk_input = parent.input_controller.walk
         if walk_input != 0:
             walk()
         else:
@@ -108,82 +258,14 @@ class GroundController extends StateController:
         parent.velocity.y += movement_parameters().gravity
 
 
-export(String, 'stand', 'idle', 'walk', 'crouch', 'fall') var animation = 'idle'
+class DeadController extends StateController:
+    func _init(parent).(parent):
+        pass
 
-var velocity := Vector2.ZERO
-var last_velocity := Vector2.ZERO
+    func _enter():
+        parent.alive = false
+        self.parent.set_collision_mask_bit(LayerNames.physics_layer('enemy'), false)
 
-var MOVEMENT_PARAMETERS = {
-    'ground': MovementParameters.new(5, 5, 3, 0.15, 0.3, 0.5),
-    'air': MovementParameters.new(5, 2, 3, 0.1, 0.005, 0.25)
-}
-
-var _current_movement_parameters = MOVEMENT_PARAMETERS['ground']
-
-var ground_controller = GroundController.new(self)
-var air_controller = AirController.new(self)
-var state_controller = ground_controller
-onready var input_controller = $DuckController
-
-func move_on_ground():
-    update_velocity_on_ground()
-    velocity = move_and_slide_with_snap(velocity*60, Vector2(0, 2), Vector2(0, -1))*(1.0/60.0)
-
-func move_in_air():
-    velocity = move_and_slide(velocity*60, Vector2(0, -1))*(1.0/60.0)
-
-func update_velocity_on_ground():
-    pass
-
-func _ready():
-    stand()
-    #set_animation(animation)
-
-func _physics_process(delta):
-    last_velocity = velocity
-    state_controller.process(delta)
-    if walk_input() != 0:
-        $Sprite.flip_h = walk_input() < 0
-
-func walk_input():
-    return input_controller.walk
-
-
-func jump_input():
-    return input_controller.jump && !input_controller.last_jump
-
-
-func set_animation(anim_name):
-    $AnimationPlayer.play(anim_name)
-
-
-func set_controller(controller : StateController):
-    if state_controller != controller:
-        state_controller.exit()
-        controller.enter()
-        state_controller = controller
-
-func walk():
-    _current_movement_parameters = MOVEMENT_PARAMETERS['ground']
-    set_animation('walk')
-    set_controller(ground_controller)
-
-func stand():
-    _current_movement_parameters = MOVEMENT_PARAMETERS['ground']
-    set_animation('stand')
-    set_controller(ground_controller)
-
-func fall():
-    _current_movement_parameters = MOVEMENT_PARAMETERS['air']
-    set_animation('fall')
-    #set_controller(air_controller)
-
-func jump():
-    _current_movement_parameters = MOVEMENT_PARAMETERS['air']
-    set_animation('fall')
-    set_controller(air_controller)
-
-func land():
-    _current_movement_parameters = MOVEMENT_PARAMETERS['ground']
-    set_animation('stand')
-    set_controller(ground_controller)
+    func process(delta):
+        parent.velocity.y += movement_parameters().gravity
+        parent.velocity = parent.move_and_slide(parent.velocity*60, Vector2(0, -1))*(1.0/60.0)

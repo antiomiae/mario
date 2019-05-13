@@ -1,6 +1,7 @@
 extends Node2D
 
 const CONTINUE = preload("res://continue.tscn")
+const PAUSE = preload('res://pause_menu.tscn')
 
 var scene_stack = []
 
@@ -12,6 +13,11 @@ func _ready():
 func _process(delta):
     handle_reset()
     handle_pause()
+    handle_pop()
+
+func handle_pop():
+    if Input.is_action_just_pressed('director_pop'):
+        pop_scene()
 
 
 func pop_scene():
@@ -45,10 +51,25 @@ func push_scene(scene):
 func reset():
     get_tree().reload_current_scene()
 
-func handle_pause():
-    if Input.is_action_just_pressed("pause"):
-        get_tree().paused = !get_tree().paused
+var _pause_menu = null
 
+func handle_pause():
+    if Input.is_action_just_pressed('pause'):
+        if get_tree().paused:
+            if _pause_menu:
+                _pause_menu.queue_free()
+                _pause_menu = null
+            else:
+                get_tree().paused = false
+        else:
+            if !_pause_menu:
+                _pause_menu = PAUSE.instance()
+                root().add_child(_pause_menu)
+                yield(_pause_menu, "tree_exited")
+                _pause_menu = null
+
+func _on_pause_menu_closed():
+    _pause_menu = null
 
 func handle_reset():
     if Input.is_action_just_pressed("reset"):

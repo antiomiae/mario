@@ -1,0 +1,22 @@
+[gd_scene load_steps=2 format=2]
+
+[sub_resource type="Animation" id=7]
+resource_name = "damage_blink"
+length = 0.35
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:self_modulate")
+tracks/0/interp = 0
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.2 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Color( 2, 2, 2, 1 ), Color( 1, 1, 1, 1 ) ]
+}
+
+[node name="color_effects" type="AnimationPlayer"]
+anims/damage_blink = SubResource( 7 )
+

@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/cemetary.png-f055e0effa5dcc40ab98482b33d54c6e.stex"
+path="res://.import/raccoon.png-47d7d3b7ac9b202d2ebe417c6d970f89.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://scenes/cemetary.png"
-dest_files=[ "res://.import/cemetary.png-f055e0effa5dcc40ab98482b33d54c6e.stex" ]
+source_file="res://sprites/raccoon.png"
+dest_files=[ "res://.import/raccoon.png-47d7d3b7ac9b202d2ebe417c6d970f89.stex" ]
 
 [params]
 

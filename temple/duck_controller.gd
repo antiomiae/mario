@@ -10,20 +10,23 @@ var walk := 0.0
 var last_walk := 0.0
 var jump := false
 var last_jump := false
+var crouch := false
 
 func _physics_process(delta):
     last_walk = walk
     walk = get_walk_input()
     last_jump = jump
     jump = get_jump_input()
+    crouch = get_crouch_input()
 
 func input(action):
-    return PlayerInput.get_player_action(action, player_number)
+    return Input.get_action_strength(PlayerInput.get_player_action(action, player_number))
 
 func get_walk_input():
-    return Input.get_action_strength(input("walk_right")) - Input.get_action_strength(input("walk_left"))
+    return input("walk_right") - input("walk_left")
 
 func get_jump_input():
-    return Input.is_action_pressed(input('jump'))
+    return input('jump')
 
-
+func get_crouch_input():
+    return input('down')
