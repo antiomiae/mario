@@ -27,10 +27,8 @@ func pop_scene():
         root().add_child(current_scene)
         get_tree().set_current_scene(current_scene)
 
-
 func root():
     return get_tree().get_root()
-
 
 func push_scene(scene):
     var current_scene = get_tree().current_scene
@@ -46,15 +44,25 @@ func reset():
     get_tree().reload_current_scene()
 
 var _pause_menu = null
+var _pause_enabled = true
+
+func disable_pause():
+    _pause_enabled = false
+    _dispose_pause_menu()
+
+func enable_pause():
+    _pause_enabled = true
+
+func _dispose_pause_menu():
+    if _pause_menu:
+        _pause_menu.queue_free()
+        _pause_menu = null
 
 func handle_pause():
-    if Input.is_action_just_pressed('pause'):
+    if _pause_enabled && Input.is_action_just_pressed('pause'):
         if get_tree().paused:
-            if _pause_menu:
-                _pause_menu.queue_free()
-                _pause_menu = null
-            else:
-                get_tree().paused = false
+            _dispose_pause_menu()
+            get_tree().paused = false
         else:
             if !_pause_menu:
                 _pause_menu = PAUSE.instance()

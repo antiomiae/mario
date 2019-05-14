@@ -1,4 +1,6 @@
-extends MarginContainer
+extends CanvasLayer
+
+signal pause_closed
 
 func _enter_tree():
     call_deferred('default_focus')
@@ -10,13 +12,13 @@ func _exit_tree():
     get_tree().paused = false
 
 func default_focus():
-    $VBoxContainer/resume.grab_focus()
+    $MarginContainer/VBoxContainer/resume.grab_focus()
 
-func _on_reset_pressed() -> void:
+func _on_restart_pressed():
     queue_free()
-    get_tree().reload_current_scene()
+    Director.reset()
 
-func _on_level_select_pressed() -> void:
+func _on_level_select_pressed():
     queue_free()
     get_tree().change_scene('res://level_select.tscn')
 

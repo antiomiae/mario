@@ -131,7 +131,7 @@ func basic_damage():
     if lives_left < 1:
         die()
 
-    velocity = Vector2(-3*_facing, -3)
+    velocity = Vector2(-2*_facing, -3)
     yield(get_tree().create_timer(2, false), "timeout")
     $sprite_effects.play('reset')
     make_invulnerable(false)
@@ -272,7 +272,7 @@ class DeadController extends StateController:
     func _init(parent).(parent):
         pass
 
-    func _enter():
+    func enter():
         parent.alive = false
         self.parent._current_movement_parameters = parent.MOVEMENT_PARAMETERS['air']
         self.parent.set_collision_mask_bit(LayerNames.physics_layer('enemy'), false)

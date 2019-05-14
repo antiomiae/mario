@@ -11,7 +11,7 @@
 [ext_resource path="res://counter.tscn" type="PackedScene" id=9]
 
 [node name="Node2D" type="Node2D"]
-pause_mode = 2
+pause_mode = 1
 script = ExtResource( 1 )
 
 [node name="ParallaxBackground" type="ParallaxBackground" parent="."]
@@ -79,6 +79,9 @@ laser_color = Color( 1, 0.290196, 0.356863, 1 )
 
 [node name="Elevator" parent="." instance=ExtResource( 7 )]
 position = Vector2( -8, 48 )
+travel_time = 4.0
+trigger_delay = 1.0
+endpoint = Vector2( 0, 0 )
 
 [node name="Sprite" type="Sprite" parent="."]
 position = Vector2( 211, 93 )
