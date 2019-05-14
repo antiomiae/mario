@@ -10,7 +10,7 @@ var scenes = [
 var buttons = []
 
 func _ready():
-    for button in $VBoxContainer.get_children():
+    for button in $MarginContainer/VBoxContainer.get_children():
         buttons.push_back(button)
 
     for i in range(min(scenes.size(), buttons.size())):
