@@ -1,13 +1,10 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://temple/switch.gd" type="Script" id=1]
 [ext_resource path="res://sprites/temple.png" type="Texture" id=2]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 6, 4 )
-
-[sub_resource type="RectangleShape2D" id=2]
-extents = Vector2( 7, 2 )
 
 [sub_resource type="Animation" id=3]
 resource_name = "not_triggered"
@@ -39,7 +36,7 @@ tracks/0/keys = {
 "values": [ 17 ]
 }
 
-[node name="Node2D" type="Node2D"]
+[node name="switch" type="Node2D"]
 script = ExtResource( 1 )
 
 [node name="Sprite" type="Sprite" parent="."]
@@ -50,20 +47,21 @@ frame = 16
 region_rect = Rect2( 0, 0, 16, 16 )
 
 [node name="trigger_area" type="Area2D" parent="."]
+visible = false
+collision_layer = 0
 collision_mask = 17
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="trigger_area"]
-visible = false
 position = Vector2( 0, 4 )
 shape = SubResource( 1 )
 
 [node name="StaticBody2D" type="StaticBody2D" parent="."]
+visible = false
 collision_layer = 2
-collision_mask = 17
+collision_mask = 0
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
-position = Vector2( 0, 6 )
-shape = SubResource( 2 )
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="StaticBody2D"]
+polygon = PoolVector2Array( -9, 8, -5, 4, 5, 4, 9, 8 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 anims/not_triggered = SubResource( 3 )

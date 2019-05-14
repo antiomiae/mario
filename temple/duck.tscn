@@ -236,7 +236,7 @@ tracks/2/keys = {
 "values": [ Vector2( 6, 14 ) ]
 }
 
-[sub_resource type="Animation" id=10]
+[sub_resource type="Animation" id=8]
 resource_name = "crouch"
 length = 0.001
 tracks/0/type = "value"
@@ -276,7 +276,7 @@ tracks/2/keys = {
 "values": [ Vector2( 6, 9 ) ]
 }
 
-[sub_resource type="Animation" id=11]
+[sub_resource type="Animation" id=9]
 resource_name = "dead"
 length = 0.1
 loop = true
@@ -305,7 +305,7 @@ tracks/1/keys = {
 "values": [ Vector2( 9, 4 ) ]
 }
 
-[sub_resource type="Animation" id=12]
+[sub_resource type="Animation" id=10]
 length = 0.4
 loop = true
 tracks/0/type = "value"
@@ -345,7 +345,7 @@ tracks/2/keys = {
 "values": [ Vector2( 6, 14 ) ]
 }
 
-[sub_resource type="Animation" id=13]
+[sub_resource type="Animation" id=11]
 length = 3.0
 loop = true
 tracks/0/type = "value"
@@ -385,7 +385,7 @@ tracks/2/keys = {
 "values": [ Vector2( 6, 14 ) ]
 }
 
-[sub_resource type="Animation" id=14]
+[sub_resource type="Animation" id=12]
 length = 0.1
 loop = true
 tracks/0/type = "value"
@@ -425,7 +425,7 @@ tracks/2/keys = {
 "values": [ Vector2( 6, 14 ) ]
 }
 
-[sub_resource type="Animation" id=15]
+[sub_resource type="Animation" id=13]
 length = 0.5
 loop = true
 tracks/0/type = "value"
@@ -465,7 +465,7 @@ tracks/2/keys = {
 "values": [ Vector2( 6, 14 ) ]
 }
 
-[sub_resource type="Animation" id=8]
+[sub_resource type="Animation" id=14]
 length = 0.35
 loop = true
 tracks/0/type = "value"
@@ -481,7 +481,7 @@ tracks/0/keys = {
 "values": [ Color( 1, 1, 1, 1 ), Color( 2, 2, 2, 1 ) ]
 }
 
-[sub_resource type="Animation" id=9]
+[sub_resource type="Animation" id=15]
 length = 0.001
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sprite:self_modulate")
@@ -522,14 +522,14 @@ anims/stand = SubResource( 6 )
 anims/walk = SubResource( 7 )
 
 [node name="AnimationPlayer2" type="AnimationPlayer" parent="."]
-anims/crouch = SubResource( 10 )
-anims/dead = SubResource( 11 )
-anims/fall = SubResource( 12 )
-anims/idle = SubResource( 13 )
-anims/stand = SubResource( 14 )
-anims/walk = SubResource( 15 )
+anims/crouch = SubResource( 8 )
+anims/dead = SubResource( 9 )
+anims/fall = SubResource( 10 )
+anims/idle = SubResource( 11 )
+anims/stand = SubResource( 12 )
+anims/walk = SubResource( 13 )
 
 [node name="sprite_effects" type="AnimationPlayer" parent="."]
-anims/damage_blink = SubResource( 8 )
-anims/reset = SubResource( 9 )
+anims/damage_blink = SubResource( 14 )
+anims/reset = SubResource( 15 )
 

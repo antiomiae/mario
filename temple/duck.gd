@@ -2,9 +2,26 @@ extends KinematicBody2D
 
 signal life_lost(lives_left)
 
+class MovementParameters:
+    var jump_speed : float
+    var fall_speed : float
+    var walk_speed : float
+    var walk_acceleration : float
+    var friction : float
+    var gravity : float
+
+    func _init(_jump_speed, _fall_speed, _walk_speed, _walk_acceleration, _friction, _gravity):
+        jump_speed = _jump_speed
+        fall_speed = _fall_speed
+        walk_speed = _walk_speed
+        walk_acceleration = _walk_acceleration
+        friction = _friction
+        gravity = _gravity
+
+
 var MOVEMENT_PARAMETERS = {
-    'ground': MovementParameters.new(5, 5, 3, 0.15, 0.3, 0.5),
-    'air': MovementParameters.new(5, 2, 3, 0.1, 0.005, 0.25)
+    'ground': MovementParameters.new(5, 5, 2, 0.15, 0.3, 0.2),
+    'air': MovementParameters.new(5, 2, 2, 0.05, 0.005, 0.2)
 }
 
 var velocity := Vector2.ZERO
@@ -82,7 +99,7 @@ func stand():
 func fall():
     _current_movement_parameters = MOVEMENT_PARAMETERS['air']
     set_animation('fall')
-    #set_controller(air_controller)
+    set_controller(air_controller)
 
 func jump():
     _current_movement_parameters = MOVEMENT_PARAMETERS['air']
@@ -114,7 +131,7 @@ func basic_damage():
     if lives_left < 1:
         die()
 
-    velocity = Vector2(-3*_facing, -4)
+    velocity = Vector2(-3*_facing, -3)
     yield(get_tree().create_timer(2, false), "timeout")
     $sprite_effects.play('reset')
     make_invulnerable(false)
@@ -129,21 +146,7 @@ func on_spike_hit(spikes):
     state_controller.on_spike_hit(spikes)
 
 
-class MovementParameters:
-    var jump_speed : float
-    var fall_speed : float
-    var walk_speed : float
-    var walk_acceleration : float
-    var friction : float
-    var gravity : float
 
-    func _init(_jump_speed, _fall_speed, _walk_speed, _walk_acceleration, _friction, _gravity):
-        jump_speed = _jump_speed
-        fall_speed = _fall_speed
-        walk_speed = _walk_speed
-        walk_acceleration = _walk_acceleration
-        friction = _friction
-        gravity = _gravity
 
 
 class StateController:
@@ -214,6 +217,7 @@ class AirController extends StateController:
     func handle_jump():
         if just_jumped() && jump_count < max_jumps:
             parent.velocity.y = -movement_parameters().jump_speed
+            jump_count += 1
 
     func update_velocity():
         var walk_input = parent.input_controller.walk
@@ -230,7 +234,12 @@ class GroundController extends StateController:
 
     func process(delta):
         update_velocity()
-        parent.velocity = parent.move_and_slide_with_snap(parent.velocity*60, Vector2(0, 2), Vector2(0, -1))*(1.0/60.0)
+        parent.velocity = parent.move_and_slide_with_snap(
+            parent.velocity*60,
+            Vector2(0, 2),
+            Vector2(0, -1),
+            true
+        )*(1.0/60.0)
 
         var action = null
 
@@ -265,8 +274,11 @@ class DeadController extends StateController:
 
     func _enter():
         parent.alive = false
+        self.parent._current_movement_parameters = parent.MOVEMENT_PARAMETERS['air']
         self.parent.set_collision_mask_bit(LayerNames.physics_layer('enemy'), false)
 
     func process(delta):
         parent.velocity.y += movement_parameters().gravity
         parent.velocity = parent.move_and_slide(parent.velocity*60, Vector2(0, -1))*(1.0/60.0)
+        if parent.is_on_floor():
+            parent.velocity = Vector2.ZERO

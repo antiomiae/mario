@@ -13,12 +13,6 @@ func _ready():
 func _process(delta):
     handle_reset()
     handle_pause()
-    handle_pop()
-
-func handle_pop():
-    if Input.is_action_just_pressed('director_pop'):
-        pop_scene()
-
 
 func pop_scene():
     var current_scene = get_tree().current_scene
