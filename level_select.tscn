@@ -94,10 +94,10 @@ flat = true
 align = 0
 
 [node name="Label" type="Label" parent="."]
-margin_right = 256.0
-margin_bottom = 258.0
+margin_right = 248.0
+margin_bottom = 99.0
 custom_fonts/font = ExtResource( 4 )
-text = "However, many types of games often need complex user interfaces, like MMOs, traditional RPGs, Simulators, Strategy, etc. These kinds of interface are also common in some games that include editors to create content, or interfaces for network connectivity. I eat dicks. DICKS. \"DICKS\"!!!.();;;;;::;;;::;.,"
+text = "ABCDEFGHIJKLMNOPQRSTUVWXYZ abcdefghijklmnopqrstuvwxyz 0123456789 .!?(),\"'\\/<>*#$^@&%~`:;[]{}|+-="
 autowrap = true
 
 [connection signal="pressed" from="MarginContainer/VBoxContainer/quit" to="." method="_on_quit_pressed"]
