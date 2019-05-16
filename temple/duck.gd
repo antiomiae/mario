@@ -20,7 +20,7 @@ class MovementParameters:
 
 
 var MOVEMENT_PARAMETERS = {
-    'ground': MovementParameters.new(5, 5, 2, 0.15, 0.3, 0.1),
+    'ground': MovementParameters.new(5, 5, 2, 0.15, 0.3, 0.05),
     'air': MovementParameters.new(5, 2, 2, 0.05, 0.005, 0.2)
 }
 
