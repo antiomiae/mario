@@ -33,3 +33,7 @@ func _on_button_pressed(scene_name):
 
 func load_scene(scene_name):
     get_tree().change_scene(scene_name)
+
+
+func _on_quit_pressed():
+    get_tree().quit()

@@ -78,10 +78,10 @@ PlayerInfo="*res://player_info.gd"
 
 [display]
 
-window/size/width=384
-window/size/height=240
-window/size/test_width=1152
-window/size/test_height=720
+window/size/width=480
+window/size/height=270
+window/size/test_width=480
+window/size/test_height=270
 window/stretch/mode="viewport"
 window/stretch/aspect="keep"
 
