@@ -24,5 +24,4 @@ position = Vector2( -12.5, 7.5 )
 [node name="front_tire" parent="Node2D/RigidBody2D" index="1"]
 editor/display_folded = true
 
-
 [editable path="Node2D"]
