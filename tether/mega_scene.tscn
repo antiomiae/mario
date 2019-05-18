@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://tether/mega_scene.gd" type="Script" id=1]
 [ext_resource path="res://counter.tscn" type="PackedScene" id=2]
@@ -11,6 +11,7 @@
 [ext_resource path="res://tether/bumper.tscn" type="PackedScene" id=9]
 [ext_resource path="res://projectile/rocket.tscn" type="PackedScene" id=10]
 [ext_resource path="res://characters/skeleton.tscn" type="PackedScene" id=11]
+[ext_resource path="res://sprites/ray.png" type="Texture" id=12]
 
 [node name="Node2D" type="Node2D"]
 script = ExtResource( 1 )
@@ -151,4 +152,8 @@ target = NodePath("../player")
 [node name="KinematicBody2D" parent="." instance=ExtResource( 11 )]
 position = Vector2( 178, 208 )
 walk_speed = 0.1
+
+[node name="Sprite" type="Sprite" parent="."]
+position = Vector2( 220, 208 )
+texture = ExtResource( 12 )
 [connection signal="died" from="player" to="." method="_on_player_died"]
