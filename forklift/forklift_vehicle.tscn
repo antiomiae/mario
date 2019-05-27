@@ -7,8 +7,7 @@
 [ext_resource path="res://forklift/rear_wheel.png" type="Texture" id=5]
 
 [sub_resource type="PhysicsMaterial" id=1]
-friction = 2.0
-bounce = 0.5
+friction = 20.0
 
 [sub_resource type="PhysicsMaterial" id=2]
 friction = 2.0
@@ -47,7 +46,7 @@ texture = ExtResource( 2 )
 
 [node name="fork" type="CollisionPolygon2D" parent="."]
 position = Vector2( 25, 8 )
-polygon = PoolVector2Array( -7, -12, -7, 12, 10, 12, 8, 11, -5, 11, -5, -11, -6, -12 )
+polygon = PoolVector2Array( -7, -12, -7, 12, 10, 12, 5, 11, -5, 11, -5, -11, -6, -12 )
 
 [node name="Sprite" type="Sprite" parent="fork"]
 texture = ExtResource( 3 )

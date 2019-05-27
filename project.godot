@@ -80,10 +80,10 @@ PlayerInfo="*res://player_info.gd"
 
 window/size/width=480
 window/size/height=270
-window/size/test_width=1440
-window/size/test_height=810
-window/dpi/allow_hidpi=true
-window/stretch/mode="viewport"
+window/size/always_on_top=true
+window/size/test_width=960
+window/size/test_height=540
+window/stretch/mode="2d"
 window/stretch/aspect="keep"
 
 [input]
@@ -213,7 +213,6 @@ director_pop={
 [rendering]
 
 quality/intended_usage/framebuffer_allocation=0
-quality/2d/use_pixel_snap=true
 environment/default_clear_color=Color( 0.25098, 0.239216, 0.239216, 1 )
 environment/default_environment="res://default_env.tres"
 quality/dynamic_fonts/use_oversampling=false

@@ -363,10 +363,11 @@ current = true
 
 [node name="forklift_vehicle_2" parent="." instance=ExtResource( 2 )]
 position = Vector2( 949, 299 )
+collision_mask = 18
 player_controllable = false
 
 [node name="box_1" type="RigidBody2D" parent="."]
-position = Vector2( 260, 305 )
+position = Vector2( 224, 301 )
 collision_layer = 16
 collision_mask = 18
 mass = 0.05

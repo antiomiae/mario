@@ -18,7 +18,7 @@ func engine_torque(rotation_speed):
 func brake():
     var wheel_speed = $front_wheel.angular_velocity
     if wheel_speed != 0:
-        $front_wheel.applied_torque = 100 * -sign(wheel_speed) * pow(clamp(abs(wheel_speed)/0.1, 0, 1), 2)
+        $front_wheel.applied_torque = 300 * -sign(wheel_speed) * pow(clamp(abs(wheel_speed)/0.1, 0, 1), 2)
 
 func _physics_process(delta):
     if player_controllable:
@@ -32,6 +32,7 @@ func _physics_process(delta):
                 brake()
             else:
                 $front_wheel.set_applied_torque(input*engine_torque(wheel_speed))
+                $rear_wheel.set_applied_torque(input*engine_torque($rear_wheel.angular_velocity))
 
         var fork_height = y_input() + $fork.position.y
         $fork.position.y = clamp(fork_height, _fork_lowered_y - fork_raise_height, _fork_lowered_y)
