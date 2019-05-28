@@ -1,0 +1,87 @@
+[gd_scene load_steps=3 format=2]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 18, 4 )
+
+[sub_resource type="RectangleShape2D" id=2]
+extents = Vector2( 2, 10 )
+
+[node name="Node2D" type="Node2D"]
+position = Vector2( 136, 131 )
+
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
+position = Vector2( 14, 8 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
+shape = SubResource( 1 )
+
+[node name="left_pincer_groove_joint" type="GrooveJoint2D" parent="StaticBody2D/CollisionShape2D"]
+position = Vector2( -18, 0 )
+rotation = -1.5708
+node_a = NodePath("../..")
+node_b = NodePath("../../left_pincer")
+length = 18.0
+initial_offset = 1.0
+
+[node name="right_pincer_groove_joint" type="GrooveJoint2D" parent="StaticBody2D/CollisionShape2D"]
+position = Vector2( 18, 0 )
+rotation = 1.5708
+node_a = NodePath("../..")
+node_b = NodePath("../../right_pincer")
+length = 18.0
+initial_offset = 1.0
+
+[node name="left_pincer" type="RigidBody2D" parent="StaticBody2D"]
+editor/display_folded = true
+position = Vector2( -17, 0 )
+can_sleep = false
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D/left_pincer"]
+shape = SubResource( 2 )
+
+[node name="left_pincer_top_spring" type="DampedSpringJoint2D" parent="StaticBody2D"]
+position = Vector2( -33, -10 )
+rotation = -1.5708
+node_a = NodePath("..")
+node_b = NodePath("../left_pincer")
+length = 16.0
+rest_length = 7.0
+
+[node name="left_pincer_bottom_spring" type="DampedSpringJoint2D" parent="StaticBody2D"]
+position = Vector2( -33, 10 )
+rotation = -1.5708
+node_a = NodePath("..")
+node_b = NodePath("../left_pincer")
+length = 16.0
+rest_length = 7.0
+
+[node name="right_pincer" type="RigidBody2D" parent="StaticBody2D"]
+editor/display_folded = true
+position = Vector2( 17, 0 )
+can_sleep = false
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D/right_pincer"]
+shape = SubResource( 2 )
+
+[node name="right_pincer_bottom_spring" type="DampedSpringJoint2D" parent="StaticBody2D"]
+position = Vector2( 33, 10 )
+rotation = 1.5708
+node_a = NodePath("..")
+node_b = NodePath("../right_pincer")
+length = 16.0
+rest_length = 7.0
+
+[node name="right_pincer_top_spring" type="DampedSpringJoint2D" parent="StaticBody2D"]
+position = Vector2( 33, -10 )
+rotation = 1.5708
+node_a = NodePath("..")
+node_b = NodePath("../right_pincer")
+length = 16.0
+rest_length = 7.0
+
