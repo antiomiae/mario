@@ -9,11 +9,11 @@
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 18, 4 )
 
-[sub_resource type="PhysicsMaterial" id=3]
+[sub_resource type="PhysicsMaterial" id=2]
 friction = 10.0
 absorbent = true
 
-[sub_resource type="RectangleShape2D" id=2]
+[sub_resource type="RectangleShape2D" id=3]
 extents = Vector2( 2, 8 )
 
 [sub_resource type="CircleShape2D" id=4]
@@ -23,6 +23,7 @@ position = Vector2( 141, 127 )
 
 [node name="StaticBody2D" type="RigidBody2D" parent="."]
 position = Vector2( 0, 5 )
+collision_mask = 18
 mass = 0.5
 can_sleep = false
 linear_damp = 0.1
@@ -55,16 +56,16 @@ initial_offset = 1.0
 [node name="left_pincer" type="RigidBody2D" parent="StaticBody2D"]
 editor/display_folded = true
 position = Vector2( -15, 12 )
-collision_mask = 16
+collision_mask = 18
 mass = 0.05
-physics_material_override = SubResource( 3 )
+physics_material_override = SubResource( 2 )
 can_sleep = false
 __meta__ = {
 "_edit_group_": true
 }
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D/left_pincer"]
-shape = SubResource( 2 )
+shape = SubResource( 3 )
 
 [node name="pincer" type="Sprite" parent="StaticBody2D/left_pincer"]
 position = Vector2( -8, -16 )
@@ -74,16 +75,16 @@ centered = false
 [node name="right_pincer" type="RigidBody2D" parent="StaticBody2D"]
 editor/display_folded = true
 position = Vector2( 15, 12 )
-collision_mask = 16
+collision_mask = 18
 mass = 0.05
-physics_material_override = SubResource( 3 )
+physics_material_override = SubResource( 2 )
 can_sleep = false
 __meta__ = {
 "_edit_group_": true
 }
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D/right_pincer"]
-shape = SubResource( 2 )
+shape = SubResource( 3 )
 
 [node name="pincer2" type="Sprite" parent="StaticBody2D/right_pincer"]
 position = Vector2( -7, -16 )
@@ -155,4 +156,6 @@ shape = SubResource( 4 )
 node_a = NodePath("..")
 node_b = NodePath("../../StaticBody2D")
 length = 86.0
-stiffness = 62.6
+rest_length = 86.0
+stiffness = 40.0
+damping = 2.0
