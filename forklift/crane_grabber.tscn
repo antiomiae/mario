@@ -38,7 +38,15 @@ position = Vector2( 0, 1 )
 texture = ExtResource( 2 )
 
 [node name="left_pincer_groove_joint" type="GrooveJoint2D" parent="StaticBody2D/bar_shape"]
-position = Vector2( -16, 12 )
+position = Vector2( -16, 19 )
+rotation = -1.5708
+node_a = NodePath("../..")
+node_b = NodePath("../../left_pincer")
+length = 18.0
+initial_offset = 1.0
+
+[node name="left_pincer_groove_joint2" type="GrooveJoint2D" parent="StaticBody2D/bar_shape"]
+position = Vector2( -16, -2 )
 rotation = -1.5708
 node_a = NodePath("../..")
 node_b = NodePath("../../left_pincer")
@@ -46,7 +54,15 @@ length = 18.0
 initial_offset = 1.0
 
 [node name="right_pincer_groove_joint" type="GrooveJoint2D" parent="StaticBody2D/bar_shape"]
-position = Vector2( 16, 12 )
+position = Vector2( 16, 19 )
+rotation = 1.5708
+node_a = NodePath("../..")
+node_b = NodePath("../../right_pincer")
+length = 18.0
+initial_offset = 1.0
+
+[node name="right_pincer_groove_joint2" type="GrooveJoint2D" parent="StaticBody2D/bar_shape"]
+position = Vector2( 16, -2 )
 rotation = 1.5708
 node_a = NodePath("../..")
 node_b = NodePath("../../right_pincer")
@@ -93,43 +109,43 @@ centered = false
 flip_h = true
 
 [node name="left_pincer_top_spring" type="DampedSpringJoint2D" parent="StaticBody2D"]
-position = Vector2( -33, -10 )
-rotation = -1.5708
-node_a = NodePath("..")
-node_b = NodePath("../left_pincer")
-length = 16.0
-rest_length = 16.0
-stiffness = 10.0
-damping = 0.1
-
-[node name="left_pincer_bottom_spring" type="DampedSpringJoint2D" parent="StaticBody2D"]
-position = Vector2( -33, 30 )
-rotation = -1.5708
-node_a = NodePath("..")
-node_b = NodePath("../left_pincer")
-length = 16.0
-rest_length = 16.0
-stiffness = 10.0
-damping = 0.1
-
-[node name="right_pincer_bottom_spring" type="DampedSpringJoint2D" parent="StaticBody2D"]
-position = Vector2( 33, 31 )
+position = Vector2( 2, 4 )
 rotation = 1.5708
 node_a = NodePath("..")
-node_b = NodePath("../right_pincer")
+node_b = NodePath("../left_pincer")
 length = 16.0
 rest_length = 16.0
-stiffness = 10.0
+stiffness = 40.0
 damping = 0.1
 
 [node name="right_pincer_top_spring" type="DampedSpringJoint2D" parent="StaticBody2D"]
-position = Vector2( 33, -10 )
-rotation = 1.5708
+position = Vector2( -2, 4 )
+rotation = -1.5708
 node_a = NodePath("..")
 node_b = NodePath("../right_pincer")
 length = 16.0
 rest_length = 16.0
-stiffness = 10.0
+stiffness = 40.0
+damping = 0.1
+
+[node name="left_pincer_bottom_spring" type="DampedSpringJoint2D" parent="StaticBody2D"]
+position = Vector2( 2, 30 )
+rotation = 1.5708
+node_a = NodePath("..")
+node_b = NodePath(".")
+length = 16.0
+rest_length = 16.0
+stiffness = 7.0
+damping = 0.1
+
+[node name="right_pincer_bottom_spring" type="DampedSpringJoint2D" parent="StaticBody2D"]
+position = Vector2( -2, 31 )
+rotation = -1.5708
+node_a = NodePath("..")
+node_b = NodePath(".")
+length = 16.0
+rest_length = 16.0
+stiffness = 7.0
 damping = 0.1
 
 [node name="TileMap" type="TileMap" parent="."]

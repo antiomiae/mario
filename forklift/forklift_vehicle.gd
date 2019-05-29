@@ -40,5 +40,8 @@ func _physics_process(delta):
                 $front_wheel.set_applied_torque(input*engine_torque(wheel_speed))
                 $rear_wheel.set_applied_torque(input*engine_torque($rear_wheel.angular_velocity))
 
-        var fork_height = y_input() + $fork.position.y
-        $fork.position.y = clamp(fork_height, _fork_lowered_y - fork_raise_height, _fork_lowered_y)
+        control_fork()
+
+func control_fork():
+    var fork_height = y_input() + $fork.position.y
+    $fork.position.y = clamp(fork_height, _fork_lowered_y - fork_raise_height, _fork_lowered_y)

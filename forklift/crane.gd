@@ -8,8 +8,8 @@ var spring_displacement = 13
 
 func adjust_pincer(dir = 1, amount = 0.1):
     for spring in springs:
-        spring.rest_length = spring.rest_length + dir*amount
-        spring.rest_length = clamp(spring.rest_length, spring_rest_length, spring_rest_length + spring_displacement)
+        spring.rest_length = spring.rest_length - dir*amount
+        spring.rest_length = clamp(spring.rest_length, spring_rest_length - spring_displacement, spring_rest_length)
         #spring.length = spring.rest_length
 
 func _physics_process(delta: float) -> void:
