@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/ray.png-ce214362d470540a9ad587fd0502a1fa.stex"
+path="res://.import/ray_sword_crackle.png-9d0cf20fa404f7c80ab3748dc027fca0.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://sprites/ray.png"
-dest_files=[ "res://.import/ray.png-ce214362d470540a9ad587fd0502a1fa.stex" ]
+source_file="res://sprites/rider/ray_sword_crackle.png"
+dest_files=[ "res://.import/ray_sword_crackle.png-9d0cf20fa404f7c80ab3748dc027fca0.stex" ]
 
 [params]
 

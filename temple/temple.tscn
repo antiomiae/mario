@@ -5,9 +5,10 @@
 [ext_resource path="res://temple/temple.tres" type="TileSet" id=3]
 [ext_resource path="res://temple/duck.tscn" type="PackedScene" id=4]
 [ext_resource path="res://temple/spikes.tscn" type="PackedScene" id=5]
-[ext_resource path="res://sprites/raccoon.png" type="Texture" id=6]
+[ext_resource path="res://sprites/temple/raccoon.png" type="Texture" id=6]
 [ext_resource path="res://temple/switch.tscn" type="PackedScene" id=7]
 [ext_resource path="res://temple/door.tscn" type="PackedScene" id=8]
+
 
 [node name="Node2D" type="Node2D"]
 script = ExtResource( 1 )

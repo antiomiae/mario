@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/moon_door.png-e9227d4f00ac46e43c8f682a6737039f.stex"
+path="res://.import/ray_poster.png-d1067bd875f9a06c49bcc1386d2825c6.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://sprites/moon_door.png"
-dest_files=[ "res://.import/moon_door.png-e9227d4f00ac46e43c8f682a6737039f.stex" ]
+source_file="res://sprites/rider/ray_poster.png"
+dest_files=[ "res://.import/ray_poster.png-d1067bd875f9a06c49bcc1386d2825c6.stex" ]
 
 [params]
 

@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/duck.png-e0f90093fad80331842606a6a0ec0ec2.stex"
+path="res://.import/walker.png-b66d9daa7bdfbca23132c160d67551d4.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://sprites/duck.png"
-dest_files=[ "res://.import/duck.png-e0f90093fad80331842606a6a0ec0ec2.stex" ]
+source_file="res://sprites/rider/walker.png"
+dest_files=[ "res://.import/walker.png-b66d9daa7bdfbca23132c160d67551d4.stex" ]
 
 [params]
 
@@ -20,7 +20,7 @@ compress/hdr_mode=0
 compress/bptc_ldr=0
 compress/normal_map=0
 flags/repeat=0
-flags/filter=false
+flags/filter=true
 flags/mipmaps=false
 flags/anisotropic=false
 flags/srgb=2

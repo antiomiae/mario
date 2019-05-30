@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/hornet_concept_1.png-23ed0d96d3e4360e9a75a07146b401a4.stex"
+path="res://.import/walker_concept.png-ce36a6b9e719f3762764ad1ab21e07ba.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://sprites/hornet_concept_1.png"
-dest_files=[ "res://.import/hornet_concept_1.png-23ed0d96d3e4360e9a75a07146b401a4.stex" ]
+source_file="res://sprites/rider/walker_concept.png"
+dest_files=[ "res://.import/walker_concept.png-ce36a6b9e719f3762764ad1ab21e07ba.stex" ]
 
 [params]
 
@@ -20,7 +20,7 @@ compress/hdr_mode=0
 compress/bptc_ldr=0
 compress/normal_map=0
 flags/repeat=0
-flags/filter=false
+flags/filter=true
 flags/mipmaps=false
 flags/anisotropic=false
 flags/srgb=2

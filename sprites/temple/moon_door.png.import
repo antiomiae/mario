@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/walker.png-45497ab33fe5c388b9bf6a5947c625ef.stex"
+path="res://.import/moon_door.png-8db94033b450450c381820968401d10e.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://sprites/walker.png"
-dest_files=[ "res://.import/walker.png-45497ab33fe5c388b9bf6a5947c625ef.stex" ]
+source_file="res://sprites/temple/moon_door.png"
+dest_files=[ "res://.import/moon_door.png-8db94033b450450c381820968401d10e.stex" ]
 
 [params]
 
@@ -20,7 +20,7 @@ compress/hdr_mode=0
 compress/bptc_ldr=0
 compress/normal_map=0
 flags/repeat=0
-flags/filter=true
+flags/filter=false
 flags/mipmaps=false
 flags/anisotropic=false
 flags/srgb=2

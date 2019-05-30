@@ -2,7 +2,8 @@
 
 [ext_resource path="res://temple/duck.gd" type="Script" id=1]
 [ext_resource path="res://temple/duck_controller.gd" type="Script" id=2]
-[ext_resource path="res://sprites/duck.png" type="Texture" id=3]
+[ext_resource path="res://sprites/temple/duck.png" type="Texture" id=3]
+
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 6, 14 )

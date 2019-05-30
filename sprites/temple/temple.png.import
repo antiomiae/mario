@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/Unnamed.png-e40cd1f948bc7faee8489eed68465547.stex"
+path="res://.import/temple.png-fcf0b2f152669af759f4ad65d9fb9f3d.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://sprites/Unnamed.png"
-dest_files=[ "res://.import/Unnamed.png-e40cd1f948bc7faee8489eed68465547.stex" ]
+source_file="res://sprites/temple/temple.png"
+dest_files=[ "res://.import/temple.png-fcf0b2f152669af759f4ad65d9fb9f3d.stex" ]
 
 [params]
 
@@ -20,7 +20,7 @@ compress/hdr_mode=0
 compress/bptc_ldr=0
 compress/normal_map=0
 flags/repeat=0
-flags/filter=true
+flags/filter=false
 flags/mipmaps=false
 flags/anisotropic=false
 flags/srgb=2

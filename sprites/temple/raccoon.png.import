@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/temple copy.png-724b06d6c18a62dea28c67b77779dfd4.stex"
+path="res://.import/raccoon.png-92a8560ead4f21329b6c58a06e3ed244.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://sprites/temple copy.png"
-dest_files=[ "res://.import/temple copy.png-724b06d6c18a62dea28c67b77779dfd4.stex" ]
+source_file="res://sprites/temple/raccoon.png"
+dest_files=[ "res://.import/raccoon.png-92a8560ead4f21329b6c58a06e3ed244.stex" ]
 
 [params]
 
@@ -20,7 +20,7 @@ compress/hdr_mode=0
 compress/bptc_ldr=0
 compress/normal_map=0
 flags/repeat=0
-flags/filter=true
+flags/filter=false
 flags/mipmaps=false
 flags/anisotropic=false
 flags/srgb=2
