@@ -35,6 +35,7 @@ script = ExtResource( 1 )
 shape = SubResource( 2 )
 
 [node name="PinJoint2D" type="PinJoint2D" parent="top"]
+visible = false
 node_a = NodePath("..")
 node_b = NodePath("../left_pincer")
 
@@ -47,7 +48,7 @@ can_sleep = false
 [node name="PinJoint2D2" type="PinJoint2D" parent="top/left_pincer"]
 position = Vector2( 2, -32 )
 node_a = NodePath("..")
-node_b = NodePath("../right_pincer")
+node_b = NodePath("../../right_pincer")
 
 [node name="pincer_spring" type="DampedSpringJoint2D" parent="top/left_pincer"]
 position = Vector2( -15, -46 )
@@ -56,28 +57,28 @@ node_a = NodePath("..")
 node_b = NodePath("../../right_pincer")
 length = 34.0
 rest_length = 34.0
-stiffness = 10.0
-damping = 0.5
+stiffness = 15.0
+damping = 0.1
 
 [node name="claw_pincer" type="Sprite" parent="top/left_pincer"]
-position = Vector2( -8, -24 )
+position = Vector2( -9, -24 )
 texture = ExtResource( 2 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="top/left_pincer"]
 shape = SubResource( 3 )
 
-[node name="right_pincer" type="RigidBody2D" parent="top/left_pincer"]
-position = Vector2( 5, 0 )
+[node name="right_pincer" type="RigidBody2D" parent="top"]
+position = Vector2( 3, 32 )
 collision_mask = 18
 mass = 0.025
 can_sleep = false
 
-[node name="claw_pincer" type="Sprite" parent="top/left_pincer/right_pincer"]
+[node name="claw_pincer" type="Sprite" parent="top/right_pincer"]
 position = Vector2( 8, -24 )
 texture = ExtResource( 2 )
 flip_h = true
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="top/left_pincer/right_pincer"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="top/right_pincer"]
 shape = SubResource( 3 )
 
 [node name="TileMap" type="TileMap" parent="."]
