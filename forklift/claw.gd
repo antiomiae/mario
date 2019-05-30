@@ -3,8 +3,10 @@ extends RigidBody2D
 var max_spring_length = 34
 var min_spring_length = 1
 
+onready var pincer_spring = $left_pincer/pincer_spring
+
 func close_claw(dir = 1, amount = 1):
-    $pincer_spring.rest_length = clamp($pincer_spring.rest_length + dir*amount, min_spring_length, max_spring_length)
+    pincer_spring.rest_length = clamp(pincer_spring.rest_length + dir*amount, min_spring_length, max_spring_length)
 
 
 func _physics_process(delta: float) -> void:

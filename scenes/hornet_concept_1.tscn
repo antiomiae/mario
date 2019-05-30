@@ -19,10 +19,12 @@ size_flags_vertical = 3
 color = Color( 0, 0, 0, 1 )
 
 [node name="TextureRect2" type="TextureRect" parent="MarginContainer"]
+margin_top = 7.0
 margin_right = 480.0
-margin_bottom = 270.0
+margin_bottom = 263.0
 size_flags_horizontal = 4
 size_flags_vertical = 4
 texture = ExtResource( 1 )
+
 [node name="Node2D" parent="MarginContainer/TextureRect2" instance=ExtResource( 2 )]
-position = Vector2( 323, 212 )
+position = Vector2( 323, 198 )
