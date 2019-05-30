@@ -25,8 +25,7 @@ tracks/0/keys = {
 texture = ExtResource( 1 )
 vframes = 2
 hframes = 10
-frame = 14
+frame = 2
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-autoplay = "crackle"
 anims/crackle = SubResource( 1 )
