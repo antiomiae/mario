@@ -84,4 +84,3 @@ node_a = NodePath("..")
 node_b = NodePath("../right_pincer")
 length = 16.0
 rest_length = 7.0
-
