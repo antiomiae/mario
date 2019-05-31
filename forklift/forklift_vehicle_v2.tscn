@@ -75,14 +75,14 @@ position = Vector2( 20, -31 )
 node_a = NodePath("../..")
 node_b = NodePath("../../fork")
 rest_length = 50.0
-damping = 0.5
+damping = 0.3
 
 [node name="fork_spring2" type="DampedSpringJoint2D" parent="fork_springs"]
 position = Vector2( 36, -31 )
 node_a = NodePath("../..")
 node_b = NodePath("../../fork")
 rest_length = 50.0
-damping = 0.5
+damping = 0.3
 
 [node name="fork" type="RigidBody2D" parent="."]
 editor/display_folded = true
