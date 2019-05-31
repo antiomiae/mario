@@ -48,7 +48,6 @@ func _ready():
 
     if b:
         var b_joint = PinJoint2D.new()
-        _links[_links.size()-1].add_child(b_joint)
+        b.add_child(b_joint)
         b_joint.node_a = _links[_links.size()-1].get_path()
         b_joint.node_b = b.get_path()
-        b_joint.position.x = offset
