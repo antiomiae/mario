@@ -1,5 +1,5 @@
 extends Node2D
-tool
+
 
 export var node_a : NodePath
 export var node_b : NodePath
@@ -71,9 +71,10 @@ func _ready():
 
         if a:
             var a_joint = PinJoint2D.new()
-            a_joint.softness = 0
-            _links[0].add_child(a_joint)
-            get_parent().add_child(a_joint)
+            a_joint.softness = 1
+            #_links[0].add_child(a_joint)
+            #get_parent().add_child(a_joint)
+            a.get_parent().add_child(a_joint)
             a_joint.global_position = _links[0].global_position
             a_joint.node_b = _links[0].get_path()
             a_joint.node_a = a.get_path()

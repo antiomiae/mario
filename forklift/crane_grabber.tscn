@@ -4,8 +4,8 @@
 [ext_resource path="res://forklift/crane.gd" type="Script" id=2]
 [ext_resource path="res://forklift/grabber_bar.png" type="Texture" id=3]
 [ext_resource path="res://forklift/pincer.png" type="Texture" id=4]
-[ext_resource path="res://forklift/chain.tscn" type="PackedScene" id=5]
-[ext_resource path="res://forklift/crane_hoist.tscn" type="PackedScene" id=6]
+[ext_resource path="res://forklift/crane_hoist.tscn" type="PackedScene" id=5]
+[ext_resource path="res://forklift/chain.tscn" type="PackedScene" id=6]
 [ext_resource path="res://forklift/box.tscn" type="PackedScene" id=7]
 
 [sub_resource type="RectangleShape2D" id=1]
@@ -31,7 +31,7 @@ tile_data = PoolIntArray( -262151, 19, 0, -262150, 17, 0, -262149, 17, 0, -26214
 
 [node name="grabber" type="RigidBody2D" parent="."]
 editor/display_folded = true
-position = Vector2( -13, -21 )
+position = Vector2( -17, 12 )
 collision_mask = 18
 mass = 0.5
 can_sleep = false
@@ -167,15 +167,16 @@ rest_length = 16.0
 stiffness = 15.0
 damping = 0.2
 
-[node name="chain" parent="." instance=ExtResource( 5 )]
-position = Vector2( -13, -88 )
+[node name="crane_hoist" parent="." instance=ExtResource( 5 )]
+position = Vector2( 0, -91 )
+mode = 3
+
+[node name="chain" parent="." instance=ExtResource( 6 )]
+position = Vector2( -17, -75 )
 rotation = 1.5708
 node_a = NodePath("../crane_hoist/winch")
 node_b = NodePath("../grabber")
-length = 12
-
-[node name="crane_hoist" parent="." instance=ExtResource( 6 )]
-position = Vector2( 0, -91 )
+length = 15
 
 [node name="box_1" parent="." instance=ExtResource( 7 )]
 position = Vector2( 0, 25 )
@@ -183,5 +184,3 @@ position = Vector2( 0, 25 )
 [node name="Label" type="Label" parent="."]
 margin_right = 40.0
 margin_bottom = 14.0
-
-[editable path="crane_hoist"]
