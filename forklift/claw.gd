@@ -1,7 +1,7 @@
 extends RigidBody2D
 
 var max_spring_length = 34
-var min_spring_length = 1
+var min_spring_length = 5
 
 onready var pincer_spring = $left_pincer/pincer_spring
 

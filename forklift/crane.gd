@@ -19,13 +19,11 @@ func _physics_process(delta: float) -> void:
         elif Input.is_action_pressed('ui_left'):
             adjust_pincer(-1)
     else:
-        if Input.is_action_pressed('up'):
-            $"../anchor/DampedSpringJoint2D".rest_length -= 0.5
-            #self.position.y -= 0.5
-        elif Input.is_action_pressed('down'):
-            $"../anchor/DampedSpringJoint2D".rest_length += 0.5
-            #self.position.y += 0.5
-        $"../anchor/DampedSpringJoint2D".rest_length = max(1, $"../anchor/DampedSpringJoint2D".rest_length)
-
-        var x_input = Input.get_action_strength('ui_right') - Input.get_action_strength('ui_left')
-        $"../anchor".position.x += 0.5 * x_input
+        pass
+#        if Input.is_action_pressed('up'):
+#            $"../crane_hoist/DampedSpringJoint2D".rest_length -= 0.5
+#            #self.position.y -= 0.5
+#        elif Input.is_action_pressed('down'):
+#            $"../crane_hoist/DampedSpringJoint2D".rest_length += 0.5
+#            #self.position.y += 0.5
+#        $"../crane_hoist/DampedSpringJoint2D".rest_length = max(1, $"../crane_hoist/DampedSpringJoint2D".rest_length)

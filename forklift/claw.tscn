@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://forklift/claw.gd" type="Script" id=1]
 [ext_resource path="res://forklift/claw_pincer.png" type="Texture" id=2]
@@ -10,9 +10,6 @@
 
 [sub_resource type="CircleShape2D" id=2]
 radius = 3.16228
-
-[sub_resource type="CircleShape2D" id=3]
-radius = 2.0
 
 [node name="Node2D" type="Node2D"]
 position = Vector2( 129, 113 )
@@ -40,46 +37,48 @@ node_a = NodePath("..")
 node_b = NodePath("../left_pincer")
 
 [node name="left_pincer" type="RigidBody2D" parent="top"]
-position = Vector2( -2, 32 )
+position = Vector2( -8, 0 )
 collision_mask = 18
 mass = 0.025
 can_sleep = false
 
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="top/left_pincer"]
+position = Vector2( 6, 32 )
+polygon = PoolVector2Array( 0, 1, -8, 1, -21, -12, -21, -25, -13, -33, -8, -33, -18, -43, -18, -46, -17, -47, -14, -47, -13, -46, -13, -43, -3, -33, -3, -30, -6, -30, -11, -30, -18, -23, -18, -14, -5, -1, 0, -1 )
+
 [node name="PinJoint2D2" type="PinJoint2D" parent="top/left_pincer"]
-position = Vector2( 2, -32 )
+position = Vector2( 8, 0 )
 node_a = NodePath("..")
 node_b = NodePath("../../right_pincer")
 
 [node name="pincer_spring" type="DampedSpringJoint2D" parent="top/left_pincer"]
-position = Vector2( -15, -46 )
+position = Vector2( -9, -21 )
 rotation = -1.5708
 node_a = NodePath("..")
 node_b = NodePath("../../right_pincer")
 length = 34.0
 rest_length = 34.0
-stiffness = 15.0
-damping = 0.1
+stiffness = 40.0
+damping = 0.2
 
 [node name="claw_pincer" type="Sprite" parent="top/left_pincer"]
-position = Vector2( -9, -24 )
+position = Vector2( -3, 8 )
 texture = ExtResource( 2 )
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="top/left_pincer"]
-shape = SubResource( 3 )
-
 [node name="right_pincer" type="RigidBody2D" parent="top"]
-position = Vector2( 3, 32 )
+position = Vector2( 8, 0 )
 collision_mask = 18
 mass = 0.025
 can_sleep = false
 
+[node name="CollisionPolygon2D3" type="CollisionPolygon2D" parent="top/right_pincer"]
+position = Vector2( -6, 32 )
+polygon = PoolVector2Array( 0, 1, 8, 1, 21, -12, 21, -25, 13, -33, 8, -33, 18, -43, 18, -46, 17, -47, 14, -47, 13, -46, 13, -43, 3, -33, 3, -30, 11, -30, 18, -23, 18, -14, 5, -1, 0, -1 )
+
 [node name="claw_pincer" type="Sprite" parent="top/right_pincer"]
-position = Vector2( 8, -24 )
+position = Vector2( 3, 8 )
 texture = ExtResource( 2 )
 flip_h = true
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="top/right_pincer"]
-shape = SubResource( 3 )
 
 [node name="TileMap" type="TileMap" parent="."]
 tile_set = ExtResource( 3 )
