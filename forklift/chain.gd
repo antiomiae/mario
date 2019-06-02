@@ -74,7 +74,7 @@ func _ready():
             a_joint.softness = 1
             #_links[0].add_child(a_joint)
             #get_parent().add_child(a_joint)
-            a.get_parent().add_child(a_joint)
+            a.add_child(a_joint)
             a_joint.global_position = _links[0].global_position
             a_joint.node_b = _links[0].get_path()
             a_joint.node_a = a.get_path()

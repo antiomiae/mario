@@ -1,0 +1,21 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://forklift/piston.gd" type="Script" id=1]
+[ext_resource path="res://forklift/piston_body.png" type="Texture" id=2]
+[ext_resource path="res://forklift/piston_shaft.png" type="Texture" id=3]
+
+[node name="spring" type="DampedSpringJoint2D"]
+rotation = -1.5708
+stiffness = 64.0
+damping = 0.8
+script = ExtResource( 1 )
+
+[node name="piston_body" type="Sprite" parent="."]
+position = Vector2( -4.5, 16.5 )
+rotation = 1.5708
+texture = ExtResource( 2 )
+
+[node name="piston_shaft" type="Sprite" parent="."]
+position = Vector2( -4.5, 15.5 )
+rotation = 1.5708
+texture = ExtResource( 3 )
