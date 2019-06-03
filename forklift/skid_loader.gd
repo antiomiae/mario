@@ -34,5 +34,7 @@ func _physics_process(delta):
     if x_input() != 0 || brake != 0:
         var target_speed = 0 if brake != 0 else x_input()*50
         var acc = 0.5*brake if brake != 0 else 0.15
-        $front_wheel.angular_velocity = accelerate_to_value(target_speed, $front_wheel.angular_velocity, acc)
-        $rear_wheel.angular_velocity = accelerate_to_value(target_speed, $rear_wheel.angular_velocity, acc)
+        var average = ($front_wheel.angular_velocity + $rear_wheel.angular_velocity)/2.0
+        var new_speed = accelerate_to_value(target_speed, average, acc)
+        $front_wheel.angular_velocity = new_speed
+        $rear_wheel.angular_velocity = new_speed
