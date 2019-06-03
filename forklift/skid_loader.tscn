@@ -1,7 +1,7 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://forklift/skid_loader.gd" type="Script" id=1]
-[ext_resource path="res://forklift/skid_loader/skid_loader_body.png" type="Texture" id=2]
+[ext_resource path="res://forklift/skid_loader/skid_loader_body_flipped.png" type="Texture" id=2]
 [ext_resource path="res://forklift/skid_loader/skid_loader_arm.png" type="Texture" id=3]
 [ext_resource path="res://forklift/skid_loader/skid_loader_bucket.png" type="Texture" id=4]
 [ext_resource path="res://forklift/skid_loader/skid_loader_wheel.png" type="Texture" id=5]
@@ -10,6 +10,9 @@
 
 [sub_resource type="PhysicsMaterial" id=1]
 friction = 0.0
+
+[sub_resource type="CircleShape2D" id=5]
+radius = 2.0
 
 [sub_resource type="PhysicsMaterial" id=2]
 friction = 10.0
@@ -82,7 +85,7 @@ centered = false
 flip_h = true
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="body/bucket"]
-polygon = PoolVector2Array( 5, 6, -3, 6, -5, 4, -5, -3, -2, -6, 5, -6, 4, -5, -2, -5, -3, -3, -3, 4, -2, 5, 6, 5 )
+polygon = PoolVector2Array( 6, 5, -3, 6, -5, 4, -5, -3, -3, -9, 5, -9, 5, -8, -2, -8, -4, -3, -4, 4, -2, 5, 6, 4 )
 
 [node name="PinJoint2D" type="PinJoint2D" parent="body/bucket"]
 position = Vector2( -5, -5 )
@@ -94,12 +97,16 @@ position = Vector2( -5, 6 )
 node_a = NodePath("../../arm")
 node_b = NodePath("..")
 
+[node name="CollisionShape2D" type="CollisionShape2D" parent="body/bucket"]
+position = Vector2( 6, 4 )
+shape = SubResource( 5 )
+
 [node name="front_wheel" type="RigidBody2D" parent="body"]
 editor/display_folded = true
 position = Vector2( 10, 18 )
 collision_layer = 16
 collision_mask = 18
-mass = 0.025
+mass = 0.0375
 physics_material_override = SubResource( 2 )
 angular_damp = 0.25
 
@@ -122,7 +129,7 @@ editor/display_folded = true
 position = Vector2( -7, 18 )
 collision_layer = 16
 collision_mask = 18
-mass = 0.025
+mass = 0.0375
 physics_material_override = SubResource( 4 )
 angular_damp = 0.25
 

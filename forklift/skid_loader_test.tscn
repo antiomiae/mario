@@ -1,8 +1,11 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://forklift/ramp_tiles.tres" type="TileSet" id=1]
 [ext_resource path="res://forklift/skid_loader.tscn" type="PackedScene" id=2]
 [ext_resource path="res://forklift/box.tscn" type="PackedScene" id=3]
+
+[sub_resource type="PhysicsMaterial" id=1]
+friction = 0.1
 
 [node name="Node2D" type="Node2D"]
 
@@ -47,5 +50,6 @@ current = true
 
 [node name="box_1" parent="." instance=ExtResource( 3 )]
 position = Vector2( 302, 149 )
+physics_material_override = SubResource( 1 )
 
 [editable path="skid_loader"]
