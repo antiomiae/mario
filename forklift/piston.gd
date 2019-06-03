@@ -21,10 +21,3 @@ func extend(dir):
 
     var b = get_node(node_b)
     global_rotation = (b.to_global(_node_b_position) - global_position).angle() - PI / 2
-
-
-#
-#func _physics_process(delta: float) -> void:
-#    var s = $spring
-#    s.length = s.length
-#    print(s.length)
