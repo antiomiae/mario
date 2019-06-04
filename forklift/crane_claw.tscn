@@ -2,10 +2,10 @@
 
 [ext_resource path="res://forklift/crane_controller.gd" type="Script" id=1]
 [ext_resource path="res://forklift/ramp_tiles.tres" type="TileSet" id=2]
-[ext_resource path="res://forklift/chain.tscn" type="PackedScene" id=3]
-[ext_resource path="res://forklift/crane_hoist.tscn" type="PackedScene" id=4]
-[ext_resource path="res://forklift/claw.tscn" type="PackedScene" id=5]
-[ext_resource path="res://forklift/box.tscn" type="PackedScene" id=6]
+[ext_resource path="res://forklift/crane_hoist.tscn" type="PackedScene" id=3]
+[ext_resource path="res://forklift/claw.tscn" type="PackedScene" id=4]
+[ext_resource path="res://forklift/box.tscn" type="PackedScene" id=5]
+[ext_resource path="res://forklift/chain.tscn" type="PackedScene" id=6]
 
 [node name="Node2D" type="Node2D"]
 position = Vector2( 141, 127 )
@@ -31,20 +31,20 @@ collision_mask = 0
 format = 1
 tile_data = PoolIntArray( 524283, 0, 0, 524284, 0, 0, 524285, 0, 0, 524286, 0, 0, 524287, 0, 0, 458752, 0, 0, 458753, 0, 0, 458754, 0, 0, 458755, 0, 0, 458756, 0, 0, 589819, 0, 0, 589820, 0, 0, 589821, 0, 0, 589822, 0, 0, 589823, 0, 0, 524288, 0, 0, 524289, 0, 0, 524290, 0, 0, 524291, 0, 0, 524292, 0, 0 )
 
-[node name="chain" parent="." instance=ExtResource( 3 )]
+[node name="crane_hoist" parent="." instance=ExtResource( 3 )]
+position = Vector2( 2, -93 )
+mode = 3
+
+[node name="claw" parent="." instance=ExtResource( 4 )]
+position = Vector2( 0, 78 )
+
+[node name="box_1" parent="." instance=ExtResource( 5 )]
+position = Vector2( 0, 105 )
+
+[node name="chain" parent="." instance=ExtResource( 6 )]
 position = Vector2( 2, -95 )
 rotation = 1.5708
 z_index = -1
 node_a = NodePath("../crane_hoist/winch")
 node_b = NodePath("../claw")
 length = 33
-
-[node name="crane_hoist" parent="." instance=ExtResource( 4 )]
-position = Vector2( 2, -93 )
-mode = 3
-
-[node name="claw" parent="." instance=ExtResource( 5 )]
-position = Vector2( 0, 78 )
-
-[node name="box_1" parent="." instance=ExtResource( 6 )]
-position = Vector2( 0, 105 )

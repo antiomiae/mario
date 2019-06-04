@@ -83,6 +83,7 @@ window/size/height=270
 window/size/always_on_top=true
 window/size/test_width=960
 window/size/test_height=540
+window/energy_saving/keep_screen_on=false
 window/stretch/mode="2d"
 window/stretch/aspect="keep"
 
@@ -187,6 +188,7 @@ up={
 "events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":16777232,"unicode":0,"echo":false,"script":null)
 , Object(InputEventJoypadMotion,"resource_local_to_scene":false,"resource_name":"","device":0,"axis":1,"axis_value":-1.0,"script":null)
 , Object(InputEventJoypadButton,"resource_local_to_scene":false,"resource_name":"","device":0,"button_index":12,"pressure":0.0,"pressed":false,"script":null)
+, Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":87,"unicode":0,"echo":false,"script":null)
  ]
 }
 director_pop={
@@ -232,7 +234,6 @@ left_shoulder={
 [rendering]
 
 quality/intended_usage/framebuffer_allocation=0
-quality/2d/use_pixel_snap=true
 environment/default_clear_color=Color( 0.25098, 0.239216, 0.239216, 1 )
 environment/default_environment="res://default_env.tres"
 quality/dynamic_fonts/use_oversampling=false

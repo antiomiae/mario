@@ -13,22 +13,17 @@ func accelerate_to_value(target, current, acc):
             current -= acc
         else:
             current = target
-
     if current <= target:
         if (target - current) > acc:
             current += acc
         else:
             current = target
-
     return current
 
 func _physics_process(delta):
     $piston.extend(y_input()*0.5)
-
     var brake = Input.get_action_strength('brake')
-
     var body_torque = Input.get_action_strength('right_shoulder') - Input.get_action_strength('left_shoulder')
-
     applied_torque = body_torque*2000
 
     if x_input() != 0 || brake != 0:

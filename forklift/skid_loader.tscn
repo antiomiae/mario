@@ -11,19 +11,18 @@
 [sub_resource type="PhysicsMaterial" id=1]
 friction = 0.0
 
-[sub_resource type="CircleShape2D" id=5]
+[sub_resource type="CircleShape2D" id=2]
 radius = 2.0
 
-[sub_resource type="PhysicsMaterial" id=2]
-friction = 10.0
+[sub_resource type="PhysicsMaterial" id=3]
+friction = 5.0
 rough = true
 
-[sub_resource type="CircleShape2D" id=3]
+[sub_resource type="CircleShape2D" id=4]
 radius = 7.0
 
-[sub_resource type="PhysicsMaterial" id=4]
+[sub_resource type="PhysicsMaterial" id=5]
 friction = 10.0
-rough = true
 
 [node name="Node2D" type="Node2D"]
 
@@ -99,15 +98,15 @@ node_b = NodePath("..")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="body/bucket"]
 position = Vector2( 6, 4 )
-shape = SubResource( 5 )
+shape = SubResource( 2 )
 
 [node name="front_wheel" type="RigidBody2D" parent="body"]
 editor/display_folded = true
 position = Vector2( 10, 18 )
 collision_layer = 16
 collision_mask = 18
-mass = 0.0375
-physics_material_override = SubResource( 2 )
+mass = 0.05
+physics_material_override = SubResource( 3 )
 angular_damp = 0.25
 
 [node name="skid_loader_wheel" type="Sprite" parent="body/front_wheel"]
@@ -117,7 +116,7 @@ centered = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="body/front_wheel"]
 visible = false
-shape = SubResource( 3 )
+shape = SubResource( 4 )
 
 [node name="PinJoint2D" type="PinJoint2D" parent="body/front_wheel"]
 visible = false
@@ -129,8 +128,8 @@ editor/display_folded = true
 position = Vector2( -7, 18 )
 collision_layer = 16
 collision_mask = 18
-mass = 0.0375
-physics_material_override = SubResource( 4 )
+mass = 0.05
+physics_material_override = SubResource( 5 )
 angular_damp = 0.25
 
 [node name="skid_loader_wheel" type="Sprite" parent="body/rear_wheel"]
@@ -140,7 +139,7 @@ centered = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="body/rear_wheel"]
 visible = false
-shape = SubResource( 3 )
+shape = SubResource( 4 )
 
 [node name="PinJoint2D" type="PinJoint2D" parent="body/rear_wheel"]
 visible = false

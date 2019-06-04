@@ -1,5 +1,5 @@
 extends Node2D
-
+tool
 
 export var node_a : NodePath
 export var node_b : NodePath
@@ -86,3 +86,7 @@ func _ready():
             _links[_links.size()-1].add_child(b_joint)
             b_joint.node_a = _links[_links.size()-1].get_path()
             b_joint.node_b = b.get_path()
+
+
+func _draw():
+    draw_line(Vector2(-5, offset*length), Vector2(5, offset*length), Color(1, 1, 1, 1), 1.0)
