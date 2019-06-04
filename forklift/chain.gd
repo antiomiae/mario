@@ -5,10 +5,17 @@ export var node_a : NodePath
 export var node_b : NodePath
 
 export var offset = 5
-export var length = 10
+export var length := 10 setget set_length, get_length
 
 var _links = []
 var _joints = []
+
+func set_length(l):
+    length = l
+    update()
+
+func get_length():
+    return length
 
 func build_with_springs():
     for i in range(1, length):
@@ -89,4 +96,4 @@ func _ready():
 
 
 func _draw():
-    draw_line(Vector2(-5, offset*length), Vector2(5, offset*length), Color(1, 1, 1, 1), 1.0)
+    draw_line(Vector2(offset*length, -5), Vector2(offset*length, 5), Color(1, 1, 1, 1), 1.0)
