@@ -36,10 +36,10 @@ position = Vector2( 2, -93 )
 mode = 3
 
 [node name="claw" parent="." instance=ExtResource( 4 )]
-position = Vector2( 2, 78 )
+position = Vector2( 2, 74 )
 
 [node name="box_1" parent="." instance=ExtResource( 5 )]
-position = Vector2( 0, 105 )
+position = Vector2( -35, 105 )
 
 [node name="chain" parent="." instance=ExtResource( 6 )]
 position = Vector2( 2, -95 )
@@ -47,4 +47,4 @@ rotation = 1.5708
 z_index = -1
 node_a = NodePath("../crane_hoist/winch")
 node_b = NodePath("../claw")
-length = 34
+length = 30
