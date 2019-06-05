@@ -76,7 +76,29 @@ margin_top = 33.0
 margin_right = 52.0
 margin_bottom = 46.0
 focus_neighbour_top = NodePath("../temple_1")
+focus_neighbour_bottom = NodePath("../forklift")
 custom_fonts/font = ExtResource( 3 )
 text = "Temple 2"
+flat = true
+align = 0
+
+[node name="forklift" type="Button" parent="MarginContainer/VBoxContainer"]
+margin_top = 44.0
+margin_right = 52.0
+margin_bottom = 57.0
+focus_neighbour_top = NodePath("../temple_1")
+focus_neighbour_bottom = NodePath("../skid_loader")
+custom_fonts/font = ExtResource( 3 )
+text = "Forklift"
+flat = true
+align = 0
+
+[node name="skid_loader" type="Button" parent="MarginContainer/VBoxContainer"]
+margin_top = 55.0
+margin_right = 64.0
+margin_bottom = 68.0
+focus_neighbour_top = NodePath("../temple_1")
+custom_fonts/font = ExtResource( 3 )
+text = "Skid Loader"
 flat = true
 align = 0

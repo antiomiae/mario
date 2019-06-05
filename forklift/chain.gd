@@ -96,4 +96,5 @@ func _ready():
 
 
 func _draw():
-    draw_line(Vector2(offset*length, -5), Vector2(offset*length, 5), Color(1, 1, 1, 1), 1.0)
+    if Engine.is_editor_hint():
+        draw_line(Vector2(offset*length, -5), Vector2(offset*length, 5), Color(1, 1, 1, 1), 1.0)

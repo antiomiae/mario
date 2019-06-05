@@ -40,11 +40,10 @@ centered = false
 flip_h = true
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="body"]
-visible = false
 position = Vector2( -1, 0 )
 rotation = 3.14159
 scale = Vector2( 1, -1 )
-polygon = PoolVector2Array( -22, 20.0001, -22, 16, -19, 8, -14, -16, -13, -16, -18, 8.00005, 11, 7.99997, 15, -4.00004, 15, -12, 12, -17, -13, -17, -13, -16, -14, -16, -14, -18, 12, -18, 14, -16, 16, -12, 16, -4, 19, -4, 21, -3, 21, 17, 19, 19, 13, 20 )
+polygon = PoolVector2Array( -18, 20, -22, 16, -22, 4.00006, -17, 4.57764e-05, -14, -16, -12, -16, -14, -0.999969, 14, -4.00003, 14, -11, 11, -16, -12, -16, -14, -16, -14, -18, 12, -18, 14, -16, 16, -12, 16, -4, 19, -4, 21, -3, 21, 17, 19, 19, 13, 20 )
 
 [node name="arm" type="RigidBody2D" parent="body"]
 position = Vector2( 9, 5 )

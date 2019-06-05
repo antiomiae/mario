@@ -4,7 +4,9 @@ var scenes = [
     'tether/tether_scene.tscn',
     'tether/mega_scene.tscn',
     'temple/temple.tscn',
-    'temple/temple_2.tscn'
+    'temple/temple_2.tscn',
+    'forklift/forklift_v2_test.tscn',
+    'forklift/skid_loader_test.tscn'
 ]
 
 var buttons = []
