@@ -70,9 +70,10 @@ func _ready():
 
     build_with_pins()
 
-    $link.queue_free()
+    $link.visible = false
 
     if !Engine.is_editor_hint():
+        $link.queue_free()
         var a = get_node(node_a)
         var b = get_node(node_b)
 
