@@ -17,6 +17,7 @@ node_a = NodePath("")
 node_b = NodePath("")
 
 [node name="link" type="RigidBody2D" parent="."]
+visible = false
 collision_layer = 16
 collision_mask = 2
 mass = 0.025
