@@ -11,7 +11,7 @@ export var player_controlled := false
 
 export var facing = 1 setget set_facing, get_facing
 
-var hit_list = {}
+var hit_list = []
 
 func _ready():
     self.facing = facing

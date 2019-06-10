@@ -80,7 +80,6 @@ PlayerInfo="*res://player_info.gd"
 
 window/size/width=480
 window/size/height=270
-window/size/always_on_top=true
 window/size/test_width=960
 window/size/test_height=540
 window/energy_saving/keep_screen_on=false

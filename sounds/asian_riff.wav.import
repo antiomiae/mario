@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/asian_riff.wav-7813c2f74fb4b9c65c880ece361b5a00.sample"
+
+[deps]
+
+source_file="res://sounds/asian_riff.wav"
+dest_files=[ "res://.import/asian_riff.wav-7813c2f74fb4b9c65c880ece361b5a00.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=true
+edit/normalize=true
+edit/loop=false
+compress/mode=0
