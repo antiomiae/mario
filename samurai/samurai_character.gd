@@ -1,6 +1,6 @@
 extends 'res:///lib/godot-flippable-physics/FlippablePhysics2D.gd'.FlippableKinematicBody2D
 
-enum Posture { IDLE_DISARMED, ARMING, IDLE_ARMED, WALKING_ARMED, SWINGING }
+enum Posture { IDLE_DISARMED, ARMING, IDLE_ARMED, WALKING_ARMED, SWINGING, DEAD }
 
 var _current_state = Posture.IDLE_DISARMED
 
@@ -17,6 +17,9 @@ var dead = false
 onready var animation_player = $container/AnimationPlayer
 onready var sword_area = $container/sword_area
 
+const clang_ogg = preload('res://sounds/sword_clang_sound.ogg')
+const bell_ogg = preload('res://sounds/bell_chime.ogg')
+
 func _ready():
     self.facing = facing
 
@@ -29,6 +32,9 @@ func _ready():
 
 
 func _physics_process(delta):
+    if dead:
+        return
+
     var x_input = Input.get_action_strength(input('walk_right')) - Input.get_action_strength(input('walk_left'))
 
     if _current_state == Posture.IDLE_DISARMED:
@@ -119,18 +125,29 @@ func process_hits():
 
             if also_hit_sword:
                 blocked_hits.append(melee_object)
+                #melee_object.parent().registered_blocked_hit(melee_object)
             else:
                 successful_hits.append(melee_object)
 
+    if blocked_hits.size() > 0:
+        if !$clang_sound.playing:
+            $clang_sound.stream = clang_ogg
+            $clang_sound.play()
+        $container/sword_area/CollisionShape2D.disabled = true
+
     if successful_hits.size() > 0:
+        $clang_sound.stream = bell_ogg
+        $clang_sound.play()
         die()
 
-    if blocked_hits.size() > 0:
-        $clang_sound.play()
+    for ob in blocked_hits:
+        body_hit_list.erase(ob)
+        sword_hit_list.erase(ob)
 
 
 func die():
     dead = true
+    _current_state = Posture.DEAD
     animation_player.play('fall_dead')
 
 
