@@ -44,7 +44,7 @@ func _physics_process(delta):
         if _current_state != Posture.SWINGING:
             if x_input != 0:
                 _current_state = Posture.WALKING_ARMED
-                position.x += x_input
+                move_and_slide(Vector2(x_input*60, 0.25), Vector2(0, -1))
                 facing = 1 if x_input > 0 else -1
                 set_flip_h(facing != 1)
             else:
@@ -125,7 +125,8 @@ func process_hits():
 
             if also_hit_sword:
                 blocked_hits.append(melee_object)
-                #melee_object.parent().registered_blocked_hit(melee_object)
+                var p = melee_object.get_parent().get_parent()
+                p.registered_blocked_hit(melee_object)
             else:
                 successful_hits.append(melee_object)
 
@@ -144,6 +145,9 @@ func process_hits():
         body_hit_list.erase(ob)
         sword_hit_list.erase(ob)
 
+func registered_blocked_hit(melee_object):
+    if melee_object == sword_area && _current_state == Posture.SWINGING:
+        _current_state = Posture.IDLE_ARMED
 
 func die():
     dead = true
