@@ -131,9 +131,10 @@ func process_hits():
                 successful_hits.append(melee_object)
 
     if blocked_hits.size() > 0:
-        if !$clang_sound.playing:
-            $clang_sound.stream = clang_ogg
-            $clang_sound.play()
+        if _current_state == Posture.SWINGING:
+            _current_state = Posture.IDLE_ARMED
+        $clang_sound.stream = clang_ogg
+        $clang_sound.play()
         $container/sword_area/CollisionShape2D.disabled = true
 
     if successful_hits.size() > 0:
