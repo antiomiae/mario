@@ -1,7 +1,8 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://samurai/samurai_character.gd" type="Script" id=1]
 [ext_resource path="res://samurai/samurai_animations.png" type="Texture" id=2]
+[ext_resource path="res://sounds/sword_clang_sound.ogg" type="AudioStream" id=3]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 4, 8 )
@@ -86,7 +87,7 @@ tracks/1/keys = {
 "values": [ true ]
 }
 
-[sub_resource type="Animation" id=8]
+[sub_resource type="Animation" id=4]
 resource_name = "fall_dead"
 step = 0.05
 tracks/0/type = "value"
@@ -102,7 +103,7 @@ tracks/0/keys = {
 "values": [ 42, 43, 44, 45, 46, 47, 48, 49, 50 ]
 }
 tracks/1/type = "value"
-tracks/1/path = NodePath("sword_area/CollisionShape2D:disabled")
+tracks/1/path = NodePath("CollisionShape2D:disabled")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/imported = false
@@ -138,8 +139,7 @@ tracks/3/keys = {
 "values": [ 0.0 ]
 }
 
-[sub_resource type="Animation" id=4]
-resource_name = "stand"
+[sub_resource type="Animation" id=5]
 length = 0.1
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sprite:frame")
@@ -166,7 +166,7 @@ tracks/1/keys = {
 "values": [ true ]
 }
 
-[sub_resource type="Animation" id=5]
+[sub_resource type="Animation" id=6]
 length = 0.1
 loop = true
 tracks/0/type = "value"
@@ -218,7 +218,7 @@ tracks/3/keys = {
 "values": [ true ]
 }
 
-[sub_resource type="Animation" id=6]
+[sub_resource type="Animation" id=7]
 length = 0.8
 loop = true
 tracks/0/type = "value"
@@ -234,7 +234,7 @@ tracks/0/keys = {
 "values": [ 14, 15, 16, 17, 18, 19, 20, 21 ]
 }
 
-[sub_resource type="SegmentShape2D" id=7]
+[sub_resource type="SegmentShape2D" id=8]
 b = Vector2( 13, 0 )
 
 [node name="samurai_character" type="KinematicBody2D" groups=[
@@ -248,21 +248,23 @@ script = ExtResource( 1 )
 position = Vector2( 0, 2 )
 shape = SubResource( 1 )
 
-[node name="Sprite" type="Sprite" parent="."]
+[node name="container" type="Node2D" parent="."]
+
+[node name="Sprite" type="Sprite" parent="container"]
 texture = ExtResource( 2 )
 vframes = 4
 hframes = 14
 frame = 46
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="container"]
 anims/downward_swing = SubResource( 2 )
 anims/draw_sword = SubResource( 3 )
-anims/fall_dead = SubResource( 8 )
-anims/stand = SubResource( 4 )
-anims/stand_sword = SubResource( 5 )
-anims/walk = SubResource( 6 )
+anims/fall_dead = SubResource( 4 )
+anims/stand = SubResource( 5 )
+anims/stand_sword = SubResource( 6 )
+anims/walk = SubResource( 7 )
 
-[node name="sword_area" type="Area2D" parent="."]
+[node name="sword_area" type="Area2D" parent="container"]
 position = Vector2( 4, 10 )
 collision_layer = 32
 collision_mask = 96
@@ -270,6 +272,9 @@ __meta__ = {
 "_edit_group_": true
 }
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="sword_area"]
-shape = SubResource( 7 )
+[node name="CollisionShape2D" type="CollisionShape2D" parent="container/sword_area"]
+shape = SubResource( 8 )
 disabled = true
+
+[node name="clang_sound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource( 3 )

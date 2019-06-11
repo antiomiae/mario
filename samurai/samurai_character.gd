@@ -1,7 +1,5 @@
 extends 'res:///lib/godot-flippable-physics/FlippablePhysics2D.gd'.FlippableKinematicBody2D
 
-onready var animation_player = $AnimationPlayer
-
 enum Posture { IDLE_DISARMED, ARMING, IDLE_ARMED, WALKING_ARMED, SWINGING }
 
 var _current_state = Posture.IDLE_DISARMED
@@ -16,15 +14,18 @@ var body_hit_list = []
 
 var dead = false
 
+onready var animation_player = $container/AnimationPlayer
+onready var sword_area = $container/sword_area
+
 func _ready():
     self.facing = facing
 
     animation_player.play('stand')
 
-    $sword_area.connect('area_entered', self, 'sword_area_entered')
-    $sword_area.connect('area_exited', self, 'sword_area_exited')
-    $sword_area.connect('body_entered', self, 'sword_body_entered')
-    $sword_area.connect('body_exited', self, 'sword_body_exited')
+    $container/sword_area.connect('area_entered', self, 'sword_area_entered')
+    $container/sword_area.connect('area_exited', self, 'sword_area_exited')
+    $container/sword_area.connect('body_entered', self, 'sword_body_entered')
+    $container/sword_area.connect('body_exited', self, 'sword_body_exited')
 
 
 func _physics_process(delta):
@@ -53,6 +54,7 @@ func _physics_process(delta):
         _update_animation()
 
 func _update_animation():
+    set_facing(facing)
     match _current_state:
         Posture.IDLE_DISARMED:
             animation_player.play('stand')
@@ -70,7 +72,7 @@ func input(action):
 func set_facing(_facing):
     if _facing == 1 or _facing == -1:
         facing = _facing
-        self.scale.x = _facing
+        $container.set_scale(Vector2(facing, 1))
 
 func get_facing():
     return facing
@@ -92,11 +94,11 @@ func sword_area_exited(area):
 func sword_body_entered(body):
     if body != self:
         sword_hit_list.append(body)
-        body.register_hit($sword_area)
+        body.register_hit(sword_area)
 
 func sword_body_exited(body):
     sword_hit_list.erase(body)
-    body.register_hit_stop($sword_area)
+    body.register_hit_stop(sword_area)
 
 func register_hit(ob):
     if !body_hit_list.has(ob):
@@ -107,7 +109,7 @@ func register_hit_stop(ob):
 
 func process_hits():
     var successful_hits = []
-
+    var blocked_hits = []
     # oh no, we've been hit
     if body_hit_list.size() > 0:
 
@@ -116,16 +118,20 @@ func process_hits():
             var also_hit_sword = sword_hit_list.has(melee_object)
 
             if also_hit_sword:
-                print('dodged it')
+                blocked_hits.append(melee_object)
             else:
                 successful_hits.append(melee_object)
 
     if successful_hits.size() > 0:
         die()
 
+    if blocked_hits.size() > 0:
+        $clang_sound.play()
+
+
 func die():
     dead = true
-    $AnimationPlayer.play('fall_dead')
+    animation_player.play('fall_dead')
 
 
 

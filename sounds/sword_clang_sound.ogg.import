@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/sword_clang_sound.ogg-bed16d4bcd2da7eb196dd2711a10a583.oggstr"
+
+[deps]
+
+source_file="res://sounds/sword_clang_sound.ogg"
+dest_files=[ "res://.import/sword_clang_sound.ogg-bed16d4bcd2da7eb196dd2711a10a583.oggstr" ]
+
+[params]
+
+loop=false
+loop_offset=0

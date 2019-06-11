@@ -1,10 +1,9 @@
-[gd_scene load_steps=15 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://samurai/samurai_level.gd" type="Script" id=1]
 [ext_resource path="res://samurai/level_tiles.png" type="Texture" id=2]
 [ext_resource path="res://samurai/samurai_character.tscn" type="PackedScene" id=3]
 [ext_resource path="res://samurai/melee_target.gd" type="Script" id=4]
-[ext_resource path="res://sounds/asian_riff.wav" type="AudioStream" id=5]
 
 [sub_resource type="ConvexPolygonShape2D" id=1]
 points = PoolVector2Array( 0, 0, 8, 0, 8, 8, 0, 8 )
@@ -220,6 +219,3 @@ __meta__ = {
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
 shape = SubResource( 9 )
-
-[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
-stream = ExtResource( 5 )
