@@ -7,7 +7,7 @@ var scenes = [
     'temple/temple_2.tscn',
     'forklift/forklift_v2_test.tscn',
     'forklift/skid_loader_test.tscn',
-	'samurai/samurai_level.tscn'
+    'samurai/samurai_level.tscn'
 ]
 
 var buttons = []

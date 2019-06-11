@@ -199,11 +199,14 @@ position = Vector2( 6, -10 )
 player_controlled = true
 
 [node name="Camera2D" type="Camera2D" parent="samurai_character"]
+position = Vector2( 19, 0 )
 current = true
 zoom = Vector2( 0.5, 0.5 )
 
 [node name="samurai_character2" parent="." instance=ExtResource( 3 )]
 position = Vector2( 41, -10 )
+player_number = 2
+player_controlled = true
 facing = -1
 
 [node name="Area2D" type="Area2D" parent="."]

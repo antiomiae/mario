@@ -11,7 +11,10 @@ export var player_controlled := false
 
 export var facing = 1 setget set_facing, get_facing
 
-var hit_list = []
+var sword_hit_list = []
+var body_hit_list = []
+
+var dead = false
 
 func _ready():
     self.facing = facing
@@ -22,6 +25,7 @@ func _ready():
     $sword_area.connect('area_exited', self, 'sword_area_exited')
     $sword_area.connect('body_entered', self, 'sword_body_entered')
     $sword_area.connect('body_exited', self, 'sword_body_exited')
+
 
 func _physics_process(delta):
     var x_input = Input.get_action_strength(input('walk_right')) - Input.get_action_strength(input('walk_left'))
@@ -66,7 +70,7 @@ func input(action):
 func set_facing(_facing):
     if _facing == 1 or _facing == -1:
         facing = _facing
-        set_flip_h(facing != 1)
+        self.scale.x = _facing
 
 func get_facing():
     return facing
@@ -79,14 +83,53 @@ func draw_sword():
         _current_state = Posture.IDLE_ARMED
         animation_player.play('stand_sword')
 
-func sword_area_entered(area : Area2D):
-    hit_list.append(area)
+func sword_area_entered(area):
+    sword_hit_list.append(area)
 
 func sword_area_exited(area):
-    hit_list.erase(area)
+    sword_hit_list.erase(area)
 
 func sword_body_entered(body):
-    hit_list.append(body)
+    if body != self:
+        sword_hit_list.append(body)
+        body.register_hit($sword_area)
 
 func sword_body_exited(body):
-    hit_list.erase(body)
+    sword_hit_list.erase(body)
+    body.register_hit_stop($sword_area)
+
+func register_hit(ob):
+    if !body_hit_list.has(ob):
+        body_hit_list.append(ob)
+
+func register_hit_stop(ob):
+    body_hit_list.erase(ob)
+
+func process_hits():
+    var successful_hits = []
+
+    # oh no, we've been hit
+    if body_hit_list.size() > 0:
+
+        for melee_object in body_hit_list:
+            # did our sword hit the thing that hit us as well?
+            var also_hit_sword = sword_hit_list.has(melee_object)
+
+            if also_hit_sword:
+                print('dodged it')
+            else:
+                successful_hits.append(melee_object)
+
+    if successful_hits.size() > 0:
+        die()
+
+func die():
+    dead = true
+    $AnimationPlayer.play('fall_dead')
+
+
+
+
+
+
+
