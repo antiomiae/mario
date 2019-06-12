@@ -7,7 +7,6 @@ var debug = true
 func _ready():
     pass
 
-
 func connect_as_server():
     var peer = NetworkedMultiplayerENet.new()
     peer.create_server(SERVER_PORT, 1)
