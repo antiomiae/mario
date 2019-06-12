@@ -1,4 +1,4 @@
-extends 'res:///lib/godot-flippable-physics/FlippablePhysics2D.gd'.FlippableKinematicBody2D
+extends '../lib/godot-flippable-physics/FlippablePhysics2D.gd'.FlippableKinematicBody2D
 
 enum Posture { IDLE_DISARMED, ARMING, IDLE_ARMED, WALKING_ARMED, SWINGING, DEAD }
 
@@ -107,7 +107,7 @@ func sword_body_exited(body):
     body.register_hit_stop(sword_area)
 
 func register_hit(ob):
-    if !body_hit_list.has(ob):
+    if not ob in body_hit_list:
         body_hit_list.append(ob)
 
 func register_hit_stop(ob):
@@ -121,7 +121,7 @@ func process_hits():
 
         for melee_object in body_hit_list:
             # did our sword hit the thing that hit us as well?
-            var also_hit_sword = sword_hit_list.has(melee_object)
+            var also_hit_sword = melee_object in sword_hit_list
 
             if also_hit_sword:
                 blocked_hits.append(melee_object)
