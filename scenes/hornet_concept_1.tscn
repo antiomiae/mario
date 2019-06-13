@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=2]
 
-[ext_resource path="res://sprites/hornet_concept_1.png" type="Texture" id=1]
+[ext_resource path="res://sprites/rider/hornet_concept_1.png" type="Texture" id=1]
 [ext_resource path="res://characters/ray_sword_crackle.tscn" type="PackedScene" id=2]
 
 [node name="Control" type="Control"]

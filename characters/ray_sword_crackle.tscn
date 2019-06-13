@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=2]
 
-[ext_resource path="res://sprites/ray_sword_crackle.png" type="Texture" id=1]
+[ext_resource path="res://sprites/rider/ray_sword_crackle.png" type="Texture" id=1]
 
 [sub_resource type="Animation" id=1]
 resource_name = "crackle"
