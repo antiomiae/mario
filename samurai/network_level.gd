@@ -1,18 +1,31 @@
 extends Node2D
 
-const SERVER_PORT = 60000
-var server_ip = '127.0.0.1'
 var debug = true
 
+onready var players_list = $gui_layer/container/vbox/players_list
+
+var _items = {}
+
 func _ready():
-    pass
+    NetworkLobby.connect('player_connected', self, '_player_connected')
+    NetworkLobby.connect('player_disconnected', self, '_player_disconnected')
 
-func connect_as_server():
-    var peer = NetworkedMultiplayerENet.new()
-    peer.create_server(SERVER_PORT, 1)
-    get_tree().set_network_peer(peer)
+    var error = NetworkLobby.connect_as_server({})
+    if error != OK:
+        error = NetworkLobby.connect_as_client({})
+        if error != OK:
+            get_tree().quit()
 
-func connect_as_client():
-    var peer = NetworkedMultiplayerENet.new()
-    peer.create_client(server_ip, SERVER_PORT)
-    get_tree().set_network_peer(peer)
+
+func _player_connected(id, info):
+    _build_player_tree()
+
+func _player_disconnected(id):
+    _build_player_tree()
+
+func _build_player_tree():
+    var s = ''
+    for player_id in NetworkLobby.player_info:
+        s += "player %d\n" % player_id
+
+    players_list.text = s

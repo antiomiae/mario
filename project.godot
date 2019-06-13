@@ -75,6 +75,7 @@ Director="*res://director.gd"
 PlayerInput="*res://player_input.gd"
 LayerNames="*res://layer_names.gd"
 PlayerInfo="*res://player_info.gd"
+NetworkLobby="*res://network_lobby.gd"
 
 [display]
 
