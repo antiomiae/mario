@@ -32,6 +32,8 @@ func _ready():
 
 
 func _physics_process(delta):
+    if not is_network_master():
+        return
     if dead:
         return
 

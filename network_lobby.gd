@@ -2,10 +2,13 @@ extends Node
 
 signal player_connected(id, info)
 signal player_disconnected(id)
+signal network_ready()
+signal start()
 
 
 const SERVER_PORT = 60000
 var server_ip = '127.0.0.1'
+var required_players = 2
 
 # Player info, associate ID to data
 var player_info = {}
@@ -65,14 +68,36 @@ remote func register_player(id, info):
     player_info[id] = info
     # If I'm the server, let the new -g-u-y- person know about existing players.
     if get_tree().is_network_server():
-        # Send my info to new player
-        rpc_id(id, 'register_player', 1, my_info)
-        # Send the info of existing players
+        # Send the info of existing players, which includes the server
         for peer_id in player_info:
             rpc_id(id, 'register_player', peer_id, player_info[peer_id])
 
+        if player_info.size() == required_players:
+            rpc('network_ready')
+
     emit_signal('player_connected', id, info)
+
+remotesync func network_ready():
+    print('network ready')
+    emit_signal('network_ready')
+
+func signal_player_ready():
+    rpc('player_ready', get_tree().get_network_unique_id())
+
+var players_ready = []
+
+master func player_ready(id):
+    if not id in players_ready:
+        players_ready.append(id)
+        print('player %d ready' % id)
+    if get_tree().is_network_server() and players_ready.size() == required_players:
+        rpc('all_players_ready')
+
+remotesync func all_players_ready():
+    print('all players ready')
+    emit_signal('start')
 
 
 func _exit_tree():
-    get_tree().network_peer.close_connection()
+    if get_tree().has_network_peer():
+        get_tree().network_peer.close_connection()
