@@ -3,3 +3,4 @@ services:
 
 script:
   - docker pull wkevina/godot
+  - docker run -v $(pwd):/game-files/ wkevina/godot
