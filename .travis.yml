@@ -7,8 +7,8 @@ script:
 
 before_deploy:
   # Set up git user name and tag this commit
-  - git config --local user.name "YOUR GIT USER NAME"
-  - git config --local user.email "YOUR GIT USER EMAIL"
+  - git config --local user.name "blank"
+  - git config --local user.email "antiomiae@gmail.com"
   - export TRAVIS_TAG=${TRAVIS_TAG:-$(date +'%Y%m%d%H%M%S')-$(git log --format=%h -1)}
   - git tag $TRAVIS_TAG
 
@@ -17,8 +17,6 @@ before_deploy:
 deploy:
   provider: releases
   api_key: $GITHUB_TOKEN
-  file: "FILE TO UPLOAD"
-  skip_cleanup: true
   file_glob: true
   file: build/**/*
   skip_cleanup: true
