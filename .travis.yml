@@ -22,5 +22,3 @@ deploy:
   file_glob: true
   file: build/**/*
   skip_cleanup: true
-  on:
-    tags: true
