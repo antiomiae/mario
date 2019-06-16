@@ -5,16 +5,11 @@ script:
   - docker pull wkevina/godot
   - docker run -v $(pwd):/game-files/ wkevina/godot
 
-before_deploy:
-  # Set up git user name and tag this commit
-  - git config --local user.name "blank"
-  - git config --local user.email "antiomiae@gmail.com"
-  - export TRAVIS_TAG=${TRAVIS_TAG:-$(date +'%Y%m%d%H%M%S')-$(git log --format=%h -1)}
-  - git tag $TRAVIS_TAG
-
 deploy:
   provider: releases
   api_key: $GITHUB_TOKEN
   file_glob: true
   file: build/**/*
   skip_cleanup: true
+  on:
+    tags: true
