@@ -1,10 +1,20 @@
 extends Node
 
+enum ServerState {
+    INITIALIZING,
+    READY
+}
+
+signal client_connection_failed()
+signal server_connection_failed()
 signal player_connected(id, info)
 signal player_disconnected(id)
 signal network_ready()
-signal start()
+signal player_start()
+signal player_reset()
 
+
+var server_state = ServerState.INITIALIZING
 
 const SERVER_PORT = 60000
 var server_ip = '127.0.0.1'
@@ -21,7 +31,6 @@ func _ready():
     get_tree().connect('connected_to_server', self, '_connected_ok')
     get_tree().connect('connection_failed', self, '_connected_fail')
     get_tree().connect('server_disconnected', self, '_server_disconnected')
-    get_tree().connect('connection_succeeded', self, '_connection_succeeded')
 
 func connect_as_server(info):
     my_info = info
@@ -32,6 +41,8 @@ func connect_as_server(info):
         get_tree().set_network_peer(peer)
         player_info[1] = my_info
         emit_signal('player_connected', 1, info)
+    else:
+        get_tree().set_network_peer(null)
     return error
 
 func connect_as_client(info):
@@ -41,6 +52,10 @@ func connect_as_client(info):
     if error == OK:
         print('connected as client')
         get_tree().set_network_peer(peer)
+#        peer.connect('connection_failed', self, '_connected_fail')
+#        peer.connect('connection_succeeded', self, '_connection_succeeded')
+    else:
+        get_tree().set_network_peer(null)
     return error
 
 func _player_connected(id):
@@ -58,10 +73,11 @@ func _connected_ok():
     rpc('register_player', get_tree().get_network_unique_id(), my_info)
 
 func _server_disconnected():
-    pass # Server kicked us; show error and abort.
+    print('server_disconnected')
 
 func _connected_fail():
-    pass # Could not even connect to server; abort.
+    emit_signal('client_connection_failed')
+    print('connected_fail')
 
 remote func register_player(id, info):
     # Store the info
@@ -92,11 +108,22 @@ master func player_ready(id):
         print('player %d ready' % id)
     if get_tree().is_network_server() and players_ready.size() == required_players:
         rpc('all_players_ready')
+        server_state = ServerState.READY
 
 remotesync func all_players_ready():
     print('all players ready')
-    emit_signal('start')
+    emit_signal('player_start')
 
+master func network_reset():
+    if server_state != ServerState.INITIALIZING:
+        server_state = ServerState.INITIALIZING
+        players_ready.clear()
+        rpc('player_reset')
+        if 1 in player_info:
+            player_reset()
+
+puppet func player_reset():
+    emit_signal('player_reset')
 
 func _exit_tree():
     if get_tree().has_network_peer():

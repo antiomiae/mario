@@ -1,0 +1,109 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://lobby_start.gd" type="Script" id=1]
+[ext_resource path="res://samurai/network_level.tscn" type="PackedScene" id=2]
+[ext_resource path="res://sprites/font-export.fnt" type="BitmapFont" id=3]
+[ext_resource path="res://characters/loading_guy.tscn" type="PackedScene" id=4]
+
+[node name="Node2D" type="Node2D"]
+script = ExtResource( 1 )
+launch_scene = ExtResource( 2 )
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color( 0.239216, 0.486275, 0.854902, 1 )
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer"]
+anchor_left = 0.5
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = -112.0
+margin_right = 122.0
+
+[node name="server_address" type="VBoxContainer" parent="CanvasLayer/MarginContainer" groups=[
+"controls",
+]]
+visible = false
+margin_top = 126.0
+margin_right = 234.0
+margin_bottom = 143.0
+size_flags_vertical = 6
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/MarginContainer/server_address"]
+margin_right = 234.0
+margin_bottom = 16.0
+
+[node name="Label" type="Label" parent="CanvasLayer/MarginContainer/server_address/HBoxContainer"]
+margin_top = 4.0
+margin_right = 32.0
+margin_bottom = 11.0
+custom_fonts/font = ExtResource( 3 )
+custom_colors/font_color = Color( 1, 1, 1, 1 )
+text = "server "
+
+[node name="LineEdit" type="LineEdit" parent="CanvasLayer/MarginContainer/server_address/HBoxContainer"]
+margin_left = 36.0
+margin_right = 234.0
+margin_bottom = 16.0
+size_flags_horizontal = 3
+custom_fonts/font = ExtResource( 3 )
+custom_colors/font_color = Color( 1, 1, 1, 1 )
+max_length = 15
+
+[node name="connection_type" type="HBoxContainer" parent="CanvasLayer/MarginContainer" groups=[
+"controls",
+]]
+margin_left = 50.0
+margin_top = 128.0
+margin_right = 184.0
+margin_bottom = 141.0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="Button" type="Button" parent="CanvasLayer/MarginContainer/connection_type"]
+margin_right = 65.0
+margin_bottom = 13.0
+rect_min_size = Vector2( 65, 0 )
+custom_fonts/font = ExtResource( 3 )
+custom_colors/font_color = Color( 1, 1, 1, 1 )
+text = "host"
+
+[node name="Button2" type="Button" parent="CanvasLayer/MarginContainer/connection_type"]
+margin_left = 69.0
+margin_right = 134.0
+margin_bottom = 13.0
+rect_min_size = Vector2( 65, 0 )
+custom_fonts/font = ExtResource( 3 )
+custom_colors/font_color = Color( 1, 1, 1, 1 )
+text = "connect"
+
+[node name="connecting" type="Label" parent="CanvasLayer/MarginContainer" groups=[
+"controls",
+]]
+margin_top = 131.0
+margin_right = 234.0
+margin_bottom = 138.0
+custom_fonts/font = ExtResource( 3 )
+custom_colors/font_color = Color( 1, 1, 1, 1 )
+text = "connecting..."
+align = 1
+
+[node name="Node2D" parent="CanvasLayer/MarginContainer/connecting" instance=ExtResource( 4 )]
+position = Vector2( 118, -15 )
+scale = Vector2( 2, 2 )
+
+[node name="server_waiting" type="Label" parent="CanvasLayer/MarginContainer" groups=[
+"controls",
+]]
+margin_top = 131.0
+margin_right = 234.0
+margin_bottom = 138.0
+custom_fonts/font = ExtResource( 3 )
+custom_colors/font_color = Color( 1, 1, 1, 1 )
+align = 1
+[connection signal="text_entered" from="CanvasLayer/MarginContainer/server_address/HBoxContainer/LineEdit" to="." method="_on_ip_address_text_entered"]
+[connection signal="pressed" from="CanvasLayer/MarginContainer/connection_type/Button" to="." method="_on_connection_type_server_pressed"]
+[connection signal="pressed" from="CanvasLayer/MarginContainer/connection_type/Button2" to="." method="_on_connection_type_client_pressed_pressed"]

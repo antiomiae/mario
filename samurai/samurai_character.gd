@@ -2,7 +2,7 @@ extends '../lib/godot-flippable-physics/FlippablePhysics2D.gd'.FlippableKinemati
 
 enum Posture { IDLE_DISARMED, ARMING, IDLE_ARMED, WALKING_ARMED, SWINGING, DEAD }
 
-var _current_state = Posture.IDLE_DISARMED
+remote var _current_state = Posture.IDLE_DISARMED
 
 export var player_number = 1
 export var player_controlled := false
@@ -12,7 +12,7 @@ export var facing = 1 setget set_facing, get_facing
 var sword_hit_list = []
 var body_hit_list = []
 
-var dead = false
+remote var dead = false
 
 onready var animation_player = $container/AnimationPlayer
 onready var sword_area = $container/sword_area
@@ -23,7 +23,10 @@ const bell_ogg = preload('res://sounds/bell_chime.ogg')
 func _ready():
     self.facing = facing
 
-    animation_player.play('stand')
+    rset_config('position', MultiplayerAPI.RPC_MODE_PUPPET)
+    rset_config('facing', MultiplayerAPI.RPC_MODE_PUPPET)
+
+    _update_animation()
 
     $container/sword_area.connect('area_entered', self, 'sword_area_entered')
     $container/sword_area.connect('area_exited', self, 'sword_area_exited')
@@ -32,7 +35,7 @@ func _ready():
 
 
 func _physics_process(delta):
-    if not is_network_master():
+    if get_tree().has_network_peer() and not is_network_master():
         return
     if dead:
         return
@@ -59,7 +62,23 @@ func _physics_process(delta):
                 if name == 'downward_swing':
                     _current_state = Posture.IDLE_ARMED
 
-        _update_animation()
+    rset('position', position)
+    rset('_current_state', _current_state)
+    rset('facing', facing)
+    rset('dead', dead)
+    _update_animation()
+    rpc('_sync_animation', $container/AnimationPlayer.assigned_animation, $container/AnimationPlayer.current_animation_position, !$container/AnimationPlayer.is_playing())
+
+puppet func _sync_animation(name, seek, stop):
+    set_facing(facing)
+    if name:
+        if name != $container/AnimationPlayer.assigned_animation:
+            $container/AnimationPlayer.play(name)
+            $container/AnimationPlayer.seek(0, true)
+            $container/AnimationPlayer.seek(seek)
+    if stop:
+        $container/AnimationPlayer.stop()
+
 
 func _update_animation():
     set_facing(facing)

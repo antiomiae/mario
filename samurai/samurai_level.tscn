@@ -207,7 +207,6 @@ modulate = Color( 2.89, 1, 1, 1 )
 position = Vector2( 41, -10 )
 player_number = 2
 player_controlled = true
-facing = -1
 
 [node name="Area2D" type="Area2D" parent="."]
 position = Vector2( -53.7407, -5.62963 )

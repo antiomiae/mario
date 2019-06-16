@@ -9,28 +9,35 @@ var _items = {}
 func _physics_process(delta):
     var fighters = get_tree().get_nodes_in_group('fighters')
 
+    var alive_count = 0
+
     for fighter in fighters:
         if !fighter.dead:
+            alive_count += 1
             fighter.process_hits()
 
+    if alive_count < 2 and get_tree().is_network_server():
+        NetworkLobby.rpc('network_reset')
 
 func _ready():
     NetworkLobby.connect('player_connected', self, '_player_connected')
     NetworkLobby.connect('player_disconnected', self, '_player_disconnected')
     NetworkLobby.connect('network_ready', self, '_network_ready')
-    NetworkLobby.connect('start', self, '_start_match')
+    NetworkLobby.connect('player_start', self, '_start_match')
+    NetworkLobby.connect('player_reset', self, '_restart_match')
 
     NetworkLobby.required_players = 2
 
-    var error = NetworkLobby.connect_as_server({})
-    if error != OK:
-        error = NetworkLobby.connect_as_client({})
-        if error != OK:
-            print('failed to connect as client')
-            get_tree().quit()
+    get_tree().paused = true
+
+    _network_ready()
 
 func _start_match():
+    get_tree().paused = false
     print('start')
+
+func _restart_match():
+    get_tree().reload_current_scene()
 
 func _network_ready():
     # set up network owners of players

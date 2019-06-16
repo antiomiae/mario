@@ -214,6 +214,7 @@ zoom = Vector2( 0.5, 0.5 )
 [node name="player1" type="KinematicBody2D" parent="." groups=[
 "fighters",
 ] instance=ExtResource( 3 )]
+pause_mode = 1
 position = Vector2( 6, -10 )
 collision_layer = 65
 collision_mask = 3
@@ -223,6 +224,7 @@ player_controlled = true
 [node name="player2" type="KinematicBody2D" parent="." groups=[
 "fighters",
 ] instance=ExtResource( 3 )]
+pause_mode = 1
 modulate = Color( 2.89, 1, 1, 1 )
 position = Vector2( 41, -10 )
 collision_layer = 65
