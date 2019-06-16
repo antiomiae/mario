@@ -1,7 +1,7 @@
 services:
   - docker
 
-script:
+before_deploy:
   - docker pull wkevina/godot
   - docker run -v $(pwd):/game-files/ wkevina/godot
 
