@@ -93,7 +93,7 @@ text = "connecting..."
 align = 1
 
 [node name="loading_guy" parent="CanvasLayer/MarginContainer/connecting" instance=ExtResource( 4 )]
-position = Vector2( 118, -15 )
+position = Vector2( 118, -21 )
 scale = Vector2( 2, 2 )
 
 [node name="server_waiting" type="Label" parent="CanvasLayer/MarginContainer" groups=[
@@ -107,7 +107,7 @@ custom_colors/font_color = Color( 1, 1, 1, 1 )
 align = 1
 
 [node name="loading_guy" parent="CanvasLayer/MarginContainer/server_waiting" instance=ExtResource( 4 )]
-position = Vector2( 118, -15 )
+position = Vector2( 118, -21 )
 scale = Vector2( 2, 2 )
 [connection signal="text_entered" from="CanvasLayer/MarginContainer/server_address/HBoxContainer/LineEdit" to="." method="_on_ip_address_text_entered"]
 [connection signal="pressed" from="CanvasLayer/MarginContainer/connection_type/Button" to="." method="_on_connection_type_server_pressed"]
