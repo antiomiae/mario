@@ -37,37 +37,13 @@ func _ready():
 func _physics_process(delta):
     if get_tree().has_network_peer() and not is_network_master():
         return
-    if dead:
-        return
 
-    var x_input = Input.get_action_strength(input('walk_right')) - Input.get_action_strength(input('walk_left'))
+    if !dead:
+        update_state()
 
-    if _current_state == Posture.IDLE_DISARMED:
-        if x_input != 0:
-            draw_sword()
-    elif _current_state != Posture.ARMING:
-        if _current_state != Posture.SWINGING:
-            if x_input != 0:
-                _current_state = Posture.WALKING_ARMED
-                move_and_slide(Vector2(x_input*60, 0.25), Vector2(0, -1))
-                facing = 1 if x_input > 0 else -1
-                set_flip_h(facing != 1)
-            else:
-                _current_state = Posture.IDLE_ARMED
+    sync_state()
 
-            if Input.is_action_just_pressed(input('sword_attack_1')):
-                _current_state = Posture.SWINGING
-                animation_player.play('downward_swing')
-                var name = yield(animation_player, 'animation_finished')
-                if name == 'downward_swing':
-                    _current_state = Posture.IDLE_ARMED
 
-    rset('position', position)
-    rset('_current_state', _current_state)
-    rset('facing', facing)
-    rset('dead', dead)
-    _update_animation()
-    rpc('_sync_animation', $container/AnimationPlayer.assigned_animation, $container/AnimationPlayer.current_animation_position, !$container/AnimationPlayer.is_playing())
 
 puppet func _sync_animation(name, seek, stop):
     set_facing(facing)
@@ -78,7 +54,6 @@ puppet func _sync_animation(name, seek, stop):
             $container/AnimationPlayer.seek(seek)
     if stop:
         $container/AnimationPlayer.stop()
-
 
 
 func _update_animation():
@@ -177,4 +152,34 @@ func die():
     _current_state = Posture.DEAD
     animation_player.play('fall_dead')
 
+func update_state():
+    var x_input = Input.get_action_strength(input('walk_right')) - Input.get_action_strength(input('walk_left'))
+
+    if _current_state == Posture.IDLE_DISARMED:
+        if x_input != 0:
+            draw_sword()
+    elif _current_state != Posture.ARMING:
+        if _current_state != Posture.SWINGING:
+            if x_input != 0:
+                _current_state = Posture.WALKING_ARMED
+                move_and_slide(Vector2(x_input*60, 0.25), Vector2(0, -1))
+                facing = 1 if x_input > 0 else -1
+                set_flip_h(facing != 1)
+            else:
+                _current_state = Posture.IDLE_ARMED
+
+            if Input.is_action_just_pressed(input('sword_attack_1')):
+                _current_state = Posture.SWINGING
+                animation_player.play('downward_swing')
+                var name = yield(animation_player, 'animation_finished')
+                if name == 'downward_swing':
+                    _current_state = Posture.IDLE_ARMED
+
+func sync_state():
+    rset('position', position)
+    rset('_current_state', _current_state)
+    rset('facing', facing)
+    rset('dead', dead)
+    _update_animation()
+    rpc('_sync_animation', $container/AnimationPlayer.assigned_animation, $container/AnimationPlayer.current_animation_position, !$container/AnimationPlayer.is_playing())
 

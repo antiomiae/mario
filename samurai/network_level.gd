@@ -12,7 +12,7 @@ var state = WAITING
 
 var my_player
 
-var player_name = 'player_1'
+var player_name = 'player1'
 
 const END_SOUND = preload('res://sounds/asian_riff.wav')
 
