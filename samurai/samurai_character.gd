@@ -177,8 +177,3 @@ func die():
     animation_player.play('fall_dead')
 
 
-
-
-
-
-

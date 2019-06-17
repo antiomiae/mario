@@ -74,6 +74,8 @@ func set_selected_control(_c):
     selected_control = _c
     for control in controls:
         control.visible = control.name == selected_control
+        if control.name == selected_control:
+            (control as Control).propagate_call('grab_focus')
 
 func get_selected_control():
     return selected_control
