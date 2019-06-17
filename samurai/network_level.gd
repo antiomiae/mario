@@ -14,6 +14,8 @@ var my_player
 
 var player_name = 'player_1'
 
+const END_SOUND = preload('res://sounds/asian_riff.wav')
+
 func _physics_process(delta):
     if state == FIGHTING:
         var fighters = get_tree().get_nodes_in_group('fighters')
@@ -96,10 +98,17 @@ remotesync func end_match():
     print('end_match')
     if state != AFTER_MATCH:
         state = AFTER_MATCH
+        play_end_sound(1.5)
         if get_tree().is_network_server():
             rpc('update_player_info')
-            yield(get_tree().create_timer(4), 'timeout')
+            yield(get_tree().create_timer(5), 'timeout')
             NetworkLobby.rpc('network_reset')
+
+func play_end_sound(delay = 0.0):
+    if delay > 0:
+        yield(get_tree().create_timer(delay), 'timeout')
+    $AudioStreamPlayer.stream = END_SOUND
+    $AudioStreamPlayer.play()
 
 remotesync func update_player_info():
     print('update_player_info')
