@@ -40,6 +40,7 @@ func connect_as_server(info):
         print('connected as server')
         get_tree().set_network_peer(peer)
         player_info[1] = my_info
+        my_info['network_id'] = 1
         emit_signal('player_connected', 1, info)
     else:
         get_tree().set_network_peer(null)
@@ -52,6 +53,7 @@ func connect_as_client(info):
     if error == OK:
         print('connected as client')
         get_tree().set_network_peer(peer)
+        my_info['network_id'] = get_tree().get_network_unique_id()
 #        peer.connect('connection_failed', self, '_connected_fail')
 #        peer.connect('connection_succeeded', self, '_connection_succeeded')
     else:
@@ -79,9 +81,16 @@ func _connected_fail():
     emit_signal('client_connection_failed')
     print('connected_fail')
 
+func assign_player(info):
+    var player_number = player_info.size() + 1
+    info['player_name'] = 'player{0}'.format([player_number])
+    return info
+
 remote func register_player(id, info):
     # Store the info
-    player_info[id] = info
+    player_info[id] = assign_player(info)
+    if id == get_tree().get_network_unique_id():
+        my_info = info
     # If I'm the server, let the new -g-u-y- person know about existing players.
     if get_tree().is_network_server():
         # Send the info of existing players, which includes the server
@@ -107,6 +116,7 @@ master func player_ready(id):
         players_ready.append(id)
         print('player %d ready' % id)
     if get_tree().is_network_server() and players_ready.size() == required_players:
+        yield(get_tree().create_timer(1), 'timeout')
         rpc('all_players_ready')
         server_state = ServerState.READY
 
@@ -128,3 +138,4 @@ puppet func player_reset():
 func _exit_tree():
     if get_tree().has_network_peer():
         get_tree().network_peer.close_connection()
+

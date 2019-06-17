@@ -290,7 +290,7 @@ shape = SubResource( 1 )
 texture = ExtResource( 2 )
 vframes = 4
 hframes = 14
-frame = 17
+frame = 31
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="container"]
 anims/downward_swing = SubResource( 2 )
@@ -301,8 +301,8 @@ anims/stand_sword = SubResource( 6 )
 anims/walk = SubResource( 7 )
 
 [node name="sword_area" type="Area2D" parent="container"]
-position = Vector2( 4, 4 )
-rotation = -0.975985
+position = Vector2( 1, 1 )
+rotation = 0.652708
 collision_layer = 32
 collision_mask = 96
 __meta__ = {
@@ -311,7 +311,6 @@ __meta__ = {
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="container/sword_area"]
 shape = SubResource( 8 )
-disabled = true
 
 [node name="clang_sound" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource( 3 )

@@ -213,7 +213,7 @@ margin_bottom = 7.0
 custom_fonts/font = ExtResource( 2 )
 text = "player 1:"
 
-[node name="player_1_deaths" type="Label" parent="gui_layer/player_deaths/player_1_deaths_box" groups=[
+[node name="player1_deaths" type="Label" parent="gui_layer/player_deaths/player_1_deaths_box" groups=[
 "death_counters",
 ]]
 margin_left = 43.0
@@ -244,7 +244,7 @@ margin_bottom = 7.0
 custom_fonts/font = ExtResource( 2 )
 text = "player 2:"
 
-[node name="player_2_deaths" type="Label" parent="gui_layer/player_deaths/player_2_deaths_box" groups=[
+[node name="player2_deaths" type="Label" parent="gui_layer/player_deaths/player_2_deaths_box" groups=[
 "death_counters",
 ]]
 margin_left = 45.0

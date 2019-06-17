@@ -25,28 +25,22 @@ func _physics_process(delta):
         for fighter in fighters:
             if !fighter.dead:
                 alive_count += 1
-                fighter.process_hits()
+
+        get_node(player_name).process_hits()
 
         if alive_count < 2 and get_tree().is_network_server():
             #NetworkLobby.rpc('network_reset')
             rpc('end_match')
 
+
+
 func _ready():
-        # set up network owners of players
-    $player1.set_network_master(1)
     $player1.player_number = 1
     $player2.player_number = 1
 
-    if get_tree().is_network_server():
-        var peer_id = get_tree().get_network_connected_peers()[0]
-        assert(peer_id > 1)
-        $player2.set_network_master(peer_id)
-        my_player = $player1
-        player_name = 'player_1'
-    else:
-        $player2.set_network_master(get_tree().get_network_unique_id())
-        my_player = $player2
-        player_name = 'player_2'
+    player_name = NetworkLobby.my_info['player_name']
+    assert(player_name != null)
+    my_player = get_node(player_name)
 
     update_player_info()
 
@@ -62,6 +56,14 @@ func _ready():
 
     _network_ready()
 
+func setup_players():
+    for id in NetworkLobby.player_info:
+        var info = NetworkLobby.player_info[id]
+        var player_character = get_node(info['player_name'])
+        assert(player_character != null)
+        player_character.set_network_master(NetworkLobby.player_info[name])
+
+
 func _process(delta):
     update_death_counters()
     _build_player_tree()
@@ -71,6 +73,7 @@ func _network_ready():
 
 func _start_match():
     get_tree().paused = false
+    setup_players()
     state = FIGHTING
     print('start')
 
@@ -108,7 +111,7 @@ func play_end_sound(delay = 0.0):
     if delay > 0:
         yield(get_tree().create_timer(delay), 'timeout')
     $AudioStreamPlayer.stream = END_SOUND
-    $AudioStreamPlayer.play()
+    #$AudioStreamPlayer.play()
 
 remotesync func update_player_info():
     print('update_player_info')
@@ -118,7 +121,7 @@ remotesync func update_player_info():
         stats[player_name] = {}
         stats[player_name]['deaths'] = 0
 
-    if my_player.dead:
+    if get_node(player_name):
         stats[player_name]['deaths'] += 1
 
     rpc('sync_player_info', stats[player_name], player_name)

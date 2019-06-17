@@ -80,6 +80,7 @@ puppet func _sync_animation(name, seek, stop):
         $container/AnimationPlayer.stop()
 
 
+
 func _update_animation():
     set_facing(facing)
     match _current_state:

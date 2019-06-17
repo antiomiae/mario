@@ -109,7 +109,7 @@ position = Vector2( 8, -9 )
 texture = ExtResource( 2 )
 vframes = 4
 hframes = 15
-frame = 56
+frame = 48
 
 [node name="guy_sprite" type="Sprite" parent="."]
 texture = ExtResource( 2 )
