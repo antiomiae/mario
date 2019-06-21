@@ -61,7 +61,7 @@ func setup_players():
         var info = NetworkLobby.player_info[id]
         var player_character = get_node(info['player_name'])
         assert(player_character != null)
-        player_character.set_network_master(NetworkLobby.player_info[name])
+        player_character.set_network_master(id)
 
 
 func _process(delta):

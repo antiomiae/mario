@@ -41,7 +41,7 @@ func _on_connection_type_client_pressed_pressed() -> void:
 func setup_lobby():
     if connection_type == SERVER:
         NetworkLobby.server_ip = '127.0.0.1'
-        var error = NetworkLobby.connect_as_server({})
+        var error = NetworkLobby.connect_as_server({'player_name': 'player1'})
         if error != OK:
             print('error connecting as server')
         else:
@@ -55,7 +55,7 @@ func setup_lobby():
     elif connection_type == CLIENT:
         if ip_address_text:
             NetworkLobby.server_ip = ip_address_text
-            var error = NetworkLobby.connect_as_client({})
+            var error = NetworkLobby.connect_as_client({'player_name': 'player2'})
             if error != OK:
                 print('error connecting as client')
             else:
