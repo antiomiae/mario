@@ -27,16 +27,16 @@ size_flags_vertical = 8
 texture = ExtResource( 2 )
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
-margin_left = 208.0
-margin_top = 95.0
-margin_right = 272.0
-margin_bottom = 174.0
+margin_left = 195.0
+margin_top = 90.0
+margin_right = 284.0
+margin_bottom = 180.0
 size_flags_horizontal = 4
 size_flags_vertical = 4
 custom_constants/separation = -2
 
 [node name="tether_1" type="Button" parent="MarginContainer/VBoxContainer"]
-margin_right = 64.0
+margin_right = 89.0
 margin_bottom = 13.0
 focus_neighbour_bottom = NodePath("../tether_2")
 focus_next = NodePath("../tether_2")
@@ -47,7 +47,7 @@ align = 0
 
 [node name="tether_2" type="Button" parent="MarginContainer/VBoxContainer"]
 margin_top = 11.0
-margin_right = 64.0
+margin_right = 89.0
 margin_bottom = 24.0
 focus_neighbour_top = NodePath("../tether_1")
 focus_neighbour_bottom = NodePath("../temple_1")
@@ -60,7 +60,7 @@ align = 0
 
 [node name="temple_1" type="Button" parent="MarginContainer/VBoxContainer"]
 margin_top = 22.0
-margin_right = 64.0
+margin_right = 89.0
 margin_bottom = 35.0
 focus_neighbour_top = NodePath("../tether_2")
 focus_neighbour_bottom = NodePath("../temple_2")
@@ -73,7 +73,7 @@ align = 0
 
 [node name="temple_2" type="Button" parent="MarginContainer/VBoxContainer"]
 margin_top = 33.0
-margin_right = 64.0
+margin_right = 89.0
 margin_bottom = 46.0
 focus_neighbour_top = NodePath("../temple_1")
 focus_neighbour_bottom = NodePath("../forklift")
@@ -84,7 +84,7 @@ align = 0
 
 [node name="forklift" type="Button" parent="MarginContainer/VBoxContainer"]
 margin_top = 44.0
-margin_right = 64.0
+margin_right = 89.0
 margin_bottom = 57.0
 focus_neighbour_top = NodePath("../temple_1")
 focus_neighbour_bottom = NodePath("../skid_loader")
@@ -95,7 +95,7 @@ align = 0
 
 [node name="skid_loader" type="Button" parent="MarginContainer/VBoxContainer"]
 margin_top = 55.0
-margin_right = 64.0
+margin_right = 89.0
 margin_bottom = 68.0
 focus_neighbour_top = NodePath("../forklift")
 focus_neighbour_bottom = NodePath("../samurai")
@@ -106,10 +106,21 @@ align = 0
 
 [node name="samurai" type="Button" parent="MarginContainer/VBoxContainer"]
 margin_top = 66.0
-margin_right = 64.0
+margin_right = 89.0
 margin_bottom = 79.0
 focus_neighbour_top = NodePath("../skid_loader")
+focus_neighbour_bottom = NodePath("../samurai_network")
 custom_fonts/font = ExtResource( 3 )
 text = "Samurai"
+flat = true
+align = 0
+
+[node name="samurai_network" type="Button" parent="MarginContainer/VBoxContainer"]
+margin_top = 77.0
+margin_right = 89.0
+margin_bottom = 90.0
+focus_neighbour_top = NodePath("../skid_loader")
+custom_fonts/font = ExtResource( 3 )
+text = "Samurai Network"
 flat = true
 align = 0
