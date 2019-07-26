@@ -62,7 +62,7 @@ _global_script_class_icons={
 
 [application]
 
-config/name="samurai deathmatch"
+config/name="demo"
 run/main_scene="res://level_select.tscn"
 boot_splash/image="res://mouse.png"
 boot_splash/fullsize=false
